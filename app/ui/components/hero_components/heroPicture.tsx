@@ -9,7 +9,7 @@ export default function HeroPicture() {
     useEffect(() => {
         async function loadPicture() {
             const data = await fetchHeroPicture();
-            setImageUrl(data.imageUrl);
+            setImageUrl("data.imageUrl");
         }
         loadPicture();
     }, []);
