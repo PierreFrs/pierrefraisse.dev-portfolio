@@ -1,5 +1,6 @@
 import HeroDescriptionForm from "@/app/ui/components/admin_components/heroDescriptionForm";
 import HeroPictureForm from "@/app/ui/components/admin_components/heroPictureForm";
+import LogoutButton from "@/app/ui/components/admin_components/logoutButton";
 
 export default function AdminPage() {
     return (
@@ -13,6 +14,7 @@ export default function AdminPage() {
                 <h2 className="text-xl font-bold mb-4">Update Hero Picture</h2>
                 <HeroPictureForm />
             </section>
+            <LogoutButton />
         </div>
     );
 }
