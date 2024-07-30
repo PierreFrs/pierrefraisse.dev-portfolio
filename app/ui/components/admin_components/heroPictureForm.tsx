@@ -1,4 +1,6 @@
-export default function HeroPictureForm() {
+export default function HeroPictureForm({userId} : {userId: 
+string
+}) {
     return (
         <div>
             <h1>Hero Picture Form</h1>

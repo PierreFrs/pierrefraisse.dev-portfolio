@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import {useState } from "react";
 import { postHeroDescription } from "@/app/lib/data/heroDescriptionData";
 
-export default function HeroDescriptionForm() {
+export default function HeroDescriptionForm({userId} : {userId: 
+string
+}) {
     const [description, setDescription] = useState<string>("");
     const [language, setLanguage] = useState<string>("en");
     const [loading, setLoading] = useState<boolean>(false);
     const [message, setMessage] = useState<string>("");
-
+    
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
@@ -17,11 +19,10 @@ export default function HeroDescriptionForm() {
         const formData = new FormData();
         formData.append("description", description);
         formData.append("language", language);
-        // If you have a userId, append it here as well
-        // formData.append("userId", "your-user-id");
+        formData.append("userId", userId);
 
         try {
-            const result = await postHeroDescription(formData);
+            const result = await postHeroDescription(userId, formData);
 
             if ('errors' in result) {
                 setMessage(`Failed to update description: ${result.message}`);

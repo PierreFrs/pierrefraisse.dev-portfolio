@@ -1,7 +1,8 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
-import { z } from "zod";
+import {PrismaClient} from "@prisma/client";
+import {z} from "zod";
+import verifyUserExistence from "./userActions";
 
 const prisma = new PrismaClient();
 
@@ -12,10 +13,10 @@ const FormSchema = z.object({
     userId: z.string().min(1, "User ID cannot be empty."),
 });
 
-export async function postHeroDescription(formData: FormData) {
+export async function postHeroDescription(userId: string, formData: FormData) {
     // Extract data from FormData
     const data = Object.fromEntries(formData.entries());
-
+    
     // Validate and parse data
     const validatedFields = FormSchema.safeParse(data);
 
@@ -26,12 +27,18 @@ export async function postHeroDescription(formData: FormData) {
         };
     }
     
-    const { id, description, language, userId } = validatedFields.data;
+    const { id, description, language } = validatedFields.data;
+
+    if (!await verifyUserExistence(userId)) {
+        return {
+            message: "User not found.",
+        }
+    }
     
     try {
-        const heroDescription = await prisma.heroDescription.upsert({
-            where: { id: id ?? '' },
-            update: { text: description, language, updatedAt: new Date() },
+        return await prisma.heroDescription.upsert({
+            where: {id: id ?? ''},
+            update: {text: description, language, updatedAt: new Date()},
             create: {
                 userId,
                 language,
@@ -40,7 +47,6 @@ export async function postHeroDescription(formData: FormData) {
                 updatedAt: new Date(),
             },
         });
-        return heroDescription;
     } catch (error) {
         console.error("Error in postHeroDescription:", error);
         return {
