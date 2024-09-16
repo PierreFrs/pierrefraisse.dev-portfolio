@@ -14,11 +14,12 @@ export const authConfig = {
     },
     providers: [Github],
     callbacks: {
-        async redirect({url, baseUrl}) {
-            if (url === '/admin') {
-                return url;
-            }
-            return baseUrl + '/admin';
+        async redirect({ url, baseUrl }) {
+            // Allows relative callback URLs
+            if (url.startsWith("/")) return `${baseUrl}${url}`
+            // Allows callback URLs on the same origin
+            else if (new URL(url).origin === baseUrl) return url
+            return baseUrl
         },
 
         async jwt({ token, user }) {
@@ -41,11 +42,7 @@ export const authConfig = {
             const allowedEmail = process.env.MY_MAIL;
 
             // Ensure that the user's email is verified and matches the allowed email
-            if (profile?.email === allowedEmail) {
-                return true;
-            } else {
-                return false;
-            }
+            return profile?.email === allowedEmail;
         },
 
         authorized: async ({ auth }) => {
