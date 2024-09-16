@@ -37,6 +37,17 @@ export const authConfig = {
             return session;
         },
 
+        async signIn({ user, account, profile }) {
+            const allowedEmail = process.env.MY_MAIL;
+
+            // Ensure that the user's email is verified and matches the allowed email
+            if (profile?.email === allowedEmail) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
         authorized: async ({ auth }) => {
             return !!auth
         },
