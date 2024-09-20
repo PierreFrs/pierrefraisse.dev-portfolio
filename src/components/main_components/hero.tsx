@@ -1,7 +1,7 @@
-import HeroDescription from "@/app/ui/components/hero_components/heroDescription";
-import SocialLink from "@/app/ui/components/hero_components/socialLink";
-import HeroPicture from "@/app/ui/components/hero_components/heroPicture";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import HeroDescription from "@/components/hero_components/heroDescription";
+import SocialLink from "@/components/hero_components/socialLink";
+import HeroPicture from "@/components/hero_components/heroPicture";
 
 export default function Hero() {
     return (

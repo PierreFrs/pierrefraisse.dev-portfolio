@@ -1,6 +1,6 @@
-import LoginForm from '@/app/ui/components/login_component/loginForm';
-import {SignOut} from "@/app/ui/components/signout_components/signOutButton";
 import {auth} from "@/auth";
+import {SignOut} from "@/components/signout_components/signOutButton";
+import LoginForm from "@/components/login_component/loginForm";
 
 export default async function LoginPage() {
     const session = await auth();

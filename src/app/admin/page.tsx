@@ -1,7 +1,7 @@
-import HeroDescriptionForm from "@/app/ui/components/admin_components/heroDescriptionForm";
-import HeroPictureForm from "@/app/ui/components/admin_components/heroPictureForm";
-import LogoutButton from "@/app/ui/components/admin_components/logoutButton";
 import {auth} from "@/auth";
+import HeroDescriptionForm from "@/components/admin_components/heroDescriptionForm";
+import HeroPictureForm from "@/components/admin_components/heroPictureForm";
+import LogoutButton from "@/components/admin_components/logoutButton";
 
 export default async function AdminPage() {
     const session = await auth();

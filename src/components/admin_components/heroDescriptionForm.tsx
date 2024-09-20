@@ -3,7 +3,7 @@
 import {useState } from "react";
 import { postHeroDescription } from "@/app/lib/data/heroDescriptionData";
 
-export default function HeroDescriptionForm({userId}: {userId: string}) {
+export default function HeroDescriptionForm({userId}: Readonly<{ userId: string }>) {
     const [description, setDescription] = useState<string>("");
     const [language, setLanguage] = useState<string>("en");
     const [loading, setLoading] = useState<boolean>(false);
