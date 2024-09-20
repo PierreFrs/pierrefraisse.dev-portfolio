@@ -27,7 +27,7 @@ export async function postHeroDescription(userId: string, formData: FormData) {
         };
     }
     
-    const { id, description, language } = validatedFields.data;
+    const { description, language } = validatedFields.data;
 
     if (!await verifyUserExistence(userId)) {
         return {
@@ -35,19 +35,34 @@ export async function postHeroDescription(userId: string, formData: FormData) {
             message: "User not found. Redirecting to login page.",
         }
     }
-    
+
     try {
-        return await prisma.heroDescription.upsert({
-            where: {id: id ?? ''},
-            update: {text: description, language, updatedAt: new Date()},
-            create: {
-                userId,
-                language,
-                text: description,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-            },
+        // Check if a description already exists for the userId and language
+        const existingDescription = await prisma.heroDescription.findFirst({
+            where: { userId, language },
         });
+
+        if (existingDescription) {
+            // Update the existing description
+            return await prisma.heroDescription.update({
+                where: { id: existingDescription.id },
+                data: {
+                    text: description,
+                    updatedAt: new Date(),
+                },
+            });
+        } else {
+            // Create a new description
+            return await prisma.heroDescription.create({
+                data: {
+                    userId,
+                    language,
+                    text: description,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            });
+        }
     } catch (error) {
         console.error("Error in postHeroDescription:", error);
         return {

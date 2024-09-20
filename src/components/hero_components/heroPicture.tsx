@@ -21,6 +21,6 @@ export default function HeroPicture() {
     return <Image src={imageUrl} 
                   alt="Your host picture" 
                   className="rounded-full" 
-                  width="1200" 
-                  height="1200"/>;
+                  width="420" 
+                  height="420"/>;
 }
