@@ -2,6 +2,9 @@ import {auth} from "@/auth";
 import HeroDescriptionForm from "@/components/admin_components/heroDescriptionForm";
 import HeroPictureForm from "@/components/admin_components/heroPictureForm";
 import LogoutButton from "@/components/admin_components/logoutButton";
+import ProjectUploadForm from "@/components/admin_components/projectUploadForm";
+import React from "react";
+import BadgeUploadForm from "@/components/admin_components/badgeUploadForm";
 
 export default async function AdminPage() {
     const session = await auth();
@@ -35,6 +38,14 @@ export default async function AdminPage() {
             <section>
                 <h2 className="text-xl font-bold mb-4">Update Hero Picture</h2>
                 <HeroPictureForm userId={userId} />
+            </section>
+            <section>
+                <h2 className="text-xl font-bold mb-4">Upload Projects</h2>
+                <ProjectUploadForm />
+            </section>
+            <section>
+                <h2 className="text-xl font-bold mb-4">Upload Badges</h2>
+                <BadgeUploadForm />
             </section>
             <LogoutButton />
         </div>

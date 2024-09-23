@@ -4,6 +4,7 @@ import {prisma} from "../../../../prisma/prisma";
 
 const profilePictureName = "profile_picture.jpg"
 export async function POST(req: Request) {
+    
     const form = await req.formData();
     const file = form.get("file") as File;
     const userId = form.get("userId") as string;
@@ -54,8 +55,7 @@ export async function POST(req: Request) {
     }
 }
 
-
-export async function GET(req: Request) {
+export async function GET() {
     try {
         // Query the database for a record containing "profile_picture" in the URL
         const heroPicture = await prisma.heroPicture.findFirst({
