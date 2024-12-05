@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import {useSession} from "next-auth/react";
+import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 
 export default function ProjectUploadForm() {
     const [title, setTitle] = useState("");
@@ -9,11 +11,13 @@ export default function ProjectUploadForm() {
     const [picture, setPicture] = useState<File | null>(null);
     const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
     const [badges, setBadges] = useState<any[]>([]);
+    const {data: session} = useSession();
+    const [inProgress, setInProgress] = useState(false);
 
     // Fetch available badges
     useEffect(() => {
         async function fetchBadges() {
-            const response = await fetch("/api/badges"); // Fetch the badges from API
+            const response = await fetch("/api/stackBadges"); // Fetch the badges from API
             const data = await response.json();
             setBadges(data);
         }
@@ -23,28 +27,49 @@ export default function ProjectUploadForm() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setInProgress(true);
+
+        if (!title || !shortDescription || !link || !picture || !selectedBadges.length) {
+            console.error("Missing required fields");
+            return;
+        }
+
+        const userId = session?.user?.id;
+        if (!userId) {
+            console.error("No user ID found in session");
+            return;
+        }
+
         const formData = new FormData();
         formData.append("title", title);
         formData.append("shortDescription", shortDescription);
         formData.append("link", link);
         formData.append("picture", picture as Blob); // Append picture file
-        formData.append("badges", JSON.stringify(selectedBadges));
+        formData.append("stack", JSON.stringify(selectedBadges));
+        formData.append("userId", userId);
 
-        // Send the form data to the API
-        const response = await fetch("/api/projects", {
-            method: "POST",
-            body: formData,
-        });
-        if (response.ok) {
-            console.log("Project uploaded successfully");
-        } else {
-            console.error("Error uploading project");
+        try {
+            const response = await fetch("/api/projectGallery", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log("Project uploaded successfully");
+            } else {
+                console.error("Error uploading project");
+            }
+            setInProgress(false);
+        }
+        catch (error) {
+            console.error("Error uploading project", error);
+            setInProgress(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
+        <form onSubmit={handleSubmit} className="w-96">
+            <div className="mb-4 flex justify-between">
                 <label htmlFor="title">Project Title</label>
                 <input
                     id="title"
@@ -55,7 +80,7 @@ export default function ProjectUploadForm() {
                 />
             </div>
 
-            <div>
+            <div className="mb-4 flex justify-between">
                 <label htmlFor="shortDescription">Short Description</label>
                 <textarea
                     id="shortDescription"
@@ -65,7 +90,7 @@ export default function ProjectUploadForm() {
                 ></textarea>
             </div>
 
-            <div>
+            <div className="mb-4 flex justify-between">
                 <label htmlFor="link">Project Link</label>
                 <input
                     id="link"
@@ -76,8 +101,8 @@ export default function ProjectUploadForm() {
                 />
             </div>
 
-            <div>
-                <label htmlFor="picture">Upload Picture</label>
+            <div className="mb-4 flex justify-between">
+                <label htmlFor="picture">Picture</label>
                 <input
                     id="picture"
                     type="file"
@@ -87,10 +112,11 @@ export default function ProjectUploadForm() {
                 />
             </div>
 
-            <div>
-                <label htmlFor="badges">Select Badges</label>
+            <div className="mb-4 flex justify-between">
+                <label htmlFor="stack">Select Badges</label>
                 <select
-                    id="badges"
+                    className="w-32"
+                    id="stack"
                     multiple
                     value={selectedBadges}
                     onChange={(e) =>
@@ -107,7 +133,13 @@ export default function ProjectUploadForm() {
                 </select>
             </div>
 
-            <button type="submit">Upload Project</button>
+            {inProgress ? (
+                <div className="text-center mb-4">Uploading...</div>
+            ) : (
+                <CustomButtonComponent variant="primary" type="submit">
+                    Upload Project
+                </CustomButtonComponent>
+            )}
         </form>
     );
 }

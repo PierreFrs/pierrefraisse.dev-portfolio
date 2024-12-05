@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {useSession} from "next-auth/react";
+import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 
 export default function BadgeUploadForm() {
     const [badgeName, setBadgeName] = useState("");
@@ -49,8 +50,8 @@ export default function BadgeUploadForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
+        <form onSubmit={handleSubmit} className="w-96">
+            <div className="mb-4 flex justify-between">
                 <label htmlFor="name">Badge Name</label>
                 <input
                     id="name"
@@ -61,8 +62,8 @@ export default function BadgeUploadForm() {
                 />
             </div>
 
-            <div>
-                <label htmlFor="icon">Upload Badge Icon</label>
+            <div className="mb-4 flex justify-between">
+                <label htmlFor="icon">Icon</label>
                 <input
                     id="icon"
                     type="file"
@@ -72,9 +73,8 @@ export default function BadgeUploadForm() {
                 />
             </div>
 
-            <button type="submit">
-                {inProgress ? "Uploading..." : "Upload Badge"}
-            </button>
+            <CustomButtonComponent variant="primary" type={"submit"}>{inProgress ? "Uploading..." : "Upload Badge"}</CustomButtonComponent>
+
         </form>
     );
 }

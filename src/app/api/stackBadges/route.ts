@@ -33,14 +33,12 @@ export async function POST(req: Request) {
         const blob = await put(file.name, file, {
             access: "public",
         });
-        
-        const pictureUrl = blob.url;
 
         // Create a new badge in the database
         const newBadge = await prisma.stackBadge.create({
             data: {
                 name,
-                pictureUrl,
+                pictureUrl: blob.url,
                 userId,
             },
         });

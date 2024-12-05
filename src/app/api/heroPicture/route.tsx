@@ -14,8 +14,6 @@ export async function POST(req: Request) {
     }
 
     try {
-        // Delete the previous image both from the Blob storage and the database
-
         // Fetch the previous record from the database
         const previousPicture = await prisma.heroPicture.findFirst({
             where: { userId }

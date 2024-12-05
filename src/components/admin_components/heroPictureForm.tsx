@@ -1,8 +1,8 @@
 "use client";
 
 import {useState} from "react";
-import {Button} from "@nextui-org/react";
 import Image from "next/image";
+import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 
 export default function HeroPictureForm({userId} : Readonly<{ userId: string }>) {
     const [file, setFile] = useState<File | null>(null);
@@ -35,9 +35,9 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
                 }}
             />
             <input type="hidden" value={userId} name="userId"/>
-            <Button type="submit">
+            <CustomButtonComponent variant="primary" type="submit">
                 {inProgress ? "Uploading..." : "Upload"}
-            </Button>
+            </CustomButtonComponent>
             
             {preview && 
                 <Image src={preview} 

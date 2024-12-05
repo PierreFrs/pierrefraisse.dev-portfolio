@@ -37,6 +37,10 @@
   --secondary-900: 25, 40, 143;   /* #19288f */
   --secondary-950: 20, 26, 87;    /* #141a57 */
 
+  --warning-50: 255, 235, 230;  /* #ffebe6 */
+  --warning-500: 255, 77, 77;    /* #ff4d4d */
+  --warning-900: 179, 0, 0;      /* #b30000 */
+
   /* Font Variables */
   --font-primary: 'Gotham', sans-serif;
   --font-primary-bold: 'Gotham', sans-serif;
@@ -52,40 +56,44 @@
   --spacing-large: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   :root {
-    /* Using palette variables for Foreground and Background Colors in Dark Mode */
-    --foreground-rgb: var(--primary-50); /* White text based on palette */
-    --background-start-rgb: var(--primary-900); /* Dark background based on palette */
-    --background-end-rgb: var(--primary-900);   /* Same as above for consistency */
+    !* Using palette variables for Foreground and Background Colors in Dark Mode *!
+    --foreground-rgb: var(--primary-50); !* White text based on palette *!
+    --background-start-rgb: var(--primary-900); !* Dark background based on palette *!
+    --background-end-rgb: var(--primary-900);   !* Same as above for consistency *!
 
-    /* Seashell Color Palette for Dark Mode */
-    --primary-50: 61, 61, 61;    /* #3d3d3d */
-    --primary-100: 70, 70, 70;   /* #464646 */
-    --primary-200: 82, 82, 82;   /* #525252 */
-    --primary-300: 101, 101, 101; /* #656565 */
-    --primary-400: 124, 124, 124; /* #7c7c7c */
-    --primary-500: 152, 152, 152; /* #989898 */
-    --primary-600: 189, 189, 189; /* #bdbdbd */
-    --primary-700: 220, 220, 220; /* #dcdcdc */
-    --primary-800: 240, 240, 240; /* #f0f0f0 */
-    --primary-900: 248, 248, 248; /* #f8f8f8 */
-    --primary-950: 255, 255, 255; /* #ffffff */
+    !* Seashell Color Palette for Dark Mode *!
+    --primary-50: 61, 61, 61;    !* #3d3d3d *!
+    --primary-100: 70, 70, 70;   !* #464646 *!
+    --primary-200: 82, 82, 82;   !* #525252 *!
+    --primary-300: 101, 101, 101; !* #656565 *!
+    --primary-400: 124, 124, 124; !* #7c7c7c *!
+    --primary-500: 152, 152, 152; !* #989898 *!
+    --primary-600: 189, 189, 189; !* #bdbdbd *!
+    --primary-700: 220, 220, 220; !* #dcdcdc *!
+    --primary-800: 240, 240, 240; !* #f0f0f0 *!
+    --primary-900: 248, 248, 248; !* #f8f8f8 *!
+    --primary-950: 255, 255, 255; !* #ffffff *!
 
-    /* Blue-Ribbon Color Palette for Dark Mode */
-    --secondary-50: 20, 26, 87;    /* #141a57 */
-    --secondary-100: 25, 40, 143;  /* #19288f */
-    --secondary-200: 23, 39, 182;  /* #1727b6 */
-    --secondary-300: 20, 47, 225;  /* #142fe1 */
-    --secondary-400: 27, 67, 245;  /* #1b43f5 */
-    --secondary-500: 51, 102, 255; /* #3366ff */
-    --secondary-600: 89, 142, 255; /* #598eff */
-    --secondary-700: 142, 182, 255; /* #8eb6ff */
-    --secondary-800: 188, 210, 255; /* #bcd2ff */
-    --secondary-900: 217, 229, 255; /* #d9e5ff */
-    --secondary-950: 238, 244, 255; /* #eef4ff */
+    !* Blue-Ribbon Color Palette for Dark Mode *!
+    --secondary-50: 20, 26, 87;    !* #141a57 *!
+    --secondary-100: 25, 40, 143;  !* #19288f *!
+    --secondary-200: 23, 39, 182;  !* #1727b6 *!
+    --secondary-300: 20, 47, 225;  !* #142fe1 *!
+    --secondary-400: 27, 67, 245;  !* #1b43f5 *!
+    --secondary-500: 51, 102, 255; !* #3366ff *!
+    --secondary-600: 89, 142, 255; !* #598eff *!
+    --secondary-700: 142, 182, 255; !* #8eb6ff *!
+    --secondary-800: 188, 210, 255; !* #bcd2ff *!
+    --secondary-900: 217, 229, 255; !* #d9e5ff *!
+    --secondary-950: 238, 244, 255; !* #eef4ff *!
+
+    --warning-50: 128, 0, 0;  !* #800000 *!
+    --warning-500: 255, 128, 128; !* #ff8080 *!
+    --warning-900: 255, 51, 51;  !* #ff3333 *!
   }
-}
+}*/
 
 body {
   color: rgb(var(--foreground-rgb)); /* Text color using palette */
@@ -95,39 +103,42 @@ body {
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  /* Primary Button Styles */
+  .btn-primary {
+    border: 2px solid rgb(var(--primary-900)); /* Bordure noire */
+    color: rgb(var(--primary-900));             /* Texte noir */
+    background-color: transparent;              /* Fond transparent par défaut */
+    padding: 8px 16px;
+    border-radius: 9999px;                      /* Bouton entièrement arrondi */
+    transition: background-color 0.3s, color 0.3s; /* Transition douce */
   }
 
-  /* Additional Utility Classes */
-  .font-primary {
-    font-family: var(--font-primary), sans-serif;
+  .btn-primary:hover {
+    background-color: rgb(var(--primary-900));  /* Fond noir au survol */
+    color: rgb(var(--primary-50));              /* Texte plus clair au survol */
   }
 
-  .font-primary-bold {
-    font-family: var(--font-primary-bold), sans-serif;
+  /* Warning Button Styles */
+  .btn-warning {
+    border: 2px solid rgb(var(--warning-900));  /* Bordure rouge */
+    color: rgb(var(--warning-900));             /* Texte rouge */
+    background-color: transparent;              /* Fond transparent par défaut */
+    padding: 8px 16px;
+    border-radius: 9999px;
+    transition: background-color 0.3s, color 0.3s; /* Transition douce */
+  }
+
+  .btn-warning:hover {
+    background-color: rgb(var(--warning-900));  /* Fond rouge au survol */
+    color: rgb(var(--primary-50));              /* Texte clair au survol */
+  }
+
+  /* Bouton avec contrast plus fort */
+  .btn-component {
     font-weight: bold;
-  }
-
-  .text-primary-50 {
-    color: var(--primary-50);
-  }
-  .text-primary-100 {
-    color: var(--primary-100);
-  }
-  /* Add similar classes for other primary colors */
-  .text-primary-950 {
-    color: var(--primary-950);
-  }
-
-  .text-secondary-50 {
-    color: var(--secondary-50);
-  }
-  .text-secondary-100 {
-    color: var(--secondary-100);
-  }
-  /* Add similar classes for other secondary colors */
-  .text-secondary-950 {
-    color: var(--secondary-950);
+    text-align: center;
   }
 }
+
+
+

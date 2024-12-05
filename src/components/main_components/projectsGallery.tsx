@@ -1,7 +1,8 @@
 export default async function ProjectsGallery() {
   return (
     <div>
-      Projects Gallery
+      <h2>Projects Gallery</h2>
+      <p>Coming soon...</p>
     </div>
   );
 }

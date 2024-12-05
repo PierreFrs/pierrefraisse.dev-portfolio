@@ -37,7 +37,7 @@ export async function POST(req: Request) {
         const link = formData.get("link") as string;
         const userId = formData.get("userId") as string;
         const stack = formData.getAll("stack") as string[];
-        const file = formData.get("file") as File; // Assuming the image is in formData under "file"
+        const file = formData.get("picture") as File; // Assuming the image is in formData under "file"
 
         // Validate that all required fields are present
         if (!title || !shortDescription || !file || !stack.length || !link || !userId) {
