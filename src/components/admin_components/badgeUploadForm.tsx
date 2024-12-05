@@ -65,7 +65,7 @@ export default function BadgeUploadForm() {
 
             <div className="mb-4 flex justify-between">
                 <label htmlFor="icon">Icon</label>
-                <CustomFileInput onFileChange={(file) => setBadgeIcon(file)} />
+                <CustomFileInput onFileChange={(file) => setBadgeIcon(file)} inputKey="badgeUpload" />
             </div>
 
             <CustomButtonComponent variant="primary" type={"submit"}>{inProgress ? "Uploading..." : "Upload Badge"}</CustomButtonComponent>

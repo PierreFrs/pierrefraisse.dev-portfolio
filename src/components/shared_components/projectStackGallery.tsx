@@ -10,10 +10,10 @@ export function ProjectStackGallery({ stack }: Readonly<ProjectStackGalleryProps
     return (
         <div className="my-4">
             <p className="font-bold">Stack:</p>
-            <ul className="flex flex-wrap gap-2 mt-2">
+            <ul className="flex flex-wrap mt-2 gap-2">
                 {stack?.map((badge: StackBadge) => (
-                    <li key={badge.id} className="rounded px-2 py-1 text-sm">
-                        <StackBadgeComponent size={30} badge={badge}/>
+                    <li key={badge.id} className="rounded text-sm w-16">
+                        <StackBadgeComponent size={20} badge={badge}/>
                     </li>
                 ))}
             </ul>

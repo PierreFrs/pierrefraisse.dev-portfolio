@@ -26,7 +26,7 @@ export function AdminProjectCardComponent({ project }: Readonly<ProjectCardProps
         }
 
     return (
-        <div key={project.id} className="border p-4 rounded shadow-lg max-w-fit">
+        <div key={project.id} className="border p-4 rounded shadow-lg max-w-96">
             <ProjectPictureComponent size={150} project={project} />
             <h2 className="text-xl font-bold mt-4">{project.title}</h2>
             <p>{project.shortDescription}</p>

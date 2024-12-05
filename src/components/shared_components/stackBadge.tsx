@@ -12,7 +12,7 @@ export function StackBadgeComponent({ size, badge }: Readonly<StackBadgeProps>) 
     const sanitizedBadgeName = badge.name.replace(/_/g, " ");
 
     return (
-        <div className="flex flex-col items-center gap-1 w-24 h-24">
+        <div className="flex flex-col items-center gap-1">
             <Image
                 src={badge.pictureUrl || placeholderImageUrl}
                 alt={sanitizedBadgeName || "Badge"}

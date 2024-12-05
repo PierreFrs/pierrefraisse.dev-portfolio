@@ -43,13 +43,16 @@ export function AdminBadgesGallery() {
     }
 
     return (
-        <div className="max-w-120">
+        <div className="max-w-96">
             <ul className="flex flex-wrap gap-4">
                 {badges.map((badge) => (
-                    <li key={badge.id} className="flex flex-col items-center gap-2 mb-2">
-                        <StackBadgeComponent size={30} badge={badge} />
+                    <li key={badge.id} className="flex flex-col items-center gap-2 mb-2 w-20">
+                        <div className="h-20 mb-2">
+                            <StackBadgeComponent size={30} badge={badge} />
+                        </div>
+
                         <CustomButtonComponent
-                            variant="warning" // Just set this to "warning" for delete
+                            variant="warning"
                             onClick={() => deleteBadge(badge.id)}
                         >
                             Delete

@@ -4,10 +4,11 @@ import { FiUpload } from "react-icons/fi";
 // Define the component props type
 type CustomFileInputProps = {
     onFileChange: (file: File | null) => void;
+    inputKey?: string;
 };
 
 // Create a functional component for CustomFileInput
-export function CustomFileInput({ onFileChange }: Readonly<CustomFileInputProps>) {
+export function CustomFileInput({ onFileChange, inputKey }: Readonly<CustomFileInputProps>) {
     const [fileName, setFileName] = useState<string | null>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,11 +19,11 @@ export function CustomFileInput({ onFileChange }: Readonly<CustomFileInputProps>
 
     return (
         <div className="custom-file-input-wrapper">
-            <label htmlFor="file-upload" className="custom-file-label flex items-center cursor-pointer">
+            <label htmlFor={`file-upload-${inputKey}`} className="custom-file-label flex items-center cursor-pointer">
                 <FiUpload size={24} className="mr-2 text-gray-700" />
                 <span className="upload-text">{fileName || "Choose File"}</span>
                 <input
-                    id="file-upload"
+                    id={`file-upload-${inputKey}`}
                     type="file"
                     onChange={handleFileChange}
                     className="hidden"

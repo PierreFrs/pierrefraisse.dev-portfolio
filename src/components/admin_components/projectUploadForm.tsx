@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
+import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
 
 export default function ProjectUploadForm() {
     const [title, setTitle] = useState("");
@@ -45,7 +46,7 @@ export default function ProjectUploadForm() {
         formData.append("title", title);
         formData.append("shortDescription", shortDescription);
         formData.append("link", link);
-        formData.append("picture", picture as Blob); // Append picture file
+        formData.append("picture", picture as Blob);
         formData.append("stack", JSON.stringify(selectedBadges));
         formData.append("userId", userId);
 
@@ -66,6 +67,14 @@ export default function ProjectUploadForm() {
             console.error("Error uploading project", error);
             setInProgress(false);
         }
+    };
+
+    const toggleBadgeSelection = (badgeId: string) => {
+        setSelectedBadges((prevSelected) =>
+            prevSelected.includes(badgeId)
+                ? prevSelected.filter((id) => id !== badgeId)
+                : [...prevSelected, badgeId]
+        );
     };
 
     return (
@@ -104,28 +113,24 @@ export default function ProjectUploadForm() {
 
             <div className="mb-4 flex justify-between">
                 <label htmlFor="picture">Picture</label>
-                <CustomFileInput onFileChange={(file) => setPicture(file)} />
+                <CustomFileInput onFileChange={(file) => setPicture(file)} inputKey="projectUpload" />
             </div>
 
-            <div className="mb-4 flex justify-between">
+            <div className="mb-4 flex flex-col justify-between">
                 <label htmlFor="stack">Select Badges</label>
-                <select
-                    className="w-32"
-                    id="stack"
-                    multiple
-                    value={selectedBadges}
-                    onChange={(e) =>
-                        setSelectedBadges(
-                            Array.from(e.target.selectedOptions, (option) => option.value)
-                        )
-                    }
-                >
+                <div className="flex flex-wrap gap-4 mt-2">
                     {badges.map((badge) => (
-                        <option key={badge.id} value={badge.id}>
-                            {badge.name}
-                        </option>
+                        <div
+                            key={badge.id}
+                            onClick={() => toggleBadgeSelection(badge.id)}
+                            className={`cursor-pointer border-2 rounded p-1 w-20 ${
+                                selectedBadges.includes(badge.id) ? "border-blue-500" : "border-transparent"
+                            }`}
+                        >
+                            <StackBadgeComponent badge={badge} size={30}/>
+                        </div>
                     ))}
-                </select>
+                </div>
             </div>
 
             {inProgress ? (

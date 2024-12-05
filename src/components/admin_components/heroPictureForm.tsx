@@ -51,7 +51,7 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
                         setPreview(null);
                     }
                 }
-            }
+            } inputKey="heroUpload"
             />
             <input type="hidden" value={userId} name="userId"/>
             <CustomButtonComponent variant="primary" type="submit">
