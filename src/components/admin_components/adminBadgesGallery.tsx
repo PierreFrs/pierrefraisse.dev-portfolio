@@ -13,7 +13,7 @@ export function AdminBadgesGallery() {
             try {
                 const response = await fetch("/api/stackBadges");
                 if (!response.ok) {
-                    console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
+                    console.error(`Failed to fetch badge. HTTP error! status: ${response.status}`);
                     return;
                 }
                 const data: StackBadge[] = await response.json();
