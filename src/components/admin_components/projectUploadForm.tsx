@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
+import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 
 export default function ProjectUploadForm() {
     const [title, setTitle] = useState("");
@@ -103,13 +104,7 @@ export default function ProjectUploadForm() {
 
             <div className="mb-4 flex justify-between">
                 <label htmlFor="picture">Picture</label>
-                <input
-                    id="picture"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setPicture(e.target.files?.[0] || null)}
-                    required
-                />
+                <CustomFileInput onFileChange={(file) => setPicture(file)} />
             </div>
 
             <div className="mb-4 flex justify-between">

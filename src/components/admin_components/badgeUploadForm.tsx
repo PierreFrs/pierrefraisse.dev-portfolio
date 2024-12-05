@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
+import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 
 export default function BadgeUploadForm() {
     const [badgeName, setBadgeName] = useState("");
@@ -64,13 +65,7 @@ export default function BadgeUploadForm() {
 
             <div className="mb-4 flex justify-between">
                 <label htmlFor="icon">Icon</label>
-                <input
-                    id="icon"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setBadgeIcon(e.target.files?.[0] || null)}
-                    required
-                />
+                <CustomFileInput onFileChange={(file) => setBadgeIcon(file)} />
             </div>
 
             <CustomButtonComponent variant="primary" type={"submit"}>{inProgress ? "Uploading..." : "Upload Badge"}</CustomButtonComponent>

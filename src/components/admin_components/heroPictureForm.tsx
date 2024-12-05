@@ -3,6 +3,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
+import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 
 export default function HeroPictureForm({userId} : Readonly<{ userId: string }>) {
     const [file, setFile] = useState<File | null>(null);
@@ -11,28 +12,46 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
     const handleSubmit = async (e: React.FormEvent) => {
         setInProgress(true);
         e.preventDefault();
-        
+
+        if (!file) {
+            console.error("No file selected");
+            setInProgress(false);
+            return;
+        }
+
         const formData = new FormData();
         formData.append("file", file as Blob);
         formData.append("userId", userId);
-        
-        const response = await fetch(`/api/heroPicture`, {
-            method: "POST",
-            body: formData,
-        });
-        
-        const data = await response.json();
-        setPreview(data.url);
-        setInProgress(false);
+
+        try {
+            const response = await fetch("/api/heroPicture", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log("Hero picture uploaded successfully");
+            } else {
+                console.error("Error uploading hero picture");
+            }
+            setInProgress(false);
+        } catch (error) {
+            console.error("Error uploading hero picture", error);
+            setInProgress(false);
+        }
     };
     
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="file"
-                onChange={(e) => {
-                    setFile(e.target.files?.item(0) || null);
-                }}
+            <CustomFileInput onFileChange={(file) => {
+                setFile(file);
+                    if (file) {
+                        setPreview(URL.createObjectURL(file));
+                    } else {
+                        setPreview(null);
+                    }
+                }
+            }
             />
             <input type="hidden" value={userId} name="userId"/>
             <CustomButtonComponent variant="primary" type="submit">
@@ -44,6 +63,7 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
                        alt="Preview"
                        width={200}
                        height={200}
+                       className="mt-4"
                 />
             }
         </form>
