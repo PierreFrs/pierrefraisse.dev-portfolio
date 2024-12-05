@@ -14,7 +14,7 @@ export function AdminProjectsGallery() {
                 // Fetch all projects
                 const response = await fetch("/api/projectGallery");
                 if (!response.ok) {
-                    console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
+                    console.error(`Failed to fetch projects. HTTP error! status: ${response.status}`);
                     return;
                 }
                 const data: CardModel[] = await response.json();
@@ -44,12 +44,12 @@ export function AdminProjectsGallery() {
 
             for (const id of stackIds) {
                 try {
-                    const badgeResponse = await fetch(`/api/stackBadges/${id}`);
+                    const response = await fetch(`/api/stackBadges/${id}`);
                     if (!response.ok) {
-                        console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
+                        console.error(`Failed to fetch badges. HTTP error! status: ${response.status}`);
                         return;
                     }
-                    const badge: StackBadge = await badgeResponse.json();
+                    const badge: StackBadge = await response.json();
                     badges.push(badge);
                 } catch (error) {
                     console.error(`Error fetching badge with ID ${id}:`, error);
