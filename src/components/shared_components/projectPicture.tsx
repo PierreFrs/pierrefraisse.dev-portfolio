@@ -2,11 +2,11 @@ import { CardModel } from "@/app/lib/models/cardModel";
 import Image from "next/image";
 
 type ProjectPictureProps = {
-    height: number;
+    size?: number;
     project: CardModel;
 };
 
-export function ProjectPictureComponent({ height, project }: Readonly<ProjectPictureProps>) {
+export function ProjectPictureComponent({ size, project }: Readonly<ProjectPictureProps>) {
     const placeholderImageUrl = "/images/placeholder.png";
 
     // Validate project.link
@@ -14,16 +14,15 @@ export function ProjectPictureComponent({ height, project }: Readonly<ProjectPic
 
     return (
         <a href={projectLink} target="_blank" rel="noopener noreferrer" className="block">
-            <div style={{ height, position: "relative", width: "100%" }}>
                 <Image
                     src={project.pictureUrl || placeholderImageUrl}
                     alt={project.title || "Project"}
-                    layout="fill"
-                    objectFit="contain"
+                    height={size}
+                    width={size}
+                    style={{ width: size ? "auto" : "auto", height: size ? `${size}px` : "auto" }}
                     className="rounded"
                     priority={true}
                 />
-            </div>
         </a>
     );
 }

@@ -26,7 +26,7 @@ export default function Hero() {
                             />
                         </div>
                     </div>
-                    <HeroPicture/>
+                    <HeroPicture size={420}/>
                 </div>
             </div>
         </section>

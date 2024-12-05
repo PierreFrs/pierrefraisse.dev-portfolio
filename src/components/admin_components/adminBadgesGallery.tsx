@@ -13,7 +13,8 @@ export function AdminBadgesGallery() {
             try {
                 const response = await fetch("/api/stackBadges");
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
+                    return;
                 }
                 const data: StackBadge[] = await response.json();
                 setBadges(data);
@@ -31,7 +32,8 @@ export function AdminBadgesGallery() {
                 method: "DELETE",
             });
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
+                return;
             }
             console.log("Badge deleted successfully");
             setBadges((prevBadges) => prevBadges.filter((badge) => badge.id !== id));
@@ -45,7 +47,7 @@ export function AdminBadgesGallery() {
             <ul className="flex flex-wrap gap-4">
                 {badges.map((badge) => (
                     <li key={badge.id} className="flex flex-col items-center gap-2 mb-2">
-                        <StackBadgeComponent height={30} badge={badge} />
+                        <StackBadgeComponent size={30} badge={badge} />
                         <CustomButtonComponent
                             variant="warning" // Just set this to "warning" for delete
                             onClick={() => deleteBadge(badge.id)}

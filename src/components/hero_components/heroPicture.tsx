@@ -3,7 +3,11 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-export default function HeroPicture() {
+type HeroPictureProps = {
+    size: number;
+};
+
+export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
     const [imageUrl, setImageUrl] = useState<string>("");
 
     useEffect(() => {
@@ -21,6 +25,8 @@ export default function HeroPicture() {
     return <Image src={imageUrl} 
                   alt="Your host picture" 
                   className="rounded-full" 
-                  width="420" 
-                  height="420"/>;
+                  width={size}
+                  height={size}
+                  style={{ width: size ? "auto" : "auto", height: size ? `${size}px` : "auto" }}
+    />;
 }
