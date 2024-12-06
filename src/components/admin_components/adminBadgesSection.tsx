@@ -20,17 +20,16 @@ export function AdminBadgesSection() {
                 console.error("Failed to fetch badges. HTTP error!", response.status);
                 return;
             }
-            const data: BadgeModel[] = await response.json();
+            const data: StackBadge[] = await response.json();
             setBadges(data);
         } catch (error) {
             console.error("Error fetching badges:", error);
         }
     }
 
-    const addBadge = (newBadge: BadgeModel) => {
+    const addBadge = (newBadge: StackBadge) => {
         setBadges((prevBadges) => [...prevBadges, newBadge]);
     };
-
 
     const removeBadge = async (badgeId: string) => {
         try {
