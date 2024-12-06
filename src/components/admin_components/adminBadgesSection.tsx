@@ -4,9 +4,10 @@ import BadgeUploadForm from "@/components/admin_components/badgeUploadForm";
 import {Divider} from "@nextui-org/react";
 import {AdminBadgesGallery} from "@/components/admin_components/adminBadgesGallery";
 import React, {useEffect, useState} from "react";
+import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 
 export function AdminBadgesSection() {
-    const [badges, setBadges] = useState<BadgeModel[]>([]);
+    const [badges, setBadges] = useState<StackBadge[]>([]);
 
     useEffect(() => {
         fetchBadges();
