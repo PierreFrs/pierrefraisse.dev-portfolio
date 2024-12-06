@@ -5,12 +5,14 @@ import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
+import {useServices} from "@/contexts/ServiceContext";
 
-type BadgeUploadFormProps = {
+interface BadgeUploadFormProps {
     onBadgeAdded: (newBadge: StackBadge) => void;
-};
+}
 
 export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadFormProps>) {
+    const { badgeService} = useServices();
     const [badgeName, setBadgeName] = useState("");
     const [badgeIcon, setBadgeIcon] = useState<File | null>(null);
     const { data: session } = useSession();
@@ -39,26 +41,16 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
         formData.append("userId", userId);
         
         try {
-            const response = await fetch("/api/stackBadges", {
-                method: "POST",
-                body: formData,
-            });
-            
-            if (response.ok) {
-                const newBadge: StackBadge = await response.json();
-                console.log("Badge uploaded successfully");
-                onBadgeAdded(newBadge);
-                console.log("Badge added to gallery");
-                resetForm();
-            } else {
-                console.error("Error uploading badge");
-            }
+            const newBadge: StackBadge = await badgeService.addBadge(formData);
+            console.log("Badge uploaded successfully");
+            onBadgeAdded(newBadge);
+            console.log("Badge added to gallery");
+            resetForm();
+        } catch (error) {
+            console.error("Error uploading badge", error);
+        } finally {
             setInProgress(false);
         }
-        catch (error) {
-            console.error("Error uploading badge", error);
-            setInProgress(false);
-        }        
     };
 
     const resetForm = () => {

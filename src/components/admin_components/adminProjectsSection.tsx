@@ -2,13 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import { CardModel } from "@/app/lib/models/cardModel";
-import { StackBadge } from "@/app/lib/models/stackBadgeModel";
 import ProjectUploadForm from "@/components/admin_components/projectUploadForm";
 import { Divider } from "@nextui-org/react";
 import { AdminProjectsGallery } from "@/components/admin_components/adminProjectsGallery";
+import {useServices} from "@/contexts/ServiceContext";
 
 export function AdminProjectsSection() {
+    const {badgeService, projectService} = useServices();
     const [projects, setProjects] = useState<CardModel[]>([]);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchProjects();
@@ -16,21 +18,15 @@ export function AdminProjectsSection() {
 
     const fetchProjects = async () => {
         try {
-            const response = await fetch("/api/projectGallery");
-            if (!response.ok) {
-                console.error("Failed to fetch projects. HTTP error!", response.status);
-                return;
-            }
-            const data: CardModel[] = await response.json();
-
+            const projects = await projectService.fetchProjects();
             // Fetch stack badges for each project
             const updatedProjects = await Promise.all(
-                data.map(async (project) => {
+                projects.map(async (project) => {
                     try {
                         project.stack = JSON.parse(project.stack[0]); // Parsing the stack field
 
                         if (project.stack && project.stack.length > 0) {
-                            const badges = await fetchStackBadgesByIds(project.stack);
+                            const badges = await badgeService.fetchBadgesByProjectId(project.stack);
                             return { ...project, stackBadges: badges }; // Adding the `stackBadges` property
                         }
 
@@ -48,32 +44,13 @@ export function AdminProjectsSection() {
         }
     }
 
-    async function fetchStackBadgesByIds(stackIds: string[]): Promise<StackBadge[]> {
-        const badges: StackBadge[] = [];
-
-        for (const id of stackIds) {
-            try {
-                const response = await fetch(`/api/stackBadges/${id}`);
-                if (!response.ok) {
-                    console.error(`Failed to fetch badge ${id}. HTTP error! status: ${response.status}`);
-                    continue;
-                }
-                const badge: StackBadge = await response.json();
-                badges.push(badge);
-            } catch (error) {
-                console.error(`Error fetching badge with ID ${id}:`, error);
-            }
-        }
-        return badges;
-    }
-
     const addProject = async (project: CardModel) => {
         // Fetch badges for the new project and update it
         try {
             project.stack = JSON.parse(project.stack[0]);
 
             if (project.stack && project.stack.length > 0) {
-                const badges = await fetchStackBadgesByIds(project.stack);
+                const badges = await badgeService.fetchBadgesByProjectId(project.stack);
                 const updatedProject = { ...project, stackBadges: badges };
                 setProjects((prevProjects) => [...prevProjects, updatedProject]);
             } else {
@@ -86,25 +63,18 @@ export function AdminProjectsSection() {
 
     const removeProject = async (projectId: string) => {
         try {
-            const response = await fetch(`/api/projectGallery/${projectId}`, {
-                method: "DELETE",
-            });
-
-            if (response.ok) {
-                console.log("Project deleted successfully");
-                setProjects((prevProjects) =>
-                    prevProjects.filter((project) => project.id !== projectId)
-                );
-            } else {
-                console.error("Failed to delete project");
-            }
-        } catch (error) {
-            console.error("Error deleting project:", error);
+            await projectService.removeProject(projectId);
+            setProjects((prevProjects) =>
+                prevProjects.filter((project) => project.id !== projectId));
+        } catch (error: any) {
+            setError("Failed to remove project. Please try again.");
+            console.error(error);
         }
     };
 
     return (
         <>
+            {error && <p className="text-red-500">{error}</p>}
             <section className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Upload Projects</h2>
                 <ProjectUploadForm onProjectAdded={addProject} />
