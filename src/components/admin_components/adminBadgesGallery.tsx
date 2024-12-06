@@ -1,46 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { StackBadge } from "@/app/lib/models/stackBadgeModel";
 import { StackBadgeComponent } from "@/components/shared_components/stackBadge";
 import { CustomButtonComponent } from "@/components/shared_components/CustomButton";
 
-export function AdminBadgesGallery() {
-    const [badges, setBadges] = useState<StackBadge[]>([]);
+type AdminBadgesGalleryProps = {
+    badges: StackBadge[];
+    onBadgeDeleted: (badgeId: string) => void;
+};
 
-    useEffect(() => {
-        async function fetchBadges() {
-            try {
-                const response = await fetch("/api/stackBadges");
-                if (!response.ok) {
-                    console.error(`Failed to fetch badge. HTTP error! status: ${response.status}`);
-                    return;
-                }
-                const data: StackBadge[] = await response.json();
-                setBadges(data);
-            } catch (error) {
-                console.error("Error fetching badges:", error);
-            }
-        }
-
-        fetchBadges();
-    }, []);
-
-    async function deleteBadge(id: string) {
-        try {
-            const response = await fetch(`/api/stackBadges/${id}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) {
-                console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
-                return;
-            }
-            console.log("Badge deleted successfully");
-            setBadges((prevBadges) => prevBadges.filter((badge) => badge.id !== id));
-        } catch (error) {
-            console.error("Error deleting badge:", error);
-        }
-    }
+export function AdminBadgesGallery({ badges, onBadgeDeleted }: Readonly<AdminBadgesGalleryProps>) {
 
     return (
         <div className="max-w-96">
@@ -48,12 +17,15 @@ export function AdminBadgesGallery() {
                 {badges.map((badge) => (
                     <li key={badge.id} className="flex flex-col items-center gap-2 mb-2 w-20">
                         <div className="h-20 mb-2">
-                            <StackBadgeComponent size={30} badge={badge} />
+                            <StackBadgeComponent
+                                size={30}
+                                badge={badge}
+                            />
                         </div>
 
                         <CustomButtonComponent
                             variant="warning"
-                            onClick={() => deleteBadge(badge.id)}
+                            onClick={() => onBadgeDeleted(badge.id)}
                         >
                             Delete
                         </CustomButtonComponent>
