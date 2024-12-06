@@ -13,10 +13,11 @@ export const CustomFileInput = forwardRef<HTMLInputElement, CustomFileInputProps
         const [fileName, setFileName] = useState<string | null>(null);
 
         // Local ref for the file input element
-        const inputRef = React.useRef<HTMLInputElement | null>(null);
+        const inputRef = React.useRef<HTMLInputElement>(null);
 
         // Method to reset the file input
         useImperativeHandle(ref, () => ({
+            ...inputRef.current,
             reset: () => {
                 if (inputRef.current) {
                     inputRef.current.value = ""; // Reset the file input element value
