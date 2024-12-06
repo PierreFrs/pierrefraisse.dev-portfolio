@@ -1,12 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
+import {CardModel} from "@/app/lib/models/cardModel";
 
-export default function ProjectUploadForm() {
+type ProjectUploadFormProps = {
+    onProjectAdded: (newProject: CardModel) => void;
+};
+
+export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
     const [title, setTitle] = useState("");
     const [shortDescription, setShortDescription] = useState("");
     const [link, setLink] = useState("");
@@ -15,11 +20,12 @@ export default function ProjectUploadForm() {
     const [badges, setBadges] = useState<any[]>([]);
     const {data: session} = useSession();
     const [inProgress, setInProgress] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [fileInputKey, setFileInputKey] = useState(0);
 
-    // Fetch available badges
     useEffect(() => {
         async function fetchBadges() {
-            const response = await fetch("/api/stackBadges"); // Fetch the badges from API
+            const response = await fetch("/api/stackBadges");
             const data = await response.json();
             setBadges(data);
         }
@@ -33,12 +39,14 @@ export default function ProjectUploadForm() {
 
         if (!title || !shortDescription || !link || !picture || !selectedBadges.length) {
             console.error("Missing required fields");
+            setInProgress(false);
             return;
         }
 
         const userId = session?.user?.id;
         if (!userId) {
             console.error("No user ID found in session");
+            setInProgress(false);
             return;
         }
 
@@ -57,15 +65,31 @@ export default function ProjectUploadForm() {
             });
 
             if (response.ok) {
+                const newProject: CardModel = await response.json();
                 console.log("Project uploaded successfully");
+                onProjectAdded(newProject);
+                console.log("Project added to gallery");
+                resetForm();
             } else {
                 console.error("Error uploading project");
             }
+        } catch (error) {
+            console.error("Error uploading project", error);
+        } finally {
             setInProgress(false);
         }
-        catch (error) {
-            console.error("Error uploading project", error);
-            setInProgress(false);
+    };
+
+    const resetForm = () => {
+        setTitle("");
+        setShortDescription("");
+        setLink("");
+        setPicture(null);
+        setSelectedBadges([]);
+        setFileInputKey((prevKey) => prevKey + 1);
+
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
         }
     };
 
@@ -113,7 +137,11 @@ export default function ProjectUploadForm() {
 
             <div className="mb-4 flex justify-between">
                 <label htmlFor="picture">Picture</label>
-                <CustomFileInput onFileChange={(file) => setPicture(file)} inputKey="projectUpload" />
+                <CustomFileInput
+                    ref={fileInputRef}
+                    key={fileInputKey}
+                    onFileChange={(file) => setPicture(file)}
+                    inputKey="projectUpload" />
             </div>
 
             <div className="mb-4 flex flex-col justify-between">

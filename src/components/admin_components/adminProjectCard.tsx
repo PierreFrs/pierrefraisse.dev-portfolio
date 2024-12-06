@@ -7,23 +7,10 @@ import {ProjectStackGallery} from "@/components/shared_components/projectStackGa
 
 type ProjectCardProps = {
     project: CardModel;
+    onDelete: () => void;
 };
 
-export function AdminProjectCardComponent({ project }: Readonly<ProjectCardProps>) {
-        async function deleteProject(id: string) {
-            try {
-                const response = await fetch(`/api/projectGallery/${id}`, {
-                    method: "DELETE",
-                });
-                if (!response.ok) {
-                    console.error(`Failed to delete project. HTTP error! status: ${response.status}`);
-                    return;
-                }
-                console.log("Project deleted successfully");
-            } catch (error) {
-                console.error("Error deleting project:", error);
-            }
-        }
+export function AdminProjectCardComponent({ project, onDelete }: Readonly<ProjectCardProps>) {
 
     return (
         <div key={project.id} className="border p-4 rounded shadow-lg max-w-96">
@@ -31,7 +18,7 @@ export function AdminProjectCardComponent({ project }: Readonly<ProjectCardProps
             <h2 className="text-xl font-bold mt-4">{project.title}</h2>
             <p>{project.shortDescription}</p>
             <ProjectStackGallery stack={project.stackBadges as StackBadge[]} />
-            <CustomButtonComponent variant={"warning"} onClick={() => deleteProject(project.id)}>Delete</CustomButtonComponent>
+            <CustomButtonComponent variant={"warning"} onClick={onDelete}>Delete</CustomButtonComponent>
         </div>
     );
 }

@@ -2,12 +2,11 @@ import {auth} from "@/auth";
 import HeroDescriptionForm from "@/components/admin_components/heroDescriptionForm";
 import HeroPictureForm from "@/components/admin_components/heroPictureForm";
 import LogoutButton from "@/components/admin_components/logoutButton";
-import ProjectUploadForm from "@/components/admin_components/projectUploadForm";
 import React from "react";
 import BadgeUploadForm from "@/components/admin_components/badgeUploadForm";
-import {AdminProjectsGallery} from "@/components/admin_components/adminProjectsGallery";
 import {AdminBadgesGallery} from "@/components/admin_components/adminBadgesGallery";
 import {Divider} from "@nextui-org/react";
+import {AdminProjectsSection} from "@/components/admin_components/adminProjectsSection";
 
 export default async function AdminPage() {
     const session = await auth();
@@ -44,15 +43,7 @@ export default async function AdminPage() {
                 <HeroPictureForm userId={userId} />
             </section>
             <Divider className="my-4" />
-            <section className="mb-8">
-                <h2 className="text-xl font-bold mb-4">Upload Projects</h2>
-                <ProjectUploadForm />
-            </section>
-            <Divider className="my-4" />
-            <section className="mb-8">
-                <h2 className="text-xl font-bold mb-4">Projects Gallery</h2>
-                <AdminProjectsGallery />
-            </section>
+            <AdminProjectsSection />
             <Divider className="my-4" />
             <section className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Upload Badges</h2>
