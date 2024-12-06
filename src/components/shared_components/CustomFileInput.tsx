@@ -1,13 +1,11 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 import { FiUpload } from "react-icons/fi";
 
-// Define the component props type
 type CustomFileInputProps = {
     onFileChange: (file: File | null) => void;
     inputKey?: string;
 };
 
-// Create a functional component for CustomFileInput and forward ref
 export const CustomFileInput = forwardRef<HTMLInputElement, CustomFileInputProps>(
     ({ onFileChange, inputKey }, ref) => {
         const [fileName, setFileName] = useState<string | null>(null);
@@ -17,12 +15,15 @@ export const CustomFileInput = forwardRef<HTMLInputElement, CustomFileInputProps
 
         // Method to reset the file input
         useImperativeHandle(ref, () => ({
-            ...inputRef.current,
             reset: () => {
                 if (inputRef.current) {
                     inputRef.current.value = ""; // Reset the file input element value
                     setFileName(null);
                 }
+            },
+            // Also ensure the original inputRef properties are accessible
+            focus: () => {
+                inputRef.current?.focus();
             },
         }));
 
