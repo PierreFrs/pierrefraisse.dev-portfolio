@@ -2,8 +2,9 @@
 
 import {useState } from "react";
 import { postHeroDescription } from "@/app/lib/data/heroDescriptionData";
+import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 
-export default function HeroDescriptionForm({userId}: {userId: string}) {
+export default function HeroDescriptionForm({userId}: Readonly<{ userId: string }>) {
     const [description, setDescription] = useState<string>("");
     const [language, setLanguage] = useState<string>("en");
     const [loading, setLoading] = useState<boolean>(false);
@@ -60,13 +61,12 @@ export default function HeroDescriptionForm({userId}: {userId: string}) {
                     className="w-full p-2 border border-gray-300 rounded"
                 />
             </div>
-            <button
+            <CustomButtonComponent
+                variant="primary"
                 type="submit"
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-                disabled={loading}
             >
                 {loading ? "Updating..." : "Update Description"}
-            </button>
+            </CustomButtonComponent>
             {message && <p className="mt-4 text-red-500">{message}</p>}
         </form>
     );
