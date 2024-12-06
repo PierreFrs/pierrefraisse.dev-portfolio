@@ -44,7 +44,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         e.preventDefault();
         setInProgress(true);
 
-        if (!title || !shortDescription || !link || !picture || !selectedBadges.length) {
+        if (!title || !shortDescription || !picture || !selectedBadges.length) {
             console.error("Missing required fields");
             setInProgress(false);
             return;
@@ -132,7 +132,6 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                         type="url"
                         value={link}
                         onChange={(e) => setLink(e.target.value)}
-                        required
                     />
                 </div>
 

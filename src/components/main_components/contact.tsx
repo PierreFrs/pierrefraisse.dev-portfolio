@@ -1,4 +1,4 @@
-export default async function Contact() {
+export default function Contact() {
     return (
         <div>
             Contact
