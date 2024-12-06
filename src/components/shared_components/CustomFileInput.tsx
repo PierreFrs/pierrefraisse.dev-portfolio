@@ -15,15 +15,13 @@ export const CustomFileInput = forwardRef<HTMLInputElement, CustomFileInputProps
 
         // Method to reset the file input
         useImperativeHandle(ref, () => ({
+            // Spread inputRef.current if it exists to make sure all HTMLInputElement properties are available
+            ...(inputRef.current as HTMLInputElement),
             reset: () => {
                 if (inputRef.current) {
                     inputRef.current.value = ""; // Reset the file input element value
                     setFileName(null);
                 }
-            },
-            // Also ensure the original inputRef properties are accessible
-            focus: () => {
-                inputRef.current?.focus();
             },
         }));
 
