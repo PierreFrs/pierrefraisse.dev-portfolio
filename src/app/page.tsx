@@ -1,8 +1,9 @@
-import Header from "@/app/ui/components/main_components/header";  
-import Footer from "@/app/ui/components/main_components/footer";
-import Hero from "@/app/ui/components/main_components/hero";
-import ProjectsGallery from "@/app/ui/components/main_components/projectsGallery";
-import Contact from "@/app/ui/components/main_components/contact";
+import Header from "@/components/main_components/header";
+import Hero from "@/components/main_components/hero";
+import ProjectsGallery from "@/components/main_components/projectsGallery";
+import Contact from "@/components/main_components/contact";
+import Footer from "@/components/main_components/footer";
+
 export default function Home() {
     return(
         <>
