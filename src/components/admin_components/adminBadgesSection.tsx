@@ -4,9 +4,10 @@ import BadgeUploadForm from "@/components/admin_components/badgeUploadForm";
 import {Divider} from "@nextui-org/react";
 import {AdminBadgesGallery} from "@/components/admin_components/adminBadgesGallery";
 import React, {useEffect, useState} from "react";
+import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 
 export function AdminBadgesSection() {
-    const [badges, setBadges] = useState<BadgeModel[]>([]);
+    const [badges, setBadges] = useState<StackBadge[]>([]);
 
     useEffect(() => {
         fetchBadges();
@@ -19,17 +20,16 @@ export function AdminBadgesSection() {
                 console.error("Failed to fetch badges. HTTP error!", response.status);
                 return;
             }
-            const data: BadgeModel[] = await response.json();
+            const data: StackBadge[] = await response.json();
             setBadges(data);
         } catch (error) {
             console.error("Error fetching badges:", error);
         }
     }
 
-    const addBadge = (newBadge: BadgeModel) => {
+    const addBadge = (newBadge: StackBadge) => {
         setBadges((prevBadges) => [...prevBadges, newBadge]);
     };
-
 
     const removeBadge = async (badgeId: string) => {
         try {
