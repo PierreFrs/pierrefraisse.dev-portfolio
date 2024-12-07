@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 interface SocialLinkProps {
@@ -13,7 +14,7 @@ export default function SocialLink(socialLinkProps: Readonly<SocialLinkProps>) {
               target="_blank"
               rel="noopener noreferrer"
         >
-            {socialLinkProps.network} {socialLinkProps.icon}
+            {socialLinkProps.icon} {socialLinkProps.network}
         </Link>
         );
 }

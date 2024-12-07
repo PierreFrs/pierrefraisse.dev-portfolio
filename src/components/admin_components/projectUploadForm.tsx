@@ -6,12 +6,14 @@ import {CustomButtonComponent} from "@/components/shared_components/CustomButton
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
 import {CardModel} from "@/app/lib/models/cardModel";
+import {useServices} from "@/contexts/ServiceContext";
 
 type ProjectUploadFormProps = {
     onProjectAdded: (newProject: CardModel) => void;
 };
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
+    const { badgeService, projectService } = useServices();
     const [title, setTitle] = useState("");
     const [shortDescription, setShortDescription] = useState("");
     const [link, setLink] = useState("");
@@ -22,22 +24,27 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     const [inProgress, setInProgress] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [fileInputKey, setFileInputKey] = useState(0);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        async function fetchBadges() {
-            const response = await fetch("/api/stackBadges");
-            const data = await response.json();
-            setBadges(data);
-        }
-
-        fetchBadges();
+        loadBadges();
     }, []);
+
+    const loadBadges = async () => {
+        try {
+            const fetchedBadges = await badgeService.fetchBadges();
+            setBadges(fetchedBadges);
+        } catch (error: any) {
+            setError("Failed to load badges. Please try again.");
+            console.error(error);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setInProgress(true);
 
-        if (!title || !shortDescription || !link || !picture || !selectedBadges.length) {
+        if (!title || !shortDescription || !picture || !selectedBadges.length) {
             console.error("Missing required fields");
             setInProgress(false);
             return;
@@ -59,20 +66,11 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         formData.append("userId", userId);
 
         try {
-            const response = await fetch("/api/projectGallery", {
-                method: "POST",
-                body: formData,
-            });
-
-            if (response.ok) {
-                const newProject: CardModel = await response.json();
-                console.log("Project uploaded successfully");
-                onProjectAdded(newProject);
-                console.log("Project added to gallery");
-                resetForm();
-            } else {
-                console.error("Error uploading project");
-            }
+            const newProject: CardModel = await projectService.addProject(formData);
+            console.log("Project uploaded successfully");
+            onProjectAdded(newProject);
+            console.log("Project added to gallery");
+            resetForm();
         } catch (error) {
             console.error("Error uploading project", error);
         } finally {
@@ -102,72 +100,75 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-96">
-            <div className="mb-4 flex justify-between">
-                <label htmlFor="title">Project Title</label>
-                <input
-                    id="title"
-                    type="text"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-            </div>
+        <>
+            {error && <p className="text-red-500">{error}</p>}
 
-            <div className="mb-4 flex justify-between">
-                <label htmlFor="shortDescription">Short Description</label>
-                <textarea
-                    id="shortDescription"
-                    value={shortDescription}
-                    onChange={(e) => setShortDescription(e.target.value)}
-                    required
-                ></textarea>
-            </div>
-
-            <div className="mb-4 flex justify-between">
-                <label htmlFor="link">Project Link</label>
-                <input
-                    id="link"
-                    type="url"
-                    value={link}
-                    onChange={(e) => setLink(e.target.value)}
-                    required
-                />
-            </div>
-
-            <div className="mb-4 flex justify-between">
-                <label htmlFor="picture">Picture</label>
-                <CustomFileInput
-                    ref={fileInputRef}
-                    key={fileInputKey}
-                    onFileChange={(file) => setPicture(file)}
-                    inputKey="projectUpload" />
-            </div>
-
-            <div className="mb-4 flex flex-col justify-between">
-                <label htmlFor="stack">Select Badges</label>
-                <div className="flex flex-wrap gap-4 mt-2">
-                    {badges.map((badge) => (
-                        <div
-                            key={badge.id}
-                            onClick={() => toggleBadgeSelection(badge.id)}
-                            className={`cursor-pointer border-2 rounded p-1 w-20 ${
-                                selectedBadges.includes(badge.id) ? "border-blue-500" : "border-transparent"
-                            }`}
-                        >
-                            <StackBadgeComponent badge={badge} size={30}/>
-                        </div>
-                    ))}
+            <form onSubmit={handleSubmit} className="w-96">
+                <div className="mb-4 flex justify-between">
+                    <label htmlFor="title">Project Title</label>
+                    <input
+                        id="title"
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
                 </div>
-            </div>
 
-            {inProgress ? (
-                <div className="text-center mb-4">Uploading...</div>
-            ) : (
-                <CustomButtonComponent variant="primary" type="submit">
-                    Upload Project
-                </CustomButtonComponent>
-            )}
-        </form>
+                <div className="mb-4 flex justify-between">
+                    <label htmlFor="shortDescription">Short Description</label>
+                    <textarea
+                        id="shortDescription"
+                        value={shortDescription}
+                        onChange={(e) => setShortDescription(e.target.value)}
+                        required
+                    ></textarea>
+                </div>
+
+                <div className="mb-4 flex justify-between">
+                    <label htmlFor="link">Project Link</label>
+                    <input
+                        id="link"
+                        type="url"
+                        value={link}
+                        onChange={(e) => setLink(e.target.value)}
+                    />
+                </div>
+
+                <div className="mb-4 flex justify-between">
+                    <label htmlFor="picture">Picture</label>
+                    <CustomFileInput
+                        ref={fileInputRef}
+                        key={fileInputKey}
+                        onFileChange={(file) => setPicture(file)}
+                        inputKey="projectUpload" />
+                </div>
+
+                <div className="mb-4 flex flex-col justify-between">
+                    <label htmlFor="stack">Select Badges</label>
+                    <div className="flex flex-wrap gap-4 mt-2">
+                        {badges.map((badge) => (
+                            <div
+                                key={badge.id}
+                                onClick={() => toggleBadgeSelection(badge.id)}
+                                className={`cursor-pointer border-2 rounded p-1 w-20 ${
+                                    selectedBadges.includes(badge.id) ? "border-blue-500" : "border-transparent"
+                                }`}
+                            >
+                                <StackBadgeComponent badge={badge} size={30}/>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {inProgress ? (
+                    <div className="text-center mb-4">Uploading...</div>
+                ) : (
+                    <CustomButtonComponent variant="primary" type="submit">
+                        Upload Project
+                    </CustomButtonComponent>
+                )}
+            </form>
+        </>
     );
 }
