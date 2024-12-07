@@ -5,8 +5,8 @@ import HeroPicture from "@/components/hero_components/heroPicture";
 
 export default function Hero() {
     return (
-        <section className="w-full h-screen flex justify-center items-center bg-hero">
-            <div className="text-center">
+        <section className="w-full flex bg-hero p-4 h-fit">
+            <div>
                 <div className="flex justify-between items-center">
                     <div className="mr-8">
                         <h1 className="text-6xl font-bold mb-8">About me :</h1>
@@ -16,13 +16,13 @@ export default function Hero() {
                                 href="https://github.com/your-profile"
                                 network="GitHub"
                                 icon={<FaGithub/>}
-                                className="text-gray-800 hover:text-gray-600"
+                                className="text-gray-800 hover:text-gray-500 flex items-center gap-1"
                             />
                             <SocialLink
                                 href="https://linkedin.com/in/your-profile"
                                 network="LinkedIn"
                                 icon={<FaLinkedin/>}
-                                className="text-blue-700 hover:text-blue-500"
+                                className="text-blue-700 hover:text-blue-400 flex items-center gap-1"
                             />
                         </div>
                     </div>
