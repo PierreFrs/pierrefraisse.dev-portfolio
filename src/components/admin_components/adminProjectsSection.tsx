@@ -8,41 +8,21 @@ import { AdminProjectsGallery } from "@/components/admin_components/adminProject
 import {useServices} from "@/contexts/ServiceContext";
 
 export function AdminProjectsSection() {
-    const {badgeService, projectService} = useServices();
+    const {badgeService, projectService, projectHelper} = useServices();
     const [projects, setProjects] = useState<CardModel[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchProjects();
+        (async () => {
+            try {
+                const projects = await projectHelper.fetchProjectsWithBadges();
+                setProjects(projects);
+            } catch (err) {
+                console.error("Error fetching projects:", err);
+                setError("Failed to fetch projects. Please try again.");
+            }
+        })();
     }, []);
-
-    const fetchProjects = async () => {
-        try {
-            const projects = await projectService.fetchProjects();
-            // Fetch stack badges for each project
-            const updatedProjects = await Promise.all(
-                projects.map(async (project) => {
-                    try {
-                        project.stack = JSON.parse(project.stack[0]); // Parsing the stack field
-
-                        if (project.stack && project.stack.length > 0) {
-                            const badges = await badgeService.fetchBadgesByProjectId(project.stack);
-                            return { ...project, stackBadges: badges }; // Adding the `stackBadges` property
-                        }
-
-                        return project; // Return the project even if stack badges are not found
-                    } catch (e) {
-                        console.error(`Error processing project ${project.id}:`, e);
-                        return project;
-                    }
-                })
-            );
-
-            setProjects(updatedProjects);
-        } catch (error) {
-            console.error("Error fetching projects:", error);
-        }
-    }
 
     const addProject = async (project: CardModel) => {
         // Fetch badges for the new project and update it
@@ -50,7 +30,7 @@ export function AdminProjectsSection() {
             project.stack = JSON.parse(project.stack[0]);
 
             if (project.stack && project.stack.length > 0) {
-                const badges = await badgeService.fetchBadgesByProjectId(project.stack);
+                const badges = await badgeService.fetchBadgesByBadgesId(project.stack);
                 const updatedProject = { ...project, stackBadges: badges };
                 setProjects((prevProjects) => [...prevProjects, updatedProject]);
             } else {

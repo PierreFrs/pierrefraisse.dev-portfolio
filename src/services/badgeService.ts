@@ -14,23 +14,36 @@ export class BadgeService implements IBadgeService {
         return await response.json();
     };
 
-    // Service to fetch badges by project id
-    async fetchBadgesByProjectId(badgesIds: string[]): Promise<StackBadge[]> {
-        const badges: StackBadge[] = [];
-
-        for (const id of badgesIds) {
-            const response = await fetch(`/api/stackBadges/${id}`);
-
+    async fetchBadgeById(id: string): Promise<StackBadge | null> {
+        try {
+            const response = await fetch(`http://localhost:3000/api/stackBadges/${id}`);
             if (!response.ok) {
-                throw new Error(`Failed to fetch badge ${id}. HTTP error! status: ${response.status}`);
+                // Handle specific error codes
+                if (response.status === 404) {
+                    console.warn(`Badge with ID ${id} not found (404).`);
+                    return null; // Return null for a missing badge
+                }
+                console.error(`Failed to fetch badge ${id}. HTTP error! status: ${response.status}`);
+                return null;
             }
-
-            const badge: StackBadge = await response.json();
-            badges.push(badge);
+            return await response.json();
+        } catch (error) {
+            console.error(`Error fetching badge ${id}:`, error);
+            return null; // Ensure the error doesn't break the flow
         }
-
-        return badges;
     }
+
+
+    // Service to fetch multiple badges for project
+    async fetchBadgesByBadgesId(badgesIds: string[]): Promise<StackBadge[]> {
+        const badgeFetchPromises = badgesIds.map((id) => this.fetchBadgeById(id));
+        const badges = await Promise.all(badgeFetchPromises);
+
+        // Filter out any null values (badges not found)
+        return badges.filter((badge): badge is StackBadge => badge !== null);
+}
+
+
 
     // Service to add a badge
     async addBadge(formData: FormData): Promise<StackBadge> {

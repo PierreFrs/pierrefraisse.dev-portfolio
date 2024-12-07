@@ -11,6 +11,7 @@ export class ProjectService implements IProjectService {
         }
         return await response.json();
     }
+
     async addProject(formData: FormData): Promise<CardModel> {
         const response = await fetch("/api/projectGallery", {
             method: "POST",
@@ -21,6 +22,7 @@ export class ProjectService implements IProjectService {
         }
         return await response.json();
     }
+
     async removeProject(projectId: string): Promise<void> {
         const response = await fetch(`/api/projectGallery/${projectId}`, {
             method: "DELETE"
