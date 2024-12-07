@@ -9,9 +9,9 @@ export default async function Header() {
                 </span>
             </div>
             <nav className="flex space-x-6">
-                <HeaderLink href="#about">About</HeaderLink>
-                <HeaderLink href="#projects">Projects</HeaderLink>
-                <HeaderLink href="#contact">Contact</HeaderLink>
+                <HeaderLink href={"#about"}>About</HeaderLink>
+                <HeaderLink href={"#projects"}>Projects</HeaderLink>
+                <HeaderLink href={"#contact"}>Contact</HeaderLink>
             </nav>
         </header>
     );
