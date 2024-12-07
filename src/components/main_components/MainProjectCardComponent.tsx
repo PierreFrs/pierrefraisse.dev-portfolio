@@ -11,7 +11,7 @@ type MainProjectCardComponentProps = {
 
 export function MainProjectCardComponent({ project }: Readonly<MainProjectCardComponentProps>) {
     return (
-        <div key={project.id} className="border p-4 rounded shadow-lg max-w-96">
+        <div key={project.id} className="border p-4 rounded shadow-lg w-80 h-96">
             <ProjectPictureComponent size={150} project={project}/>
             <h2 className="text-xl font-bold mt-4">{project.title}</h2>
             <p>{project.shortDescription}</p>

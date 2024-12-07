@@ -8,7 +8,8 @@ type ProjectGalleryProps = {
 
 export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryProps>) {
   return (
-      <>
+      <div className="flex flex-col">
+          <h2 className="text-3xl font-bold mb-8">Projets</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {projects.map((project) => (
                   <MainProjectCardComponent
@@ -17,6 +18,6 @@ export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryPro
                   />
               ))}
           </div>
-      </>
+      </div>
   );
 }

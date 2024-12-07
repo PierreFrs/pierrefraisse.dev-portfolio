@@ -9,7 +9,6 @@ type ProjectStackGalleryProps = {
 export function ProjectStackGallery({ stack }: Readonly<ProjectStackGalleryProps>) {
     return (
         <div className="my-4">
-            <p className="font-bold">Stack:</p>
             <ul className="flex flex-wrap mt-2 gap-2">
                 {stack?.map((badge: StackBadge) => (
                     <li key={badge.id} className="rounded text-sm w-16">
