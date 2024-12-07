@@ -45,9 +45,15 @@ export default function MainComponentsComponent() {
 
     return (
         <>
-            <Hero />
-            <ProjectsGallery projects={projects} />
-            <Contact />
+            <section id="about">
+                <Hero/>
+            </section>
+            <section id="projects">
+                <ProjectsGallery projects={projects}/>
+            </section>
+            <section id="contact">
+                <Contact/>
+            </section>
         </>
     );
 }
