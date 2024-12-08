@@ -10,7 +10,7 @@ export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryPro
   return (
       <section id="projects" className="homepage-section flex flex-col">
           <h2 className="title section-title">Projets</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="project-gallery">
               {projects.map((project) => (
                   <MainProjectCardComponent
                       project={project}
