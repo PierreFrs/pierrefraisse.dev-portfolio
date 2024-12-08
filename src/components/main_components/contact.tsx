@@ -42,7 +42,7 @@ export default function Contact() {
 
     return (
         <section id="contact" className="homepage-section max-w-96">
-            <h2 className="text-3xl section-title">Contact</h2>
+            <h2 className="title section-title">Contact</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='mb-5'>
                     <label

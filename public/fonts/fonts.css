@@ -2,18 +2,24 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('../fonts/gotham/Gotham-Medium.otf') format('otf'),
-    url('../fonts/gotham/Gotham-Medium.otf') format('otf');
+    src: url('../fonts/gotham/Gotham-Book.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Gotham';
-    src: url('../fonts/gotham/Gotham-Bold.otf') format('otf'),
-    url('../fonts/gotham/Gotham-Bold.otf') format('otf');
+    font-family: 'Gotham-bold';
+    src: url('../fonts/gotham/Gotham-Bold.otf') format('opentype');
     font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/montserrat/Montserrat-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
