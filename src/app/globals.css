@@ -153,6 +153,13 @@ body {
     color: #3399ff; /* Matches hover:text-blue-400 */
   }
 
+  /* Project Gallery */
+    .project-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
   /* Project Card Styles */
   .project-card {
     padding: 0;
