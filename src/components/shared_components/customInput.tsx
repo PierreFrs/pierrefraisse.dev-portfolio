@@ -3,20 +3,19 @@
 import { Input } from "@nextui-org/input";
 import React from "react";
 import {FieldError, UseFormRegister} from "react-hook-form";
-import {ContactFormData} from "@/components/main_components/contact";
 
-type CustomInputProps = {
-    field: keyof ContactFormData;
+type CustomInputProps<TFieldName extends string> = {
+    field: TFieldName;
     label: string;
     type: string;
     placeholder?: string;
     isRequired?: boolean;
     error?: FieldError | undefined;
-    register: UseFormRegister<ContactFormData>;
+    register: UseFormRegister<any>;
     validationRules?: object; // Additional validation rules
 };
 
-export const CustomInput: React.FC<CustomInputProps> = ({
+export const CustomInput = <TFieldName extends string>({
     field,
     label,
     type,
@@ -25,7 +24,7 @@ export const CustomInput: React.FC<CustomInputProps> = ({
     error,
     register,
     validationRules = {},
-}) => {
+}: CustomInputProps<TFieldName>) => {
     return (
         <Input
             label={label}

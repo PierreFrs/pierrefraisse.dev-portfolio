@@ -6,29 +6,36 @@ import {CustomButtonComponent} from "@/components/shared_components/CustomButton
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 import {useServices} from "@/contexts/ServiceContext";
+import {CustomInput} from "@/components/shared_components/customInput";
+import {Form} from "@nextui-org/form";
+import {useForm} from "react-hook-form";
 
 interface BadgeUploadFormProps {
     onBadgeAdded: (newBadge: StackBadge) => void;
 }
 
+type BadgeFormSchema = {
+    badgeName: string;
+};
+
 export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadFormProps>) {
     const { badgeService} = useServices();
-    const [badgeName, setBadgeName] = useState("");
-    const [badgeIcon, setBadgeIcon] = useState<File | null>(null);
     const { data: session } = useSession();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<BadgeFormSchema>();
+    const [badgeIcon, setBadgeIcon] = useState<File | null>(null);
     const [inProgress, setInProgress] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [fileInputKey, setFileInputKey] = useState(0);
     
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: BadgeFormSchema) => {
         setInProgress(true);
-        
+
         if (!badgeIcon) {
             console.error("No badge icon selected");
+            setInProgress(false);
             return;
-        } 
-        
+        }
+
         const userId = session?.user?.id;
         if (!userId) {
             console.error("No user ID found in session");
@@ -36,7 +43,7 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
         }
 
         const formData = new FormData();
-        formData.append("name", badgeName);
+        formData.append("name", data.badgeName);
         formData.append("icon", badgeIcon as Blob);
         formData.append("userId", userId);
         
@@ -44,7 +51,6 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
             const newBadge: StackBadge = await badgeService.addBadge(formData);
             console.log("Badge uploaded successfully");
             onBadgeAdded(newBadge);
-            console.log("Badge added to gallery");
             resetForm();
         } catch (error) {
             console.error("Error uploading badge", error);
@@ -54,7 +60,7 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
     };
 
     const resetForm = () => {
-        setBadgeName("");
+        reset();
         setBadgeIcon(null);
         setFileInputKey(fileInputKey + 1);
 
@@ -64,29 +70,31 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-96">
-            <div className="mb-4 flex justify-between">
-                <label htmlFor="name">Badge Name</label>
-                <input
-                    id="name"
-                    type="text"
-                    value={badgeName}
-                    onChange={(e) => setBadgeName(e.target.value)}
-                    required
-                />
-            </div>
+        <Form onSubmit={handleSubmit(onSubmit)} className="w-96">
+            <CustomInput
+                field="badgeName"
+                label="Badge Name"
+                type="text"
+                placeholder="Enter badge name"
+                isRequired
+                error={errors.badgeName} // Replace with validation if needed
+                register={register}
+            />
 
             <div className="mb-4 flex justify-between">
-                <label htmlFor="icon">Icon</label>
                 <CustomFileInput
                     ref={fileInputRef}
                     key={fileInputKey}
                     onFileChange={(file) => setBadgeIcon(file)}
                     inputKey="badgeUpload" />
             </div>
-
-            <CustomButtonComponent variant="primary" type={"submit"}>{inProgress ? "Uploading..." : "Upload Badge"}</CustomButtonComponent>
-
-        </form>
+            <CustomButtonComponent
+                variant="primary"
+                type="submit"
+                isLoading={inProgress}
+            >
+                Upload
+            </CustomButtonComponent>
+        </Form>
     );
 }
