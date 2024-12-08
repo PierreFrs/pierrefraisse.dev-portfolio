@@ -23,16 +23,10 @@ export default function MainComponentsComponent() {
     }, []);
 
     return (
-        <>
-            <section id="about" className="mt-16">
-                <Hero/>
-            </section>
-            <section id="projects" className="mt-16 p-4">
-                <ProjectsGallery projects={projects}/>
-            </section>
-            <section id="contact" className="mt-16 max-w-96 p-4">
-                <Contact/>
-            </section>
-        </>
+        <section className="homepage">
+            <Hero/>
+            <ProjectsGallery projects={projects}/>
+            <Contact/>
+        </section>
     );
 }
