@@ -14,7 +14,7 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
     return (
         <Card key={project.id} className="project-card">
             <ProjectPictureComponent project={project}/>
-            <CardHeader className="text-xl font-bold">{project.title}</CardHeader>
+            <CardHeader className="card-title">{project.title}</CardHeader>
             <CardBody>
                 <p>
                     {project.shortDescription}

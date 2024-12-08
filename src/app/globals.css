@@ -172,6 +172,13 @@ body {
     font-size: var(--font-size-large);
   }
 
+  .card-title {
+    font-size: 1.5rem;
+    font-family: var(--font-title), sans-serif;
+    font-weight: bold;
+    line-height: 1;
+  }
+
                       /***** Buttons *****/
   /* Primary Button Styles */
   .btn-primary {
