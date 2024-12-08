@@ -195,6 +195,7 @@ body {
     padding: 8px 16px;
     border-radius: 9999px;                      /* Bouton entièrement arrondi */
     transition: background-color 0.3s, color 0.3s; /* Transition douce */
+    font-weight: bold;
   }
 
   .btn-primary:hover {
@@ -202,7 +203,11 @@ body {
     color: rgb(var(--primary-50));              /* Texte plus clair au survol */
   }
 
-  /* Warning Button Styles */
+  .btn-primary[aria-busy="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
   .btn-warning {
     border: 2px solid rgb(var(--warning-900));  /* Bordure rouge */
     color: rgb(var(--warning-900));             /* Texte rouge */
@@ -210,6 +215,7 @@ body {
     padding: 8px 16px;
     border-radius: 9999px;
     transition: background-color 0.3s, color 0.3s; /* Transition douce */
+    font-weight: bold;
   }
 
   .btn-warning:hover {
@@ -217,10 +223,9 @@ body {
     color: rgb(var(--primary-50));              /* Texte clair au survol */
   }
 
-  /* Bouton avec contrast plus fort */
-  .btn-component {
-    font-weight: bold;
-    text-align: center;
+  .btn-warning[aria-busy="true"] {
+    cursor: not-allowed;
+    opacity: 0.6;
   }
 
   .custom-file-input-wrapper {
