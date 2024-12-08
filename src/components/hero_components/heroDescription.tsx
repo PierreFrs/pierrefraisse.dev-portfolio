@@ -19,5 +19,5 @@ export default function HeroDescription() {
         loadDescription();
     }, []);
 
-    return <p className="text-lg">{description}</p>;
+    return <p className="text-lg text-justify">{description}</p>;
 }

@@ -28,7 +28,7 @@ export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
     
     return <Image src={imageUrl} 
                   alt="Your host picture" 
-                  className="rounded-2xl"
+                  className="rounded-2xl shadow-lg"
                   width={size}
                   height={size}
                   style={{ width: size ? "auto" : "auto", height: size ? `${size}px` : "auto" }}

@@ -41,8 +41,8 @@ export default function Contact() {
     };
 
     return (
-        <>
-            <h2 className="text-3xl font-bold mb-8">Contact</h2>
+        <section id="contact" className="homepage-section max-w-96">
+            <h2 className="text-3xl section-title">Contact</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='mb-5'>
                     <label
@@ -117,6 +117,6 @@ export default function Contact() {
                     {error && <p className="text-red-500">{error}</p>}
                 </div>
             </form>
-        </>
+        </section>
     );
 };

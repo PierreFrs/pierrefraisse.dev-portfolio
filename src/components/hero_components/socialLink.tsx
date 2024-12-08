@@ -8,13 +8,19 @@ interface SocialLinkProps {
     className?: string;
 }
 export default function SocialLink(socialLinkProps: Readonly<SocialLinkProps>) {
+    const { href, network, icon, className } = socialLinkProps;
+
+    const networkClass = network.toLowerCase();
+
     return (
-        <Link href={socialLinkProps.href} passHref
-              className={socialLinkProps.className}
-              target="_blank"
-              rel="noopener noreferrer"
+        <Link
+            href={href}
+            passHref
+            className={`social-link ${networkClass} ${className || ""}`}
+            target="_blank"
+            rel="noopener noreferrer"
         >
-            {socialLinkProps.icon} {socialLinkProps.network}
+            {icon} {network}
         </Link>
         );
 }
