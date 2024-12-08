@@ -1,9 +1,12 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { Form } from "@nextui-org/form";
+import {useForm} from 'react-hook-form';
 import { sendEmail } from "@/app/utils/send-email";
-import React from "react";
+import React, {useEffect} from "react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
+import {CustomInput} from "@/components/shared_components/customInput";
+import {CustomTextarea} from "@/components/shared_components/customTextArea";
 
 export type ContactFormData = {
     name: string;
@@ -30,8 +33,8 @@ export default function Contact() {
         try {
             const message = await sendEmail(data); // Simulate sending the email
             console.log(message);
-            setSuccess(true); // Show success message
-            reset(); // Reset the form
+            setSuccess(true);
+            reset();
         } catch (err: any) {
             console.error("Failed to send email", error);
             setError(err.message || "An unexpected error occurred.");
@@ -40,83 +43,70 @@ export default function Contact() {
         }
     };
 
+    useEffect(() => {
+        if (success) {
+            const timer = setTimeout(() => setSuccess(false), 3000);
+            return () => clearTimeout(timer); // Cleanup the timer if the component unmounts
+        }
+    }, [success]);
+
     return (
         <section id="contact" className="homepage-section max-w-96">
             <h2 className="title section-title">Contact</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div className='mb-5'>
-                    <label
-                        htmlFor='name'
-                        className='mb-3 block text-base font-medium'
-                    >
-                        Votre nom
-                    </label>
-                    <input
-                        type='text'
-                        placeholder='Prénom Nom'
-                        className={`w-full rounded-md border py-3 px-6 text-base font-medium outline-none focus:border-bg-primary-50 focus:shadow-md ${errors.name ? 'border-red-500' : 'border-foreground-rgb'}`}
-                        {...register('name', {required: "Nom requis"})}
-                    />
-                    {errors.name && <p className='text-red-500'>{errors.name.message}</p>}
-                </div>
-                <div className='mb-5'>
-                    <label
-                        htmlFor='email'
-                        className='mb-3 block text-base font-medium'
-                    >
-                        Adresse Mail
-                    </label>
-                    <input
-                        type='email'
-                        placeholder='example@domain.com'
-                        className={`w-full rounded-md border py-3 px-6 text-base font-medium outline-none focus:bordbg-primary-50 focus:shadow-md ${errors.name ? 'border-red-500' : 'border-foreground-rgb'}`}
-                        {...register('email', {
-                            required: "Adresse mail requise",
-                            pattern: {
-                                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/,
-                                message: "Adresse mail invalide"
-                            },
-                        })}
-                    />
-                    {errors.email && <p className='text-red-500'>{errors.email.message}</p>}
-                </div>
-                <div className="mb-5">
-                    <label
-                        htmlFor='subject'
-                        className='mb-3 block text-base font-medium'
-                    >
-                        Objet
-                    </label>
-                    <input
-                        type='text'
-                        placeholder='Objet'
-                        className={`w-full rounded-md border py-3 px-6 text-base font-medium outline-none focus:bordbg-primary-50 focus:shadow-md ${errors.name ? 'border-red-500' : 'border-foreground-rgb'}`}
-                        {...register('subject', {required: "Objet requis"})}
-                    />
-                    {errors.subject && <p className='text-red-500'>{errors.subject.message}</p>}
-                </div>
-                <div className='mb-5'>
-                    <label
-                        htmlFor='message'
-                        className='mb-3 block text-base font-medium'
-                    >
-                        Message
-                    </label>
-                    <textarea
-                        rows={4}
-                        placeholder='Votre message'
-                        className={`w-full rounded-md border py-3 px-6 text-base font-medium outline-none focus:bordbg-primary-50 focus:shadow-md ${errors.name ? 'border-red-500' : 'border-foreground-rgb'}`}
-                        {...register('message', {required: "Message requis"})}
-                    ></textarea>
-                    {errors.message && <p className='text-red-500'>{errors.message.message}</p>}
-                </div>
+            <Form onSubmit={handleSubmit(onSubmit)}>
+                <CustomInput
+                    field="name"
+                    label="Nom"
+                    type="text"
+                    placeholder="Votre nom"
+                    isRequired
+                    error={errors.name}
+                    register={register}
+                />
+                <CustomInput
+                    field="email"
+                    label="Adresse Mail"
+                    type="email"
+                    placeholder="example@domain.com"
+                    isRequired
+                    error={errors.email}
+                    register={register}
+                    validationRules={{
+                        pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                            message: "Adresse mail invalide",
+                        },
+                    }}
+                />
+                <CustomInput
+                    field="subject"
+                    label="Objet"
+                    type="text"
+                    placeholder="Objet du message"
+                    isRequired
+                    error={errors.subject}
+                    register={register}
+                />
+                <CustomTextarea
+                    field="message"
+                    label="Message"
+                    placeholder="Votre message"
+                    isRequired
+                    error={errors.message}
+                    register={register}
+                />
                 <div className="flex items-center gap-4">
-                    <CustomButtonComponent variant={"primary"}
-                                           type={"submit"}>{inProgress ? "Envoi..." : "Envoyer"}</CustomButtonComponent>
-                    {success && <p className="text-green-500">Message envoyé avec succès !</p>}
-                    {error && <p className="text-red-500">{error}</p>}
+                    <CustomButtonComponent
+                        variant="primary"
+                        type={"submit"}
+                        isLoading={inProgress}
+                    >
+                        Envoyer
+                    </CustomButtonComponent>
+                    {success && <p className="text-xs">Message envoyé</p>}
+                    {error && <p className="text-xs text-red-500">{error}</p>}
                 </div>
-            </form>
+            </Form>
         </section>
     );
 };
