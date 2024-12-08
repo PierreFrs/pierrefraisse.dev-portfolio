@@ -103,6 +103,64 @@ body {
 }
 
 @layer utilities {
+  /* Homepage Global styles */
+    .homepage {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+  /* Homepage sections Styles*/
+  .homepage-section {
+    padding: 16px;
+    margin-top: 64px;
+    max-width: 1200px;
+  }
+
+  .hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 64px;
+    height: fit-content;
+  }
+
+  /* Social links */
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem; /* Matches gap-1 */
+    transition: color 0.2s ease-in-out;
+    font-weight: bold;
+  }
+
+  .social-link.github {
+    color: #4b5563; /* Matches text-gray-800 */
+  }
+
+  .social-link.github:hover {
+    color: #6b7280; /* Matches hover:text-gray-500 */
+  }
+
+  .social-link.linkedin {
+    color: #0a66c2; /* Matches text-blue-700 */
+  }
+
+  .social-link.linkedin:hover {
+    color: #3399ff; /* Matches hover:text-blue-400 */
+  }
+
+
+  /***** Titles *****/
+  .section-title {
+    line-height: 1;
+    font-weight: bold;
+    margin-bottom: 32px;
+  }
+
+                      /***** Buttons *****/
   /* Primary Button Styles */
   .btn-primary {
     border: 2px solid rgb(var(--primary-900)); /* Bordure noire */
