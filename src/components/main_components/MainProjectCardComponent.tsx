@@ -4,6 +4,7 @@ import {ProjectStackGallery} from "@/components/shared_components/projectStackGa
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import React from "react";
+import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 
 type MainProjectCardComponentProps = {
     project: CardModel;
@@ -11,16 +12,22 @@ type MainProjectCardComponentProps = {
 
 export function MainProjectCardComponent({ project }: Readonly<MainProjectCardComponentProps>) {
     return (
-        <div key={project.id} className="border p-4 rounded shadow-lg w-80 h-96">
-            <ProjectPictureComponent size={150} project={project}/>
-            <h2 className="text-xl font-bold mt-4">{project.title}</h2>
-            <p>{project.shortDescription}</p>
-            <ProjectStackGallery stack={project.stackBadges as StackBadge[]}/>
+        <Card key={project.id} className="project-card">
+            <ProjectPictureComponent project={project}/>
+            <CardHeader className="card-title">{project.title}</CardHeader>
+            <CardBody>
+                <p>
+                    {project.shortDescription}
+                </p>
+                <ProjectStackGallery stack={project.stackBadges as StackBadge[]}/>
+            </CardBody>
             {project.link && (
-                <a href={project.link} target="_blank" rel="noopener noreferrer">
-                    <CustomButtonComponent variant="primary">Visit Project</CustomButtonComponent>
-                </a>
+                <CardFooter>
+                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                        <CustomButtonComponent variant="primary">Visiter</CustomButtonComponent>
+                    </a>
+                </CardFooter>
             )}
-        </div>
+        </Card>
     );
 }
