@@ -1,21 +1,40 @@
 "use client";
 
-import {useState} from "react";
+import {useRef, useState} from "react";
 import Image from "next/image";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
+import {useSession} from "next-auth/react";
+import {Form} from "@nextui-org/form";
+import {useForm} from "react-hook-form";
 
-export default function HeroPictureForm({userId} : Readonly<{ userId: string }>) {
+
+export type HeroPictureFormData = {
+    userId: string;
+    file: File;
+};
+
+export default function HeroPictureForm() {
+    const {handleSubmit, reset} = useForm<HeroPictureFormData>();
     const [file, setFile] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
     const [inProgress, setInProgress] = useState(false);
-    const handleSubmit = async (e: React.FormEvent) => {
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [fileInputKey, setFileInputKey] = useState(0);
+    const { data: session } = useSession();
+
+    const onSubmit = async () => {
         setInProgress(true);
-        e.preventDefault();
 
         if (!file) {
             console.error("No file selected");
             setInProgress(false);
+            return;
+        }
+
+        const userId = session?.user?.id;
+        if (!userId) {
+            console.error("No user ID found in session");
             return;
         }
 
@@ -24,38 +43,52 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
         formData.append("userId", userId);
 
         try {
-            const response = await fetch("/api/heroPicture", {
+            await fetch("/api/heroPicture", {
                 method: "POST",
                 body: formData,
             });
 
-            if (response.ok) {
-                console.log("Hero picture uploaded successfully");
-            } else {
-                console.error("Error uploading hero picture");
-            }
-            setInProgress(false);
+            resetForm();
         } catch (error) {
             console.error("Error uploading hero picture", error);
+        } finally {
             setInProgress(false);
         }
     };
-    
+
+        const resetForm = () => {
+            reset();
+            setFile(null);
+            setFileInputKey(fileInputKey + 1);
+            setPreview(null);
+
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+        };
+
     return (
-        <form onSubmit={handleSubmit}>
-            <CustomFileInput onFileChange={(file) => {
-                setFile(file);
-                    if (file) {
-                        setPreview(URL.createObjectURL(file));
-                    } else {
-                        setPreview(null);
+        <Form onSubmit={handleSubmit(onSubmit)}>
+            <CustomFileInput
+                ref={fileInputRef}
+                key={fileInputKey}
+                onFileChange={(file) => {
+                    setFile(file);
+                        if (file) {
+                            setPreview(URL.createObjectURL(file));
+                        } else {
+                            setPreview(null);
+                        }
                     }
                 }
-            } inputKey="heroUpload"
+                inputKey="heroUpload"
             />
-            <input type="hidden" value={userId} name="userId"/>
-            <CustomButtonComponent variant="primary" type="submit">
-                {inProgress ? "Uploading..." : "Upload"}
+            <CustomButtonComponent
+                variant="primary"
+                type="submit"
+                isLoading={inProgress}
+            >
+                Upload
             </CustomButtonComponent>
             
             {preview && 
@@ -66,6 +99,6 @@ export default function HeroPictureForm({userId} : Readonly<{ userId: string }>)
                        className="mt-4"
                 />
             }
-        </form>
+        </Form>
     );
 }

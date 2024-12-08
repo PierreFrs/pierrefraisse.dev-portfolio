@@ -1,5 +1,3 @@
-"use client";
-
 import React, {useRef, useState} from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
@@ -39,6 +37,7 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
         const userId = session?.user?.id;
         if (!userId) {
             console.error("No user ID found in session");
+            setInProgress(false);
             return;
         }
 
@@ -77,17 +76,14 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
                 type="text"
                 placeholder="Enter badge name"
                 isRequired
-                error={errors.badgeName} // Replace with validation if needed
+                error={errors.badgeName}
                 register={register}
             />
-
-            <div className="mb-4 flex justify-between">
-                <CustomFileInput
-                    ref={fileInputRef}
-                    key={fileInputKey}
-                    onFileChange={(file) => setBadgeIcon(file)}
-                    inputKey="badgeUpload" />
-            </div>
+            <CustomFileInput
+                ref={fileInputRef}
+                key={fileInputKey}
+                onFileChange={(file) => setBadgeIcon(file)}
+                inputKey="badgeUpload" />
             <CustomButtonComponent
                 variant="primary"
                 type="submit"

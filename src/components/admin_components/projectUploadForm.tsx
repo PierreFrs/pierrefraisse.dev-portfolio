@@ -7,20 +7,28 @@ import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
 import {CardModel} from "@/app/lib/models/cardModel";
 import {useServices} from "@/contexts/ServiceContext";
+import {Form} from "@nextui-org/form";
+import {useForm} from "react-hook-form";
+import {CustomInput} from "@/components/shared_components/customInput";
+import {CustomTextarea} from "@/components/shared_components/customTextArea";
 
-type ProjectUploadFormProps = {
+interface ProjectUploadFormProps {
     onProjectAdded: (newProject: CardModel) => void;
+}
+
+type ProjectFormSchema = {
+    title: string;
+    shortDescription: string;
+    link: string;
 };
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
     const { badgeService, projectService } = useServices();
-    const [title, setTitle] = useState("");
-    const [shortDescription, setShortDescription] = useState("");
-    const [link, setLink] = useState("");
+    const {data: session} = useSession();
+    const {register, handleSubmit, reset, formState: {errors}} = useForm<ProjectFormSchema>();
     const [picture, setPicture] = useState<File | null>(null);
     const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
     const [badges, setBadges] = useState<any[]>([]);
-    const {data: session} = useSession();
     const [inProgress, setInProgress] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [fileInputKey, setFileInputKey] = useState(0);
@@ -40,15 +48,8 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: ProjectFormSchema) => {
         setInProgress(true);
-
-        if (!title || !shortDescription || !picture || !selectedBadges.length) {
-            console.error("Missing required fields");
-            setInProgress(false);
-            return;
-        }
 
         const userId = session?.user?.id;
         if (!userId) {
@@ -58,9 +59,9 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         }
 
         const formData = new FormData();
-        formData.append("title", title);
-        formData.append("shortDescription", shortDescription);
-        formData.append("link", link);
+        formData.append("title", data.title);
+        formData.append("shortDescription", data.shortDescription);
+        formData.append("link", data.link);
         formData.append("picture", picture as Blob);
         formData.append("stack", JSON.stringify(selectedBadges));
         formData.append("userId", userId);
@@ -79,9 +80,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     };
 
     const resetForm = () => {
-        setTitle("");
-        setShortDescription("");
-        setLink("");
+        reset();
         setPicture(null);
         setSelectedBadges([]);
         setFileInputKey((prevKey) => prevKey + 1);
@@ -103,39 +102,33 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         <>
             {error && <p className="text-red-500">{error}</p>}
 
-            <form onSubmit={handleSubmit} className="w-96">
-                <div className="mb-4 flex justify-between">
-                    <label htmlFor="title">Project Title</label>
-                    <input
-                        id="title"
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                    />
-                </div>
+            <Form onSubmit={handleSubmit(onSubmit)} className="w-96">
+                <CustomInput
+                    field="title"
+                    label="Project Title"
+                    type="text"
+                    placeholder="Enter project title"
+                    isRequired
+                    error={errors.title}
+                    register={register}
+                />
+                <CustomTextarea
+                    field="shortDescription"
+                    label="Short Description"
+                    placeholder="Enter a short description"
+                    isRequired
+                    error={errors.shortDescription}
+                    register={register}
+                />
+                <CustomInput
+                    field="link"
+                    label="Project Link"
+                    type="url"
+                    placeholder="Enter project link"
+                    register={register}
+                />
 
-                <div className="mb-4 flex justify-between">
-                    <label htmlFor="shortDescription">Short Description</label>
-                    <textarea
-                        id="shortDescription"
-                        value={shortDescription}
-                        onChange={(e) => setShortDescription(e.target.value)}
-                        required
-                    ></textarea>
-                </div>
-
-                <div className="mb-4 flex justify-between">
-                    <label htmlFor="link">Project Link</label>
-                    <input
-                        id="link"
-                        type="url"
-                        value={link}
-                        onChange={(e) => setLink(e.target.value)}
-                    />
-                </div>
-
-                <div className="mb-4 flex justify-between">
+                <div className="mb-4 mt-2 w-full flex justify-between items-center">
                     <label htmlFor="picture">Picture</label>
                     <CustomFileInput
                         ref={fileInputRef}
@@ -160,15 +153,14 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                         ))}
                     </div>
                 </div>
-
-                {inProgress ? (
-                    <div className="text-center mb-4">Uploading...</div>
-                ) : (
-                    <CustomButtonComponent variant="primary" type="submit">
-                        Upload Project
-                    </CustomButtonComponent>
-                )}
-            </form>
+                <CustomButtonComponent
+                    variant="primary"
+                    type="submit"
+                    isLoading={inProgress}
+                >
+                    Upload
+                </CustomButtonComponent>
+            </Form>
         </>
     );
 }

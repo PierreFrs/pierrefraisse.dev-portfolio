@@ -1,5 +1,3 @@
-'use client';
-
 import { Input } from "@nextui-org/input";
 import React from "react";
 import {FieldError, UseFormRegister} from "react-hook-form";
