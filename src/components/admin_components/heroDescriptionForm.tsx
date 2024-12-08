@@ -1,73 +1,98 @@
 "use client";
 
-import {useState } from "react";
+import React, {useState } from "react";
 import { postHeroDescription } from "@/app/lib/data/heroDescriptionData";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
+import {CustomTextarea} from "@/components/shared_components/customTextArea";
+import {useForm} from "react-hook-form";
+import {Form} from "@nextui-org/form";
+import {useSession} from "next-auth/react";
+import {Select, SelectItem} from "@nextui-org/select";
 
-export default function HeroDescriptionForm({userId}: Readonly<{ userId: string }>) {
-    const [description, setDescription] = useState<string>("");
+type HeroDescriptionFormSchema = {
+    description: string;
+};
+
+type LanguageItem = {
+    value: string;
+    fullName: string;
+};
+
+export default function HeroDescriptionForm() {
+    const { data: session } = useSession();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors }
+    } = useForm<HeroDescriptionFormSchema>();
     const [language, setLanguage] = useState<string>("en");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>("");
-    
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setLoading(true);
-        setMessage("");
+    const [inProgress, setInProgress] = useState(false);
+
+    const selectValues: LanguageItem[] = [
+        { value: "en", fullName: "English" },
+        { value: "fr", fullName: "French" }
+    ];
+
+    const onSubmit = async (
+        data: HeroDescriptionFormSchema
+    ) => {
+        setInProgress(true);
+
+        const userId = session?.user?.id;
+        if (!userId) {
+            console.error("No user ID found in session");
+            setInProgress(false);
+            return;
+        }
         
         const formData = new FormData();
-        formData.append("description", description);
+        formData.append("description", data.description);
         formData.append("language", language);
         formData.append("userId", userId);
 
         try {
-            const result = await postHeroDescription(userId, formData);
-
-            if ('errors' in result) {
-                setMessage(`Failed to update description: ${result.message}`);
-            } else {
-                setMessage("Description updated successfully!");
-            }
-        } catch (error) {
-            if (error instanceof Error) {
-                setMessage(`An error occurred: ${error.message}`);
-            } else {
-                setMessage("An unknown error occurred.");
-            }
+            await postHeroDescription(userId, formData);
+            reset();
+        } catch (err: any) {
+            console.error("Error updating description", err);
         } finally {
-            setLoading(false);
+            setInProgress(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="language-select">Language:</label>
-                <select 
-                    id="language-select"
-                    value={language} 
-                    onChange={(e) => setLanguage(e.target.value)}>
-                    <option value="en">English</option>
-                    <option value="fr">French</option>
-                </select>
-            </div>
-            <div>
-                <label htmlFor="description-area">Description:</label>
-                <textarea
-                    id="description-area"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={5}
-                    className="w-full p-2 border border-gray-300 rounded"
-                />
-            </div>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+            <Select
+                label="Language"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                size="sm"
+                color="default"
+                defaultSelectedKeys={["en"]}
+                className="w-32"
+            >
+                {selectValues.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                        {item.fullName}
+                    </SelectItem>
+                ))}
+            </Select>
+            <CustomTextarea
+                field="description"
+                label="Description"
+                placeholder="Enter a description"
+                isRequired
+                error={errors.description}
+                register={register}
+            />
             <CustomButtonComponent
                 variant="primary"
                 type="submit"
+                isLoading={inProgress}
             >
-                {loading ? "Updating..." : "Update Description"}
+                Upload
             </CustomButtonComponent>
-            {message && <p className="mt-4 text-red-500">{message}</p>}
-        </form>
+        </Form>
     );
 }

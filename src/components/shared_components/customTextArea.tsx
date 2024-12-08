@@ -1,29 +1,28 @@
 import { Textarea } from "@nextui-org/input";
 import React from "react";
 import { FieldError, UseFormRegister } from "react-hook-form";
-import { ContactFormData } from "@/components/main_components/contact";
 
-type CustomTextareaProps = {
-    field: keyof ContactFormData;
+type CustomTextareaProps<TFieldName extends string> = {
+    field: TFieldName;
     label: string;
     placeholder?: string;
     isRequired?: boolean;
     error?: FieldError | undefined;
-    register: UseFormRegister<ContactFormData>;
+    register: UseFormRegister<any>;
     validationRules?: object;
     rows?: number;
 };
 
-export const CustomTextarea: React.FC<CustomTextareaProps> = ({
-                                                                  field,
-                                                                  label,
-                                                                  placeholder,
-                                                                  isRequired = false,
-                                                                  error,
-                                                                  register,
-                                                                  validationRules = {},
-                                                                  rows = 4,
-                                                              }) => {
+export const CustomTextarea = <TFieldName extends string>({
+          field,
+          label,
+          placeholder,
+          isRequired = false,
+          error,
+          register,
+          validationRules = {},
+          rows = 4,
+      }: CustomTextareaProps<TFieldName>) => {
     return (
         <Textarea
             label={label}

@@ -34,12 +34,12 @@ export default async function AdminPage() {
             <h1 className="text-2xl font-bold mb-6">Admin Page</h1>
             <section className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Update Hero Description</h2>
-                <HeroDescriptionForm userId={userId} />
+                <HeroDescriptionForm />
             </section>
             <Divider className="my-4" />
             <section className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Update Hero Picture</h2>
-                <HeroPictureForm userId={userId} />
+                <HeroPictureForm />
             </section>
             <Divider className="my-4" />
             <AdminProjectsSection />
