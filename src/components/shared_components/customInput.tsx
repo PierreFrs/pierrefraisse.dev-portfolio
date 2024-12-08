@@ -17,15 +17,15 @@ type CustomInputProps = {
 };
 
 export const CustomInput: React.FC<CustomInputProps> = ({
-                                                            field,
-                                                            label,
-                                                            type,
-                                                            placeholder,
-                                                            isRequired = false,
-                                                            error,
-                                                            register,
-                                                            validationRules = {},
-                                                        }) => {
+    field,
+    label,
+    type,
+    placeholder,
+    isRequired = false,
+    error,
+    register,
+    validationRules = {},
+}) => {
     return (
         <Input
             label={label}
