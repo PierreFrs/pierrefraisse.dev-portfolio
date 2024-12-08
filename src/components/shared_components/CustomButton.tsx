@@ -1,23 +1,30 @@
 import React from "react";
+import {Button} from "@nextui-org/button";
 
 type CustomButtonProps = {
     variant: "primary" | "warning";
     type?: "button" | "submit" | "reset";
     onClick?: () => void;
+    isLoading?: boolean;
     children: React.ReactNode;
 };
 
 export function CustomButtonComponent({
-                                          variant,
-                                          type = "button",
-                                          onClick,
-                                          children,
-                                      }: Readonly<CustomButtonProps>) {
-    const buttonClass = variant === "primary" ? "btn-primary btn-component" : "btn-warning btn-component";
-
+      variant,
+      type = "button",
+      onClick,
+      isLoading = false,
+      children,
+  }: Readonly<CustomButtonProps>) {
+    const buttonClassName = variant === "primary" ? "btn-primary" : "btn-warning";
     return (
-        <button type={type} onClick={onClick} className={buttonClass}>
+        <Button
+            type={type}
+            onClick={onClick}
+            isLoading={isLoading}
+            className={buttonClassName}
+        >
             {children}
-        </button>
+        </Button>
     );
 }
