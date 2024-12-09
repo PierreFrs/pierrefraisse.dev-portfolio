@@ -143,6 +143,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                         {badges.map((badge) => (
                             <button
                                 key={badge.id}
+                                type="button"
                                 onClick={() => toggleBadgeSelection(badge.id)}
                                 className={`cursor-pointer border-2 rounded p-1 w-20 ${
                                     selectedBadges.includes(badge.id) ? "border-blue-500" : "border-transparent"
