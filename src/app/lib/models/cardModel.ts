@@ -7,5 +7,5 @@ export type CardModel = {
     pictureUrl: string;
     stack: string[];
     stackBadges: StackBadge[];
-    link: string;
+    link?: string;
 };
