@@ -7,7 +7,7 @@ export default function Hero() {
     return (
         <section id="about" className="homepage-section hero-section">
                 <div>
-                    <h1 className="text-6xl title">About me :</h1>
+                    <h1 className="hero-title title">About me :</h1>
                     <HeroDescription/>
                     <div className="flex space-x-4 mt-4">
                         <SocialLink
