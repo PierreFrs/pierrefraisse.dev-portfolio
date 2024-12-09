@@ -19,7 +19,7 @@ interface ProjectUploadFormProps {
 type ProjectFormSchema = {
     title: string;
     shortDescription: string;
-    link: string;
+    link?: string;
 };
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
@@ -61,7 +61,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         const formData = new FormData();
         formData.append("title", data.title);
         formData.append("shortDescription", data.shortDescription);
-        formData.append("link", data.link);
+        formData.append("link", data.link ?? "");
         formData.append("picture", picture as Blob);
         formData.append("stack", JSON.stringify(selectedBadges));
         formData.append("userId", userId);
@@ -141,7 +141,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                     <label htmlFor="stack">Select Badges</label>
                     <div className="flex flex-wrap gap-4 mt-2">
                         {badges.map((badge) => (
-                            <div
+                            <button
                                 key={badge.id}
                                 onClick={() => toggleBadgeSelection(badge.id)}
                                 className={`cursor-pointer border-2 rounded p-1 w-20 ${
@@ -149,7 +149,7 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                                 }`}
                             >
                                 <StackBadgeComponent badge={badge} size={30}/>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </div>

@@ -40,7 +40,7 @@ export async function POST(req: Request) {
         const file = formData.get("picture") as File; // Assuming the image is in formData under "file"
 
         // Validate that all required fields are present
-        if (!title || !shortDescription || !file || !stack.length || !link || !userId) {
+        if (!title || !shortDescription || !file || !stack.length || !userId) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
 
