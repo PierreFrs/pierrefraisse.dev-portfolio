@@ -26,11 +26,15 @@ export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
         return <p>Loading...</p>;
     }
     
-    return <Image src={imageUrl} 
-                  alt="Your host picture" 
-                  className="rounded-2xl shadow-lg"
-                  width={size}
-                  height={size}
-                  style={{ width: size ? "auto" : "auto", height: size ? `${size}px` : "auto" }}
-    />;
+    return (
+        <div className="hero-picture-container">
+            <Image src={imageUrl}
+                   alt="Your host picture"
+                   className="hero-picture"
+                   width={size}
+                   height={size}
+            />
+        </div>
+
+    );
 }
