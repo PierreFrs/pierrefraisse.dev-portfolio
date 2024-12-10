@@ -51,50 +51,52 @@ export default function Contact() {
     }, [success]);
 
     return (
-        <section id="contact" className="homepage-section max-w-96">
+        <section id="contact" className="homepage-section contact-section">
             <h2 className="title section-title">Contact</h2>
-            <Form onSubmit={handleSubmit(onSubmit)}>
-                <CustomInput
-                    field="name"
-                    label="Nom"
-                    type="text"
-                    placeholder="Votre nom"
-                    isRequired
-                    error={errors.name}
-                    register={register}
-                />
-                <CustomInput
-                    field="email"
-                    label="Adresse Mail"
-                    type="email"
-                    placeholder="example@domain.com"
-                    isRequired
-                    error={errors.email}
-                    register={register}
-                    validationRules={{
-                        pattern: {
-                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                            message: "Adresse mail invalide",
-                        },
-                    }}
-                />
-                <CustomInput
-                    field="subject"
-                    label="Objet"
-                    type="text"
-                    placeholder="Objet du message"
-                    isRequired
-                    error={errors.subject}
-                    register={register}
-                />
-                <CustomTextarea
-                    field="message"
-                    label="Message"
-                    placeholder="Votre message"
-                    isRequired
-                    error={errors.message}
-                    register={register}
-                />
+            <Form onSubmit={handleSubmit(onSubmit)} className="contact-form">
+                <div className="contact-fields-container">
+                    <CustomInput
+                        field="name"
+                        label="Nom"
+                        type="text"
+                        placeholder="Votre nom"
+                        isRequired
+                        error={errors.name}
+                        register={register}
+                    />
+                    <CustomInput
+                        field="email"
+                        label="Adresse Mail"
+                        type="email"
+                        placeholder="example@domain.com"
+                        isRequired
+                        error={errors.email}
+                        register={register}
+                        validationRules={{
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                message: "Adresse mail invalide",
+                            },
+                        }}
+                    />
+                    <CustomInput
+                        field="subject"
+                        label="Objet"
+                        type="text"
+                        placeholder="Objet du message"
+                        isRequired
+                        error={errors.subject}
+                        register={register}
+                    />
+                    <CustomTextarea
+                        field="message"
+                        label="Message"
+                        placeholder="Votre message"
+                        isRequired
+                        error={errors.message}
+                        register={register}
+                    />
+                </div>
                 <div className="flex items-center gap-4">
                     <CustomButtonComponent
                         variant="primary"
