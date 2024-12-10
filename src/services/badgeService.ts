@@ -16,7 +16,7 @@ export class BadgeService implements IBadgeService {
 
     async fetchBadgeById(id: string): Promise<StackBadge | null> {
         try {
-            const response = await fetch(`http://localhost:3000/api/stackBadges/${id}`);
+            const response = await fetch(`/api/stackBadges/${id}`);
             if (!response.ok) {
                 // Handle specific error codes
                 if (response.status === 404) {
