@@ -3,7 +3,6 @@ import Link from "next/link";
 interface HeaderLinkProps {
     href: string;
     children: React.ReactNode;
-    className?: string;
     target?: string;
 }
 
@@ -11,7 +10,7 @@ export default async function HeaderLink(headerLinkProps: Readonly<HeaderLinkPro
     return (
         <Link 
             href={headerLinkProps.href} 
-            className={headerLinkProps.className} 
+            className="font-bold"
             target={headerLinkProps.target}
         >
             {headerLinkProps.children}
