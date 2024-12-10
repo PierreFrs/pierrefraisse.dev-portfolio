@@ -1,15 +1,15 @@
-/* Import the fonts */
+/* Reset and Imports */
 @import url('../../public/fonts/fonts.css');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Variables */
 :root {
   /* Using palette variables for Foreground and Background Colors */
   --foreground-rgb: var(--primary-900); /* Text color based on palette */
-  --background-start-rgb: var(--primary-50); /* Background color based on palette */
-  --background-end-rgb: var(--primary-50);   /* Same as above for consistency */
+  --background-rgb: var(--primary-50); /* Background color based on palette */
 
   /* Seashell Color Palette */
   --primary-50: 248, 248, 248; /* #f8f8f8 */
@@ -41,28 +41,50 @@
   --warning-500: 255, 77, 77;    /* #ff4d4d */
   --warning-900: 179, 0, 0;      /* #b30000 */
 
-  /* Font Variables */
-  --font-primary: 'Gotham', sans-serif;
-  --font-primary-bold: 'Gotham', sans-serif;
-  --font-title: 'Montserrat', sans-serif;
+  /* Font Families */
+  --font-primary: 'Montserrat', sans-serif;
+  --font-primary-bold: 'Montserrat', sans-serif;
+  --font-title: 'Gotham', sans-serif;
 
   /* Font Sizes */
+  --font-size-sm: 14px;
   --font-size-base: 16px;
-  --font-size-large: 2rem;
-  --font-size-small: 14px;
+  --font-size-md: 1.2rem;
+  --font-size-lg: 2rem;
 
-  /* Spacing Variables */
-  --spacing-small: 8px;
-  --spacing-medium: 16px;
-  --spacing-large: 24px;
+
+  /* Buttons */
+  --button-border-width: 2px;
+  --button-border-radius: 9999px;
+
+  /* Spacing */
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+  --spacing-extra-lg: 3rem;
+  --spacing-xx-lg: 4rem;
+
+    /* Border & Shadow */
+  --border-radius: 1rem;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  /* Embla Carousel */
+  --slides-per-view: 3;
+  --carousel-gap: 1rem;
+  --carousel-padding: 1rem 0;
+
+  /* Text and Typography */
+  --text-align: justify;
+
+  /* Card */
+  --card-width: 22rem;
 }
 
 /*@media (prefers-color-scheme: dark) {
   :root {
     !* Using palette variables for Foreground and Background Colors in Dark Mode *!
     --foreground-rgb: var(--primary-50); !* White text based on palette *!
-    --background-start-rgb: var(--primary-900); !* Dark background based on palette *!
-    --background-end-rgb: var(--primary-900);   !* Same as above for consistency *!
+    --background-rgb: var(--primary-900); !* Dark background based on palette *!
 
     !* Seashell Color Palette for Dark Mode *!
     --primary-50: 61, 61, 61;    !* #3d3d3d *!
@@ -96,18 +118,81 @@
   }
 }*/
 
+            /* Media Queries */
+
+@media screen and (max-width: 1024px) {
+  :root {
+    --slides-per-view: 2.8; /* 2 slides for tablets */
+    --card-width: 18rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  :root {
+    --slides-per-view: 2.4; /* 2 slides for tablets */
+    --card-width: 18rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --slides-per-view: 1.2; /* 2 slides for tablets */
+    --font-size-base: 14px;
+  }
+
+  .hero-section {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    align-items: start;
+  }
+  .hero-picture-container {
+    order: -1;
+    width: 200px;
+    height: 200px;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .hero-description {
+    padding-right: var(--spacing-md);
+  }
+
+  .homepage-section {
+    padding: var(--spacing-lg);
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  :root {
+    --slides-per-view: 1; /* 1 slide for mobile */
+    --card-width: 16rem;
+    --font-size-base: 12px;
+  }
+
+  .hero-description {
+    font-size: calc(var(--font-size-base) * 1.2); /* Should resolve to 14.4px */
+  }
+}
+
+/* Global Styles */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  width: 100%; /* Ensure the body always fits the viewport width */
+  box-sizing: border-box;
+}
+
+
 body {
   color: rgb(var(--foreground-rgb)); /* Text color using palette */
-  background: rgb(var(--background-start-rgb)); /* Background color using palette */
+  background: rgb(var(--background-rgb)); /* Background color using palette */
   font-family: var(--font-primary), sans-serif; /* Primary font */
   font-size: var(--font-size-base); /* Base font size */
 }
 
-@media screen and (max-width: 768px) {
-    body {
-      font-size: var(--font-size-small);
-    }
-}
+/* Components */
 
 @layer utilities {
   /* Homepage Global styles */
@@ -116,28 +201,25 @@ body {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 100vw;
+      width: 100%;
       min-height: 100vh;
   }
 
   /* Homepage sections Styles*/
   .homepage-section {
-    padding: 1rem;
-    margin-top: 4rem;
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-xx-lg);
+    width: 100%;
     max-width: 1200px;
-  }
-
-  @media screen and (max-width: 768px) {
-    .homepage-section {
-      padding: 3rem;
-    }
+    min-height: 100%;
+    gap: var(--spacing-md);
   }
 
   .hero-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 4rem;
+    gap: var(--spacing-xx-lg);
     height: fit-content;
   }
 
@@ -146,8 +228,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     width: 380px;
     height: 380px;
     flex-shrink: 0;
@@ -160,36 +242,18 @@ body {
   }
 
   .hero-description {
-    font-size: 1.2rem;
-    text-align: justify;
-    width: 100%
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .hero-section {
-      flex-direction: column;
-      gap: 2rem;
-      align-items: start;
-    }
-    .hero-picture-container {
-      order: -1;
-      width: 200px;
-      height: 200px;
-      margin-bottom: 1rem;
-    }
-
-    .hero-description {
-      padding-right: 1rem;
-    }
+    font-size: var(--font-size-md);
+    text-align: var(--text-align);
+    width: 100%;
+    margin-top: var(--spacing-lg);
   }
 
   /* Social links */
   .social-link {
     display: flex;
     align-items: center;
-    gap: 0.25rem; /* Matches gap-1 */
-    transition: color 0.2s ease-in-out;
+    gap: .25rem; /* Matches gap-1 */
+    transition: color .2s ease-in-out;
     font-weight: bold;
   }
 
@@ -212,35 +276,98 @@ body {
   /* Project Gallery */
   .project-gallery {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
-    gap: 1.5rem;
+    flex-direction: column;
     width: 100%;
+    padding: var(--spacing-lg) 0;
+  }
+
+  /* Project Carousel */
+  .embla {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .embla__container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .embla__slide {
+    flex: 0 0 calc(100% / var(--slides-per-view));
+    min-width: calc(100% / var(--slides-per-view));
+    max-width: calc(100% / var(--slides-per-view));
+    margin: 0 var(--carousel-gap);
+  }
+
+  .embla__controls {
+    display: flex;
+    justify-content: center;
+  }
+
+  .embla__dots {
+    display: flex;
+    justify-content: center;
+    height: fit-content;
+  }
+
+  .embla__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: lightgray;
+    margin: 0 5px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: background-color 0.3s;
+  }
+
+  .embla__dot--selected {
+    background-color: black;
   }
 
   /* Project Card Styles */
   .project-card {
     padding: 0;
-    background: rgb(var(--background-end-rgb));
-    width: 22rem;
+    background: rgb(var(--background-rgb));
+    width: var(--card-width);
     height: fit-content;
   }
 
-  @media screen and (max-width: 768px) {
-    .project-card {
-      width: 20rem;
-    }
+                    /* Contact Section */
+
+  .contact-section {
+    max-width: 32rem;
   }
+
+  .contact-form {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .contact-fields-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    width: 100%;
+  }
+
                     /***** Titles *****/
   .title {
     font-family: var(--font-title), sans-serif;
     font-weight: bold;
     line-height: 1;
-    margin-bottom: 2rem;
   }
 
   .section-title {
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-lg);
   }
 
   .hero-title {
@@ -260,7 +387,7 @@ body {
     border: 2px solid rgb(var(--primary-900)); /* Bordure noire */
     color: rgb(var(--primary-900));             /* Texte noir */
     background-color: transparent;              /* Fond transparent par défaut */
-    padding: .5rem 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: 9999px;                      /* Bouton entièrement arrondi */
     transition: background-color 0.3s, color 0.3s; /* Transition douce */
     font-weight: bold;
@@ -280,7 +407,7 @@ body {
     border: 2px solid rgb(var(--warning-900));  /* Bordure rouge */
     color: rgb(var(--warning-900));             /* Texte rouge */
     background-color: transparent;              /* Fond transparent par défaut */
-    padding: .5rem 1rem;
+    padding: var(--spacing-sm) var(--spacing-md);
     border-radius: 9999px;
     transition: background-color 0.3s, color 0.3s; /* Transition douce */
     font-weight: bold;
@@ -297,15 +424,15 @@ body {
   }
 
   .custom-file-input-wrapper {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-md);
   }
 
   .custom-file-label {
     display: inline-flex;
     align-items: center;
-    padding: .5rem .75rem;
+    padding: var(--spacing-sm) .75rem;
     border: 2px solid #ccc;
-    border-radius: .5rem;
+    border-radius: var(--border-radius);
     transition: all 0.3s;
   }
 
@@ -315,6 +442,6 @@ body {
   }
 
   .upload-text {
-    margin-left: .5rem;
+    margin-left: var(--spacing-sm);
   }
 }
