@@ -51,7 +51,7 @@
   --font-size-base: 16px;
   --font-size-md: 1.2rem;
   --font-size-lg: 2rem;
-
+  --logo-font-size: 1.25rem;
 
   /* Buttons */
   --button-border-width: 2px;
@@ -63,6 +63,12 @@
   --spacing-lg: 2rem;
   --spacing-extra-lg: 3rem;
   --spacing-xx-lg: 4rem;
+
+  --section-gap: 4rem;
+
+  --homepage-mt: 8rem;
+
+  --header-link-gap: 4rem;
 
     /* Border & Shadow */
   --border-radius: 1rem;
@@ -124,6 +130,8 @@
   :root {
     --slides-per-view: 2.8; /* 2 slides for tablets */
     --card-width: 18rem;
+    --section-gap: 3rem;
+    --homepage-mt: 6rem;
   }
 }
 
@@ -131,6 +139,10 @@
   :root {
     --slides-per-view: 2.4; /* 2 slides for tablets */
     --card-width: 18rem;
+    --section-gap: 2rem;
+    --homepage-mt: 4rem;
+    --header-link-gap: 3rem;
+    --logo-font-size: 1.15rem;
   }
 }
 
@@ -138,6 +150,9 @@
   :root {
     --slides-per-view: 1.2; /* 2 slides for tablets */
     --font-size-base: 14px;
+    --section-gap: 1rem;
+    --homepage-mt: 2rem;
+    --header-link-gap: 2rem;
   }
 
   .hero-section {
@@ -167,6 +182,9 @@
     --slides-per-view: 1; /* 1 slide for mobile */
     --card-width: 16rem;
     --font-size-base: 12px;
+    --section-gap: 1rem;
+    --header-link-gap: 1rem;
+    --logo-font-size: 1.05;
   }
 
   .hero-description {
@@ -195,20 +213,50 @@ body {
 /* Components */
 
 @layer utilities {
+  .header {
+    top: 0;
+    padding: var(--spacing-md) 1.5rem;
+    z-index: 50;
+    width: 100%
+  }
+
+  .header-container {
+    width: 100%; /* Shrink with the screen */
+    max-width: 1200px; /* Same max-width as section components */
+    margin: 0 auto; /* Center the container */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box; /* Ensures padding doesn’t affect width */
+  }
+
+  .header-links-container {
+    display: flex;
+    gap: var(--header-link-gap);
+  }
+
+  .header-logo {
+    font-weight: bold;
+    font-size: var(--logo-font-size);
+    text-transform: uppercase;
+    font-family: var(--font-title), sans-serif;
+  }
+
   /* Homepage Global styles */
   .homepage {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: var(--section-gap);
       width: 100%;
       min-height: 100vh;
+      margin-top: var(--homepage-mt);
   }
 
   /* Homepage sections Styles*/
   .homepage-section {
     padding: var(--spacing-md);
-    margin-top: var(--spacing-xx-lg);
     width: 100%;
     max-width: 1200px;
     min-height: 100%;
