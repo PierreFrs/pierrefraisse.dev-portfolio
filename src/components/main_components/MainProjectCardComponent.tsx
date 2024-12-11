@@ -1,13 +1,12 @@
-import {CardModel} from "@/app/lib/models/cardModel";
 import {ProjectPictureComponent} from "@/components/shared_components/projectPicture";
 import {ProjectStackGallery} from "@/components/shared_components/projectStackGallery";
-import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import React from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
+import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 type MainProjectCardComponentProps = {
-    project: CardModel;
+    project: CardModelWithBadges;
 };
 
 export function MainProjectCardComponent({ project }: Readonly<MainProjectCardComponentProps>) {
@@ -19,7 +18,7 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
                 <p>
                     {project.shortDescription}
                 </p>
-                <ProjectStackGallery stack={project.stackBadges as StackBadge[]}/>
+                <ProjectStackGallery stack={project.stackBadges}/>
             </CardBody>
             {project.link && (
                 <CardFooter>

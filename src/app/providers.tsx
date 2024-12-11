@@ -2,19 +2,17 @@
 
 import {NextUIProvider} from "@nextui-org/react";
 import {SessionProvider} from "next-auth/react";
-import {ServiceProvider} from "@/contexts/ServiceContext";
+import React from "react";
 
 interface ProvidersProps {
     children: React.ReactNode;
 }
 
-export default function Providers({ children }: ProvidersProps) {
+export default function Providers({ children }: Readonly<ProvidersProps>) {
     return (
         <SessionProvider>
             <NextUIProvider>
-                <ServiceProvider>
                     {children}
-                </ServiceProvider>
             </NextUIProvider>
         </SessionProvider>
     );    

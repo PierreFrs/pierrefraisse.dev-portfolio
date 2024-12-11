@@ -7,7 +7,7 @@ type CustomTextareaProps<TFieldName extends string> = {
     label: string;
     placeholder?: string;
     isRequired?: boolean;
-    error?: FieldError | undefined;
+    error?: FieldError;
     register: UseFormRegister<any>;
     validationRules?: object;
     rows?: number;

@@ -1,4 +1,4 @@
-import HeaderLink from "../headerLink";
+import HeaderLink from "../shared_components/headerLink";
 
 export default async function Header() {
     return (

@@ -31,7 +31,7 @@ export default function Contact() {
         setSuccess(false);
         setError(null);
         try {
-            const message = await sendEmail(data); // Simulate sending the email
+            const message = await sendEmail(data);
             console.log(message);
             setSuccess(true);
             reset();

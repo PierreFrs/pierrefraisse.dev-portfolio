@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { MainProjectCardComponent } from "@/components/main_components/MainProjectCardComponent";
-import { CardModel } from "@/app/lib/models/cardModel";
 import useEmblaCarousel from "embla-carousel-react";
+import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 type ProjectGalleryProps = {
-    projects: CardModel[];
+    projects: CardModelWithBadges[];
 };
 
 export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryProps>) {

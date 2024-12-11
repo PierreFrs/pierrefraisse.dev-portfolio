@@ -5,15 +5,16 @@ import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
-import {CardModel} from "@/app/lib/models/cardModel";
-import {useServices} from "@/contexts/ServiceContext";
 import {Form} from "@nextui-org/form";
 import {useForm} from "react-hook-form";
 import {CustomInput} from "@/components/shared_components/customInput";
 import {CustomTextarea} from "@/components/shared_components/customTextArea";
+import {fetchBadges} from "@/app/lib/data/badgeActions";
+import {addProject} from "@/app/lib/data/projectActions";
+import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 interface ProjectUploadFormProps {
-    onProjectAdded: (newProject: CardModel) => void;
+    onProjectAdded: (newProject: CardModelWithBadges) => void;
 }
 
 type ProjectFormSchema = {
@@ -23,7 +24,6 @@ type ProjectFormSchema = {
 };
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
-    const { badgeService, projectService } = useServices();
     const {data: session} = useSession();
     const {register, handleSubmit, reset, formState: {errors}} = useForm<ProjectFormSchema>();
     const [picture, setPicture] = useState<File | null>(null);
@@ -35,49 +35,45 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        loadBadges();
-    }, []);
-
-    const loadBadges = async () => {
-        try {
-            const fetchedBadges = await badgeService.fetchBadges();
+        (async () => {
+            const fetchedBadges = await fetchBadges();
             setBadges(fetchedBadges);
-        } catch (error: any) {
-            setError("Failed to load badges. Please try again.");
-            console.error(error);
-        }
-    };
+        })();
+    }, []);
 
     const onSubmit = async (data: ProjectFormSchema) => {
         setInProgress(true);
 
-        const userId = session?.user?.id;
-        if (!userId) {
-            console.error("No user ID found in session");
+        if (!picture) {
+            console.error("Picture is required.");
             setInProgress(false);
             return;
         }
 
-        const formData = new FormData();
-        formData.append("title", data.title);
-        formData.append("shortDescription", data.shortDescription);
-        formData.append("link", data.link ?? "");
-        formData.append("picture", picture as Blob);
-        formData.append("stack", JSON.stringify(selectedBadges));
-        formData.append("userId", userId);
+            const formData = new FormData();
+            formData.append("title", data.title);
+            formData.append("shortDescription", data.shortDescription);
+            formData.append("link", data.link ?? "");
+            formData.append("picture", picture as Blob);
+            selectedBadges.forEach((badgeId) => formData.append("stack", badgeId));
 
-        try {
-            const newProject: CardModel = await projectService.addProject(formData);
-            console.log("Project uploaded successfully");
-            onProjectAdded(newProject);
-            console.log("Project added to gallery");
-            resetForm();
-        } catch (error) {
-            console.error("Error uploading project", error);
-        } finally {
-            setInProgress(false);
-        }
-    };
+            const userId = session?.user?.id;
+            if (!userId) {
+                console.error("User ID is missing");
+                return setError("User ID is missing");
+            }
+            formData.append("userId", userId);
+
+            try {
+                const newProject = await addProject(formData);
+                onProjectAdded(newProject);
+                resetForm();
+            } catch (error) {
+                console.error("Error uploading project", error);
+            } finally {
+                setInProgress(false);
+            }
+        };
 
     const resetForm = () => {
         reset();
