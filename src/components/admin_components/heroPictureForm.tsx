@@ -7,6 +7,7 @@ import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {useSession} from "next-auth/react";
 import {Form} from "@nextui-org/form";
 import {useForm} from "react-hook-form";
+import {postHeroPicture} from "@/app/lib/data/heroPictureActions";
 
 
 export type HeroPictureFormData = {
@@ -43,11 +44,7 @@ export default function HeroPictureForm() {
         formData.append("userId", userId);
 
         try {
-            await fetch("/api/heroPicture", {
-                method: "POST",
-                body: formData,
-            });
-
+            await postHeroPicture(formData);
             resetForm();
         } catch (error) {
             console.error("Error uploading hero picture", error);

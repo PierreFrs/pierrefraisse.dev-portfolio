@@ -5,10 +5,9 @@ import {Divider} from "@nextui-org/react";
 import {AdminBadgesGallery} from "@/components/admin_components/adminBadgesGallery";
 import React, {useEffect, useState} from "react";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
-import {useServices} from "@/contexts/ServiceContext";
+import {fetchBadges, removeBadge} from "@/app/lib/data/badgeActions";
 
 export function AdminBadgesSection() {
-    const { badgeService } = useServices();
     const [badges, setBadges] = useState<StackBadge[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -18,7 +17,7 @@ export function AdminBadgesSection() {
 
     const loadBadges = async () => {
         try {
-            const fetchedBadges = await badgeService.fetchBadges();
+            const fetchedBadges = await fetchBadges();
             setBadges(fetchedBadges);
         } catch (error: any) {
             setError("Failed to load badges. Please try again.");
@@ -37,7 +36,7 @@ export function AdminBadgesSection() {
 
     const removeBadgeHandler = async (badgeId: string) => {
         try {
-            await badgeService.removeBadge(badgeId);
+            await removeBadge(badgeId);
             setBadges((prevBadges) =>
                 prevBadges.filter((badge) => badge.id !== badgeId));
         } catch (error: any) {

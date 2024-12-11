@@ -1,10 +1,10 @@
 import React from "react";
-import { CardModel } from "@/app/lib/models/cardModel";
 import {AdminProjectCardComponent} from "@/components/admin_components/adminProjectCard";
+import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 type AdminProjectsGalleryProps = {
-    projects: CardModel[];
-    onProjectDeleted: (projectId: string) => void; // Callback to remove project
+    projects: CardModelWithBadges[];
+    onProjectDeleted: (projectId: string) => void;
 };
 
 export function AdminProjectsGallery({ projects, onProjectDeleted }: Readonly<AdminProjectsGalleryProps>) {

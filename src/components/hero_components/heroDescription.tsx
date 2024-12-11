@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchHeroDescription } from "@/app/lib/data/heroDescriptionData";
+import { fetchHeroDescription } from "@/app/lib/data/heroDescriptionActions";
 
 export default function HeroDescription() {
     const [description, setDescription] = useState<string>("");
