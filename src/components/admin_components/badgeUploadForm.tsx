@@ -3,10 +3,10 @@ import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
-import {useServices} from "@/contexts/ServiceContext";
 import {CustomInput} from "@/components/shared_components/customInput";
 import {Form} from "@nextui-org/form";
 import {useForm} from "react-hook-form";
+import {addBadge} from "@/app/lib/data/badgeActions";
 
 interface BadgeUploadFormProps {
     onBadgeAdded: (newBadge: StackBadge) => void;
@@ -17,14 +17,13 @@ type BadgeFormSchema = {
 };
 
 export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadFormProps>) {
-    const { badgeService} = useServices();
     const { data: session } = useSession();
     const { register, handleSubmit, reset, formState: { errors } } = useForm<BadgeFormSchema>();
     const [badgeIcon, setBadgeIcon] = useState<File | null>(null);
     const [inProgress, setInProgress] = useState(false);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const [fileInputKey, setFileInputKey] = useState(0);
-    
+
     const onSubmit = async (data: BadgeFormSchema) => {
         setInProgress(true);
 
@@ -34,25 +33,30 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
             return;
         }
 
-        const userId = session?.user?.id;
-        if (!userId) {
-            console.error("No user ID found in session");
-            setInProgress(false);
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append("name", data.badgeName);
-        formData.append("icon", badgeIcon as Blob);
-        formData.append("userId", userId);
-        
         try {
-            const newBadge: StackBadge = await badgeService.addBadge(formData);
-            console.log("Badge uploaded successfully");
+            const userId = session?.user?.id;
+            if (!userId) {
+                console.error("User ID is missing");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("name", data.badgeName);
+            formData.append("icon", badgeIcon);
+            formData.append("userId", userId);
+
+            const newBadge = await addBadge(formData);
+
+            if (newBadge === null) {
+                console.error("Error uploading badge:");
+                return null;
+            }
+
             onBadgeAdded(newBadge);
+
             resetForm();
-        } catch (error) {
-            console.error("Error uploading badge", error);
+        } catch (error: any) {
+            console.error("Error uploading badge:", error);
         } finally {
             setInProgress(false);
         }

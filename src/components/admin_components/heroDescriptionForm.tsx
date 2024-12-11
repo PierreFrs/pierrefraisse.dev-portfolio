@@ -1,7 +1,7 @@
 "use client";
 
 import React, {useState } from "react";
-import { postHeroDescription } from "@/app/lib/data/heroDescriptionData";
+import { postHeroDescription } from "@/app/lib/data/heroDescriptionActions";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomTextarea} from "@/components/shared_components/customTextArea";
 import {useForm} from "react-hook-form";
@@ -34,9 +34,7 @@ export default function HeroDescriptionForm() {
         { value: "fr", fullName: "French" }
     ];
 
-    const onSubmit = async (
-        data: HeroDescriptionFormSchema
-    ) => {
+    const onSubmit = async (data: HeroDescriptionFormSchema) => {
         setInProgress(true);
 
         const userId = session?.user?.id;
@@ -45,14 +43,13 @@ export default function HeroDescriptionForm() {
             setInProgress(false);
             return;
         }
-        
-        const formData = new FormData();
-        formData.append("description", data.description);
-        formData.append("language", language);
-        formData.append("userId", userId);
 
         try {
-            await postHeroDescription(userId, formData);
+            await postHeroDescription({
+                userId,
+                language,
+                text: data.description
+            });
             reset();
         } catch (err: any) {
             console.error("Error updating description", err);

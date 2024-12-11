@@ -1,21 +1,20 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { CardModel } from "@/app/lib/models/cardModel";
 import ProjectUploadForm from "@/components/admin_components/projectUploadForm";
 import { Divider } from "@nextui-org/react";
 import { AdminProjectsGallery } from "@/components/admin_components/adminProjectsGallery";
-import {useServices} from "@/contexts/ServiceContext";
+import {deleteProject, fetchProjectsWithBadges} from "@/app/lib/data/projectActions";
+import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 export function AdminProjectsSection() {
-    const {badgeService, projectService, projectHelper} = useServices();
-    const [projects, setProjects] = useState<CardModel[]>([]);
+    const [projects, setProjects] = useState<CardModelWithBadges[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const projects = await projectHelper.fetchProjectsWithBadges();
+                const projects = await fetchProjectsWithBadges();
                 setProjects(projects);
             } catch (err) {
                 console.error("Error fetching projects:", err);
@@ -24,18 +23,9 @@ export function AdminProjectsSection() {
         })();
     }, []);
 
-    const addProject = async (project: CardModel) => {
-        // Fetch badges for the new project and update it
+    const uploadProject = async (newProject: CardModelWithBadges) => {
         try {
-            project.stack = JSON.parse(project.stack[0]);
-
-            if (project.stack && project.stack.length > 0) {
-                const badges = await badgeService.fetchBadgesByBadgesId(project.stack);
-                const updatedProject = { ...project, stackBadges: badges };
-                setProjects((prevProjects) => [...prevProjects, updatedProject]);
-            } else {
-                setProjects((prevProjects) => [...prevProjects, project]);
-            }
+            setProjects((prev) => [...prev, newProject]);
         } catch (error) {
             console.error("Error adding project:", error);
         }
@@ -43,7 +33,7 @@ export function AdminProjectsSection() {
 
     const removeProject = async (projectId: string) => {
         try {
-            await projectService.removeProject(projectId);
+            await deleteProject(projectId);
             setProjects((prevProjects) =>
                 prevProjects.filter((project) => project.id !== projectId));
         } catch (error: any) {
@@ -57,7 +47,7 @@ export function AdminProjectsSection() {
             {error && <p className="text-red-500">{error}</p>}
             <section className="mb-8">
                 <h2 className="text-xl font-bold mb-4">Upload Projects</h2>
-                <ProjectUploadForm onProjectAdded={addProject} />
+                <ProjectUploadForm onProjectAdded={uploadProject} />
             </section>
             <Divider className="my-4" />
             <section className="mb-8">

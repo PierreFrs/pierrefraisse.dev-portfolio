@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import {fetchHeroPicture} from "@/app/lib/data/heroPictureActions";
 
 type HeroPictureProps = {
     size: number;
@@ -11,16 +12,21 @@ export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
     const [imageUrl, setImageUrl] = useState<string>("");
 
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await fetch(`/api/heroPicture`);
-                const data = await response.json();
-                setImageUrl(data.url);
-            } catch (error) {
-                console.error("Error fetching the hero picture:", error);
-            }
-        })();
+        loadPicture();
     }, []);
+
+    const loadPicture = async () => {
+        try {
+            const picture = await fetchHeroPicture();
+            if (picture?.url) {
+                setImageUrl(picture.url);
+            } else {
+                console.warn("No hero picture URL returned");
+            }
+        } catch (error: any) {
+            console.error("Failed to load hero picture", error);
+        }
+    };
 
     if (!imageUrl) {
         return <p>Loading...</p>;
