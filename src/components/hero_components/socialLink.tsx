@@ -16,7 +16,7 @@ export default function SocialLink(socialLinkProps: Readonly<SocialLinkProps>) {
         <Link
             href={href}
             passHref
-            className={`social-link ${networkClass} ${className || ""}`}
+            className={`social-link ${networkClass} ${className ?? ""}`}
             target="_blank"
             rel="noopener noreferrer"
         >
