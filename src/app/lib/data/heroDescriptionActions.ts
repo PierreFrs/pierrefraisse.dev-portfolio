@@ -18,7 +18,6 @@ export async function postHeroDescription(data: { userId: string; language: stri
     });
 }
 
-
 export async function fetchHeroDescription(language: string) {
     try {
         const hero = await prisma.heroDescription.findFirst({
