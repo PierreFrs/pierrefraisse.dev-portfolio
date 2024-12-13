@@ -6,16 +6,23 @@ const config: Config = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
   ],
-  theme: {
-    extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-    },
-  },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [nextui({
+    themes: {
+      light: {
+        layout:{},
+        colors: {
+          foreground: "#212121",
+          background: "#f5f5f5",
+      }},
+      dark: {
+        layout:{},
+        colors: {
+          foreground: "#f5f5f5",
+          background: "#212121",
+      }
+    }
+      },})],
+
 };
 export default config;
