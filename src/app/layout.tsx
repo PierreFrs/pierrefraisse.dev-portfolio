@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/app/providers";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Pierre Fraisse Portfolio",
@@ -9,11 +10,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
    children,
-       }: { 
-   children: React.ReactNode;
-}) {
+       }: Readonly<{
+    children: React.ReactNode;
+}>) {
   return (
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
           <body className="antialiased">
               <Providers>
                 {children}
