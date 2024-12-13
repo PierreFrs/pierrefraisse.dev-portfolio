@@ -11,7 +11,6 @@ export default async function Header() {
                 </div>
                 <ThemeSwitcher />
             </div>
-
         </header>
     );
 };
