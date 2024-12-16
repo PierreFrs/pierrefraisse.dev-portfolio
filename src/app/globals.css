@@ -102,7 +102,8 @@
     --section-gap: 1rem;
     --homepage-mt: 2rem;
     --header-link-gap: 2rem;
-    --font-size-xxl: 3rem;
+    --font-size-lg: 2rem;
+    --font-size-xxl: 2.1rem;
   }
 
   .hero-section {
