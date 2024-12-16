@@ -6,9 +6,10 @@ import {fetchHeroPicture} from "@/app/lib/data/heroPictureActions";
 
 type HeroPictureProps = {
     size: number;
+    className?: string;
 };
 
-export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
+export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
     const [imageUrl, setImageUrl] = useState<string>("");
 
     useEffect(() => {
@@ -31,14 +32,15 @@ export default function HeroPicture({size}: Readonly<HeroPictureProps>) {
     if (!imageUrl) {
         return <p>Loading...</p>;
     }
-    
+
     return (
-        <div className="hero-picture-container">
+        <div className={`hero-picture-container ${className ?? ""}`}>
             <Image src={imageUrl}
                    alt="Your host picture"
                    className="hero-picture"
-                   width={size}
-                   height={size}
+                   layout="responsive"
+                   width={1}
+                   height={1}
             />
         </div>
 

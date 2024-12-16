@@ -11,7 +11,10 @@ type MainProjectCardComponentProps = {
 
 export function MainProjectCardComponent({ project }: Readonly<MainProjectCardComponentProps>) {
     return (
-        <Card key={project.id} className="project-card">
+        <Card key={project.id}
+              radius="md"
+              className="project-card dark:bg-black-100 dark:text-white-100"
+        >
             <ProjectPictureComponent project={project}/>
             <CardHeader className="card-title">{project.title}</CardHeader>
             <CardBody>
@@ -23,7 +26,7 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
             {project.link && (
                 <CardFooter>
                     <a href={project.link} target="_blank" rel="noopener noreferrer">
-                        <CustomButtonComponent variant="primary">Visiter</CustomButtonComponent>
+                        <CustomButtonComponent variant="primary" >Visiter</CustomButtonComponent>
                     </a>
                 </CardFooter>
             )}

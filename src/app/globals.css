@@ -8,11 +8,8 @@
 /* Variables */
 :root {
   /* Using palette variables for Foreground and Background Colors */
-  --foreground-rgb: var(--black-color); /* Text color based on palette */
-  --background-rgb: var(--white-color); /* Background color based on palette */
-
-  --black-color: #212121;
-  --white-color: #f5f5f5 ;
+  --foreground-hex: #1f1f1f;
+  --background-hex: #f5f5f5;
 
   --warning-50: 255, 235, 230;  /* #ffebe6 */
   --warning-500: 255, 77, 77;    /* #ff4d4d */
@@ -28,6 +25,7 @@
   --font-size-base: 16px;
   --font-size-md: 1.2rem;
   --font-size-lg: 4rem;
+  --font-size-xxl: 6rem;
   --logo-font-size: 1.25rem;
 
   /* Buttons */
@@ -63,12 +61,9 @@
   --card-width: 22rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Using palette variables for Foreground and Background Colors in Dark Mode */
-    --foreground-rgb: var(--white-color); /* White text based on palette */
-    --background-rgb: var(--black-color); /* Dark background based on palette */
-  }
+[data-theme="dark"] {
+  --foreground-hex: #f5f5f5;
+  --background-hex: #1f1f1f;
 }
 
             /* Media Queries */
@@ -79,6 +74,7 @@
     --card-width: 18rem;
     --section-gap: 3rem;
     --homepage-mt: 6rem;
+    --font-size-xxl: 5rem;
   }
 }
 
@@ -90,6 +86,12 @@
     --homepage-mt: 4rem;
     --header-link-gap: 3rem;
     --logo-font-size: 1.15rem;
+    --font-size-xxl: 4rem;
+  }
+
+  .hero-picture-container {
+    width: 300px;
+    height: 300px;
   }
 }
 
@@ -100,16 +102,27 @@
     --section-gap: 1rem;
     --homepage-mt: 2rem;
     --header-link-gap: 2rem;
+    --font-size-xxl: 3rem;
   }
 
   .hero-section {
     flex-direction: column;
     gap: var(--spacing-lg);
     align-items: start;
+    justify-content: start;
+  }
+
+  .hero-description-picture-container {
+    width: 100%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: var(--spacing-lg);
   }
 
   .hero-picture-container {
     order: -1;
+    justify-content: start;
     width: 200px;
     height: 200px;
     margin-bottom: var(--spacing-md);
@@ -133,10 +146,25 @@
     --section-gap: 1rem;
     --header-link-gap: 1rem;
     --logo-font-size: 1.05;
+    --font-size-xxl: 1.5rem;
   }
 
   .hero-description {
     font-size: calc(var(--font-size-base) * 1.2); /* Should resolve to 14.4px */
+  }
+
+  .hero-picture-container {
+    width: 160px;
+    height: 160px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .homepage-section {
+    gap: var(--spacing-sm);
+  }
+
+  .section-title {
+    font-size: var(--font-size-md);
   }
 }
 
@@ -145,18 +173,17 @@
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  width: 100%; /* Ensure the body always fits the viewport width */
+  overflow-x: hidden;
+  width: 100%;
   box-sizing: border-box;
 }
 
 
 body {
-  color: rgb(var(--foreground-rgb)); /* Text color using palette */
-  background: rgb(var(--background-rgb)); /* Background color using palette */
-  font-family: var(--font-primary), sans-serif; /* Primary font */
-  font-size: var(--font-size-base); /* Base font size */
-  font-weight: bold;
+  color: rgb(var(--foreground-hex));
+  background: rgb(var(--background-hex));
+  font-family: var(--font-primary), sans-serif;
+  font-size: var(--font-size-base);
 }
 
 /* Components */
@@ -221,6 +248,12 @@ body {
     height: fit-content;
   }
 
+  .hero-description-picture-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xx-lg);
+  }
+
   .hero-picture-container {
     overflow: hidden;
     display: flex;
@@ -244,6 +277,7 @@ body {
     text-align: var(--text-align);
     width: 100%;
     margin-top: var(--spacing-lg);
+    text-indent: 20%
   }
 
   /* Social links */
@@ -316,22 +350,23 @@ body {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: var(--white-color);
+    background-color: var(--background-hex);
     margin: 0 5px;
     cursor: pointer;
-    border: none;
+    border: 1px solid var(--foreground-hex);
     outline: none;
     transition: background-color 0.3s;
   }
 
   .embla__dot--selected {
-    background-color: var(--black-color);
+    background-color: var(--foreground-hex);
+    border: 1px solid var(--background-hex);
   }
 
   /* Project Card Styles */
+
   .project-card {
     padding: 0;
-    background: rgb(var(--background-rgb));
     width: var(--card-width);
     height: fit-content;
   }
@@ -361,8 +396,8 @@ body {
   .title {
     font-family: var(--font-title), sans-serif;
     font-weight: bold;
-    letter-spacing: 0.1rem;
     line-height: 1;
+    letter-spacing: 0.4rem;
     text-transform: uppercase;
   }
 
@@ -371,7 +406,8 @@ body {
   }
 
   .hero-title {
-    font-size: 6rem;
+    font-size: var(--font-size-xxl);
+    line-height: 1.25;
   }
 
   .card-title {
@@ -382,46 +418,6 @@ body {
   }
 
                       /***** Buttons *****/
-  /* Primary Button Styles */
-  .btn-primary {
-    border: 2px solid rgb(var(--black-color)); /* Bordure noire */
-    color: rgb(var(--black-color));             /* Texte noir */
-    background-color: transparent;              /* Fond transparent par défaut */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: 9999px;                      /* Bouton entièrement arrondi */
-    transition: background-color 0.3s, color 0.3s; /* Transition douce */
-    font-weight: bold;
-  }
-
-  .btn-primary:hover {
-    background-color: rgb(var(--black-color));  /* Fond noir au survol */
-    color: rgb(var(--white-color));              /* Texte plus clair au survol */
-  }
-
-  .btn-primary[aria-busy="true"] {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  .btn-warning {
-    border: 2px solid rgb(var(--warning-900));  /* Bordure rouge */
-    color: rgb(var(--warning-900));             /* Texte rouge */
-    background-color: transparent;              /* Fond transparent par défaut */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: 9999px;
-    transition: background-color 0.3s, color 0.3s; /* Transition douce */
-    font-weight: bold;
-  }
-
-  .btn-warning:hover {
-    background-color: rgb(var(--warning-900));  /* Fond rouge au survol */
-    color: rgb(var(--white-color));              /* Texte clair au survol */
-  }
-
-  .btn-warning[aria-busy="true"] {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
 
   .custom-file-input-wrapper {
     margin-bottom: var(--spacing-md);
