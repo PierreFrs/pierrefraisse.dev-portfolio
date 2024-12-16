@@ -20,7 +20,6 @@ export function ProjectPictureComponent({ project }: Readonly<ProjectPictureProp
             sizes="100vw"
             style={{width: '100%', height: 'auto'}}
             priority={true}
-            className="rounded-2xl"
         />
     );
 

@@ -23,7 +23,7 @@ export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryPro
 
     return (
         <section id="projects" className="homepage-section flex flex-col">
-            <h2 className="title section-title">Projets</h2>
+            <h2 className="title section-title">Projets significatifs</h2>
             <div className="project-gallery embla" ref={emblaRef}>
                 <div className="embla__container">
                     {projects.map((project) => (

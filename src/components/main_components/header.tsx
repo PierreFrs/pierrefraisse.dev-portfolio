@@ -1,4 +1,4 @@
-import HeaderLink from "../shared_components/headerLink";
+import {ThemeSwitcher} from "@/components/shared_components/theme-switcher";
 
 export default async function Header() {
     return (
@@ -9,13 +9,8 @@ export default async function Header() {
                         Pierre Fraisse
                     </span>
                 </div>
-                <nav className="header-links-container">
-                    <HeaderLink href={"#about"}>About</HeaderLink>
-                    <HeaderLink href={"#projects"}>Projects</HeaderLink>
-                    <HeaderLink href={"#contact"}>Contact</HeaderLink>
-                </nav>
+                <ThemeSwitcher />
             </div>
-
         </header>
     );
 };

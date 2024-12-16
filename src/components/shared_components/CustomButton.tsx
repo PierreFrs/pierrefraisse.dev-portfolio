@@ -16,13 +16,15 @@ export function CustomButtonComponent({
       isLoading = false,
       children,
   }: Readonly<CustomButtonProps>) {
-    const buttonClassName = variant === "primary" ? "btn-primary" : "btn-warning";
+    const buttonType = variant === "primary" ? "default" : "danger";
     return (
         <Button
             type={type}
             onClick={onClick}
             isLoading={isLoading}
-            className={buttonClassName}
+            radius="sm"
+            size="md"
+            color={buttonType}
         >
             {children}
         </Button>
