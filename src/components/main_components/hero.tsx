@@ -6,7 +6,7 @@ import HeroPicture from "@/components/hero_components/heroPicture";
 export default function Hero() {
     return (
         <section id="about" className="homepage-section hero-section">
-            <h1 className="hero-title title">Concepteur, développeur d'applications web</h1>
+            <h1 className="hero-title title">Concepteur, développeur d&apos;applications web</h1>
             <div className="hero-description-picture-container">
                 <HeroDescription/>
                 <HeroPicture size={380}/>
