@@ -8,49 +8,24 @@
 /* Variables */
 :root {
   /* Using palette variables for Foreground and Background Colors */
-  --foreground-rgb: var(--primary-900); /* Text color based on palette */
-  --background-rgb: var(--primary-50); /* Background color based on palette */
-
-  /* Seashell Color Palette */
-  --primary-50: 248, 248, 248; /* #f8f8f8 */
-  --primary-100: 240, 240, 240; /* #f0f0f0 */
-  --primary-200: 220, 220, 220; /* #dcdcdc */
-  --primary-300: 189, 189, 189; /* #bdbdbd */
-  --primary-400: 152, 152, 152; /* #989898 */
-  --primary-500: 124, 124, 124; /* #7c7c7c */
-  --primary-600: 101, 101, 101; /* #656565 */
-  --primary-700: 82, 82, 82;    /* #525252 */
-  --primary-800: 70, 70, 70;    /* #464646 */
-  --primary-900: 61, 61, 61;    /* #3d3d3d */
-  --primary-950: 41, 41, 41;    /* #292929 */
-
-  /* Blue-Ribbon Color Palette */
-  --secondary-50: 238, 244, 255; /* #eef4ff */
-  --secondary-100: 217, 229, 255; /* #d9e5ff */
-  --secondary-200: 188, 210, 255; /* #bcd2ff */
-  --secondary-300: 142, 182, 255; /* #8eb6ff */
-  --secondary-400: 89, 142, 255;  /* #598eff */
-  --secondary-500: 51, 102, 255;  /* #3366ff */
-  --secondary-600: 27, 67, 245;   /* #1b43f5 */
-  --secondary-700: 20, 47, 225;   /* #142fe1 */
-  --secondary-800: 23, 39, 182;   /* #1727b6 */
-  --secondary-900: 25, 40, 143;   /* #19288f */
-  --secondary-950: 20, 26, 87;    /* #141a57 */
+  --foreground-hex: #1f1f1f;
+  --background-hex: #f5f5f5;
 
   --warning-50: 255, 235, 230;  /* #ffebe6 */
   --warning-500: 255, 77, 77;    /* #ff4d4d */
   --warning-900: 179, 0, 0;      /* #b30000 */
 
   /* Font Families */
-  --font-primary: 'Montserrat', sans-serif;
-  --font-primary-bold: 'Montserrat', sans-serif;
-  --font-title: 'Gotham', sans-serif;
+  --font-primary: 'Helvetica', sans-serif;
+  --font-primary-bold: 'Helvetica', sans-serif;
+  --font-title: 'Helvetica', sans-serif;
 
   /* Font Sizes */
   --font-size-sm: 14px;
   --font-size-base: 16px;
   --font-size-md: 1.2rem;
-  --font-size-lg: 2rem;
+  --font-size-lg: 4rem;
+  --font-size-xxl: 6rem;
   --logo-font-size: 1.25rem;
 
   /* Buttons */
@@ -86,43 +61,10 @@
   --card-width: 22rem;
 }
 
-/*@media (prefers-color-scheme: dark) {
-  :root {
-    !* Using palette variables for Foreground and Background Colors in Dark Mode *!
-    --foreground-rgb: var(--primary-50); !* White text based on palette *!
-    --background-rgb: var(--primary-900); !* Dark background based on palette *!
-
-    !* Seashell Color Palette for Dark Mode *!
-    --primary-50: 61, 61, 61;    !* #3d3d3d *!
-    --primary-100: 70, 70, 70;   !* #464646 *!
-    --primary-200: 82, 82, 82;   !* #525252 *!
-    --primary-300: 101, 101, 101; !* #656565 *!
-    --primary-400: 124, 124, 124; !* #7c7c7c *!
-    --primary-500: 152, 152, 152; !* #989898 *!
-    --primary-600: 189, 189, 189; !* #bdbdbd *!
-    --primary-700: 220, 220, 220; !* #dcdcdc *!
-    --primary-800: 240, 240, 240; !* #f0f0f0 *!
-    --primary-900: 248, 248, 248; !* #f8f8f8 *!
-    --primary-950: 255, 255, 255; !* #ffffff *!
-
-    !* Blue-Ribbon Color Palette for Dark Mode *!
-    --secondary-50: 20, 26, 87;    !* #141a57 *!
-    --secondary-100: 25, 40, 143;  !* #19288f *!
-    --secondary-200: 23, 39, 182;  !* #1727b6 *!
-    --secondary-300: 20, 47, 225;  !* #142fe1 *!
-    --secondary-400: 27, 67, 245;  !* #1b43f5 *!
-    --secondary-500: 51, 102, 255; !* #3366ff *!
-    --secondary-600: 89, 142, 255; !* #598eff *!
-    --secondary-700: 142, 182, 255; !* #8eb6ff *!
-    --secondary-800: 188, 210, 255; !* #bcd2ff *!
-    --secondary-900: 217, 229, 255; !* #d9e5ff *!
-    --secondary-950: 238, 244, 255; !* #eef4ff *!
-
-    --warning-50: 128, 0, 0;  !* #800000 *!
-    --warning-500: 255, 128, 128; !* #ff8080 *!
-    --warning-900: 255, 51, 51;  !* #ff3333 *!
-  }
-}*/
+[data-theme="dark"] {
+  --foreground-hex: #f5f5f5;
+  --background-hex: #1f1f1f;
+}
 
             /* Media Queries */
 
@@ -132,6 +74,7 @@
     --card-width: 18rem;
     --section-gap: 3rem;
     --homepage-mt: 6rem;
+    --font-size-xxl: 5rem;
   }
 }
 
@@ -143,6 +86,12 @@
     --homepage-mt: 4rem;
     --header-link-gap: 3rem;
     --logo-font-size: 1.15rem;
+    --font-size-xxl: 4rem;
+  }
+
+  .hero-picture-container {
+    width: 300px;
+    height: 300px;
   }
 }
 
@@ -153,15 +102,27 @@
     --section-gap: 1rem;
     --homepage-mt: 2rem;
     --header-link-gap: 2rem;
+    --font-size-xxl: 3rem;
   }
 
   .hero-section {
     flex-direction: column;
     gap: var(--spacing-lg);
     align-items: start;
+    justify-content: start;
   }
+
+  .hero-description-picture-container {
+    width: 100%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: var(--spacing-lg);
+  }
+
   .hero-picture-container {
     order: -1;
+    justify-content: start;
     width: 200px;
     height: 200px;
     margin-bottom: var(--spacing-md);
@@ -185,10 +146,25 @@
     --section-gap: 1rem;
     --header-link-gap: 1rem;
     --logo-font-size: 1.05;
+    --font-size-xxl: 1.5rem;
   }
 
   .hero-description {
     font-size: calc(var(--font-size-base) * 1.2); /* Should resolve to 14.4px */
+  }
+
+  .hero-picture-container {
+    width: 160px;
+    height: 160px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .homepage-section {
+    gap: var(--spacing-sm);
+  }
+
+  .section-title {
+    font-size: var(--font-size-md);
   }
 }
 
@@ -197,17 +173,17 @@
 html, body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-  width: 100%; /* Ensure the body always fits the viewport width */
+  overflow-x: hidden;
+  width: 100%;
   box-sizing: border-box;
 }
 
 
 body {
-  color: rgb(var(--foreground-rgb)); /* Text color using palette */
-  background: rgb(var(--background-rgb)); /* Background color using palette */
-  font-family: var(--font-primary), sans-serif; /* Primary font */
-  font-size: var(--font-size-base); /* Base font size */
+  color: rgb(var(--foreground-hex));
+  background: rgb(var(--background-hex));
+  font-family: var(--font-primary), sans-serif;
+  font-size: var(--font-size-base);
 }
 
 /* Components */
@@ -230,9 +206,8 @@ body {
     box-sizing: border-box; /* Ensures padding doesn’t affect width */
   }
 
-  .header-links-container {
-    display: flex;
-    gap: var(--header-link-gap);
+  .theme-switch {
+    cursor: pointer;
   }
 
   .header-logo {
@@ -240,6 +215,7 @@ body {
     font-size: var(--logo-font-size);
     text-transform: uppercase;
     font-family: var(--font-title), sans-serif;
+    letter-spacing: 0.1rem;
   }
 
   /* Homepage Global styles */
@@ -265,10 +241,17 @@ body {
 
   .hero-section {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     gap: var(--spacing-xx-lg);
     height: fit-content;
+  }
+
+  .hero-description-picture-container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xx-lg);
   }
 
   .hero-picture-container {
@@ -294,6 +277,7 @@ body {
     text-align: var(--text-align);
     width: 100%;
     margin-top: var(--spacing-lg);
+    text-indent: 20%
   }
 
   /* Social links */
@@ -366,22 +350,23 @@ body {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: lightgray;
+    background-color: var(--background-hex);
     margin: 0 5px;
     cursor: pointer;
-    border: none;
+    border: 1px solid var(--foreground-hex);
     outline: none;
     transition: background-color 0.3s;
   }
 
   .embla__dot--selected {
-    background-color: black;
+    background-color: var(--foreground-hex);
+    border: 1px solid var(--background-hex);
   }
 
   /* Project Card Styles */
+
   .project-card {
     padding: 0;
-    background: rgb(var(--background-rgb));
     width: var(--card-width);
     height: fit-content;
   }
@@ -412,6 +397,8 @@ body {
     font-family: var(--font-title), sans-serif;
     font-weight: bold;
     line-height: 1;
+    letter-spacing: 0.4rem;
+    text-transform: uppercase;
   }
 
   .section-title {
@@ -419,7 +406,8 @@ body {
   }
 
   .hero-title {
-    font-size: 2.5rem;
+    font-size: var(--font-size-xxl);
+    line-height: 1.25;
   }
 
   .card-title {
@@ -430,46 +418,6 @@ body {
   }
 
                       /***** Buttons *****/
-  /* Primary Button Styles */
-  .btn-primary {
-    border: 2px solid rgb(var(--primary-900)); /* Bordure noire */
-    color: rgb(var(--primary-900));             /* Texte noir */
-    background-color: transparent;              /* Fond transparent par défaut */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: 9999px;                      /* Bouton entièrement arrondi */
-    transition: background-color 0.3s, color 0.3s; /* Transition douce */
-    font-weight: bold;
-  }
-
-  .btn-primary:hover {
-    background-color: rgb(var(--primary-900));  /* Fond noir au survol */
-    color: rgb(var(--primary-50));              /* Texte plus clair au survol */
-  }
-
-  .btn-primary[aria-busy="true"] {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
-
-  .btn-warning {
-    border: 2px solid rgb(var(--warning-900));  /* Bordure rouge */
-    color: rgb(var(--warning-900));             /* Texte rouge */
-    background-color: transparent;              /* Fond transparent par défaut */
-    padding: var(--spacing-sm) var(--spacing-md);
-    border-radius: 9999px;
-    transition: background-color 0.3s, color 0.3s; /* Transition douce */
-    font-weight: bold;
-  }
-
-  .btn-warning:hover {
-    background-color: rgb(var(--warning-900));  /* Fond rouge au survol */
-    color: rgb(var(--primary-50));              /* Texte clair au survol */
-  }
-
-  .btn-warning[aria-busy="true"] {
-    cursor: not-allowed;
-    opacity: 0.6;
-  }
 
   .custom-file-input-wrapper {
     margin-bottom: var(--spacing-md);
