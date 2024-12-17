@@ -1,9 +1,10 @@
 import {ProjectPictureComponent} from "@/components/shared_components/projectPicture";
 import {ProjectStackGallery} from "@/components/shared_components/projectStackGallery";
-import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import React from "react";
 import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
+import {Button} from "@nextui-org/button";
+import Link from "next/link";
 
 type MainProjectCardComponentProps = {
     project: CardModelWithBadges;
@@ -25,9 +26,13 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
             </CardBody>
             {project.link && (
                 <CardFooter>
-                    <a href={project.link} target="_blank" rel="noopener noreferrer">
-                        <CustomButtonComponent variant="primary" >Visiter</CustomButtonComponent>
-                    </a>
+                    <Button
+                        as={Link}
+                        href={project.link}
+                        target={"_blank"}
+                    >
+                        Visiter
+                    </Button>
                 </CardFooter>
             )}
         </Card>

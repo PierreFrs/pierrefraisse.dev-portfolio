@@ -3,8 +3,9 @@
 
 import {useTheme} from "next-themes";
 import React, { useEffect, useState } from "react";
-import {FiMoon, FiSun} from "react-icons/fi";
 import Image from "next/image"
+import {MoonIcon, SunIcon} from "@heroicons/react/16/solid";
+import {Button} from "@nextui-org/button";
 
 export function ThemeSwitcher() {
     const [mounted, setMounted] = useState(false)
@@ -26,11 +27,22 @@ export function ThemeSwitcher() {
         />
     )
 
-    if (resolvedTheme === 'dark') {
-        return <FiSun onClick={() => setTheme('light')} className="theme-switch"/>
-    }
-
-    if (resolvedTheme === 'light') {
-        return <FiMoon onClick={() => setTheme('dark')} className="theme-switch" />
-    }
+    return (
+        <Button
+            as="a" // Render as an anchor tag
+            href="#"
+            isIconOnly
+            onClick={(e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                setTheme(resolvedTheme === "dark" ? "light" : "dark");
+            }}
+            aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+        >
+            {resolvedTheme === "dark" ? (
+                <SunIcon className="w-6 h-6 header-icon" />
+            ) : (
+                <MoonIcon className="w-6 h-6 header-icon" />
+            )}
+        </Button>
+    );
 }

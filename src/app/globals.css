@@ -212,8 +212,10 @@ body {
     align-items: center;
     gap: var(--header-link-gap);
   }
-  .theme-switch {
-    cursor: pointer;
+
+  .header-icon {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .header-logo {

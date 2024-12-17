@@ -20,11 +20,14 @@ export function CustomButtonComponent({
     return (
         <Button
             type={type}
-            onClick={onClick}
             isLoading={isLoading}
             radius="sm"
             size="md"
             color={buttonType}
+            onClick={(e) => {
+                e.stopPropagation(); // Ensure propagation does not interfere
+                if (onClick) onClick();
+            }}
         >
             {children}
         </Button>
