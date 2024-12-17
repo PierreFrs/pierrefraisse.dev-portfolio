@@ -5,12 +5,14 @@ import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
 import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 import {Button} from "@nextui-org/button";
 import Link from "next/link";
+import {useTranslations} from "next-intl";
 
 type MainProjectCardComponentProps = {
     project: CardModelWithBadges;
 };
 
 export function MainProjectCardComponent({ project }: Readonly<MainProjectCardComponentProps>) {
+    const t = useTranslations('HomePage.project-card');
     return (
         <Card key={project.id}
               radius="md"
@@ -31,7 +33,7 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
                         href={project.link}
                         target={"_blank"}
                     >
-                        Visiter
+                        {t('visit-button')}
                     </Button>
                 </CardFooter>
             )}

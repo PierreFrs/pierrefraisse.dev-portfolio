@@ -15,6 +15,9 @@
       "message-placeholder": "Your message",
       "send-contact-message": "Send",
       "contact-message-sent": "Message sent!"
+    },
+    "project-card": {
+      "visit-button": "Visit"
     }
   }
 }
