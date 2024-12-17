@@ -1,4 +1,5 @@
 import {ThemeSwitcher} from "@/components/shared_components/theme-switcher";
+import {LanguagePicker} from "@/components/shared_components/languagePicker";
 
 export default async function Header() {
     return (
@@ -9,7 +10,10 @@ export default async function Header() {
                         Pierre Fraisse
                     </span>
                 </div>
-                <ThemeSwitcher />
+                <div className="header-controls">
+                    <LanguagePicker />
+                    <ThemeSwitcher />
+                </div>
             </div>
         </header>
     );

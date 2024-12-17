@@ -7,6 +7,7 @@ import React, {useEffect} from "react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomInput} from "@/components/shared_components/customInput";
 import {CustomTextarea} from "@/components/shared_components/customTextArea";
+import {useTranslations} from "next-intl";
 
 export type ContactFormData = {
     name: string;
@@ -25,6 +26,7 @@ export default function Contact() {
     const [inProgress, setInProgress] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [error, setError] = React.useState<string | null>(null);
+    const t = useTranslations('HomePage.contact-section');
 
     const onSubmit = async (data: ContactFormData) => {
         setInProgress(true);
@@ -57,41 +59,41 @@ export default function Contact() {
                 <div className="contact-fields-container">
                     <CustomInput
                         field="name"
-                        label="Nom"
+                        label={t('name')}
                         type="text"
-                        placeholder="Votre nom"
+                        placeholder={t('name-placeholder')}
                         isRequired
                         error={errors.name}
                         register={register}
                     />
                     <CustomInput
                         field="email"
-                        label="Adresse Mail"
+                        label={t('email')}
                         type="email"
-                        placeholder="example@domain.com"
+                        placeholder={t('email-placeholder')}
                         isRequired
                         error={errors.email}
                         register={register}
                         validationRules={{
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                message: "Adresse mail invalide",
+                                message: t('email-error-message'),
                             },
                         }}
                     />
                     <CustomInput
                         field="subject"
-                        label="Objet"
+                        label={t('subject')}
                         type="text"
-                        placeholder="Objet du message"
+                        placeholder={t('subject-placeholder')}
                         isRequired
                         error={errors.subject}
                         register={register}
                     />
                     <CustomTextarea
                         field="message"
-                        label="Message"
-                        placeholder="Votre message"
+                        label={t('message')}
+                        placeholder={t('message-placeholder')}
                         isRequired
                         error={errors.message}
                         register={register}

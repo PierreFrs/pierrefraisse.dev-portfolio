@@ -207,6 +207,11 @@ body {
     box-sizing: border-box; /* Ensures padding doesn’t affect width */
   }
 
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--header-link-gap);
+  }
   .theme-switch {
     cursor: pointer;
   }

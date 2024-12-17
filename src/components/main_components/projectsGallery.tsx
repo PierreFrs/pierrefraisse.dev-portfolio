@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { MainProjectCardComponent } from "@/components/main_components/MainProjectCardComponent";
 import useEmblaCarousel from "embla-carousel-react";
 import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
+import {useTranslations} from "next-intl";
 
 type ProjectGalleryProps = {
     projects: CardModelWithBadges[];
@@ -12,6 +13,7 @@ type ProjectGalleryProps = {
 export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryProps>) {
     const [emblaRef, emblaApi] = useEmblaCarousel();
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const t = useTranslations('HomePage');
 
     useEffect(() => {
         if (!emblaApi) return;
@@ -23,7 +25,7 @@ export default function ProjectsGallery({ projects }: Readonly<ProjectGalleryPro
 
     return (
         <section id="projects" className="homepage-section flex flex-col">
-            <h2 className="title section-title">Projets significatifs</h2>
+            <h2 className="title section-title">{t('projects-title')}</h2>
             <div className="project-gallery embla" ref={emblaRef}>
                 <div className="embla__container">
                     {projects.map((project) => (

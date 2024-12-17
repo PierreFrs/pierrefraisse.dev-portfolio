@@ -1,0 +1,20 @@
+{
+  "Language Selector": "Language Selector",
+  "HomePage": {
+    "hero-title": "I design and develop web apps",
+    "projects-title": "Significant projects",
+    "contact-section": {
+      "name": "Name",
+      "name-placeholder": "Your name",
+      "email": "Email",
+      "email-placeholder": "example@domain.com",
+      "email-error-message": "Please enter a valid email address",
+      "subject": "Subject",
+      "subject-placeholder": "Subject of your message",
+      "message": "Message",
+      "message-placeholder": "Your message",
+      "send-contact-message": "Send",
+      "contact-message-sent": "Message sent!"
+    }
+  }
+}
