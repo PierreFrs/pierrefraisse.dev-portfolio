@@ -1,9 +1,8 @@
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
+import {Translation} from "@/app/lib/models/translations";
 
 export type CardModelWithBadges = {
     id: string;
-    title: string;
-    shortDescription: string;
     pictureUrl: string;
     stack: string[];
     stackBadges: StackBadge[];
@@ -11,4 +10,5 @@ export type CardModelWithBadges = {
     userId: string;
     createdAt: Date;
     updatedAt: Date;
+    translations: Translation[];
 };

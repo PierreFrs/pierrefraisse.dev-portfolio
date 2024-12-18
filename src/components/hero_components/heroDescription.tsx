@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { fetchHeroDescription } from "@/app/lib/data/heroDescriptionActions";
+import {useLocale} from "next-intl";
 
 export default function HeroDescription() {
     const [description, setDescription] = useState<string>("");
-    const language = "en";
+    const locale = useLocale();
     
     useEffect(() => {
         async function loadDescription() {
-            const data = await fetchHeroDescription(language);
+            const data = await fetchHeroDescription(locale);
             if (data?.description) {
                 setDescription(data.description);
             } else if (data?.message) {

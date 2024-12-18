@@ -12,7 +12,13 @@ const prisma = new PrismaClient();
 
 export async function fetchProjectsWithBadges(): Promise<CardModelWithBadges[]> {
     try {
-        const projects = await prisma.projectCard.findMany();
+        const projects = await prisma.projectCard.findMany({
+            include: {
+                translations: {
+                    select: { title: true, shortDescription: true, language: true },
+                }
+            }
+        });
 
         return await Promise.all(
             projects.map(async (project) => {
@@ -53,15 +59,15 @@ export async function fetchProjectsWithBadges(): Promise<CardModelWithBadges[]> 
 export async function addProject(formData: FormData): Promise<CardModelWithBadges> {
     // Create the project using helper
     const project = await createProjectFromFormData(formData);
+
     const stackBadges = await Promise.all(
-        project.stack.map(async (badgeId: string) => {
-            return await fetchBadgeById(badgeId);
-        })
+        project.stack.map(async (badgeId: string) => await fetchBadgeById(badgeId))
     );
 
     return {
         ...project,
         stackBadges: stackBadges.filter((badge) => badge !== null),
+        translations: project.translations || [],
     };
 }
 

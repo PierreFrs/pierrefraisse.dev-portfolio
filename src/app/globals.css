@@ -207,8 +207,15 @@ body {
     box-sizing: border-box; /* Ensures padding doesn’t affect width */
   }
 
-  .theme-switch {
-    cursor: pointer;
+  .header-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--header-link-gap);
+  }
+
+  .header-icon {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .header-logo {

@@ -18,8 +18,10 @@ interface ProjectUploadFormProps {
 }
 
 type ProjectFormSchema = {
-    title: string;
-    shortDescription: string;
+    titleEn: string;
+    titleFr: string;
+    shortDescriptionEn: string;
+    shortDescriptionFr: string;
     link?: string;
 };
 
@@ -51,8 +53,10 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
         }
 
             const formData = new FormData();
-            formData.append("title", data.title);
-            formData.append("shortDescription", data.shortDescription);
+            formData.append("titleEn", data.titleEn);
+            formData.append("titleFr", data.titleFr);
+            formData.append("shortDescriptionEn", data.shortDescriptionEn);
+            formData.append("shortDescriptionFr", data.shortDescriptionFr);
             formData.append("link", data.link ?? "");
             formData.append("picture", picture as Blob);
             selectedBadges.forEach((badgeId) => formData.append("stack", badgeId));
@@ -100,20 +104,37 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
 
             <Form onSubmit={handleSubmit(onSubmit)} className="w-96">
                 <CustomInput
-                    field="title"
-                    label="Project Title"
+                    field="titleEn"
+                    label="Project Title (En)"
                     type="text"
-                    placeholder="Enter project title"
+                    placeholder="Enter project title in english"
                     isRequired
-                    error={errors.title}
+                    error={errors.titleEn}
+                    register={register}
+                />
+                <CustomInput
+                    field="titleFr"
+                    label="Project Title (Fr)"
+                    type="text"
+                    placeholder="Enter project title in french"
+                    isRequired
+                    error={errors.titleFr}
                     register={register}
                 />
                 <CustomTextarea
-                    field="shortDescription"
-                    label="Short Description"
-                    placeholder="Enter a short description"
+                    field="shortDescriptionEn"
+                    label="Short Description (en)"
+                    placeholder="Enter a short description in english"
                     isRequired
-                    error={errors.shortDescription}
+                    error={errors.shortDescriptionEn}
+                    register={register}
+                />
+                <CustomTextarea
+                    field="shortDescriptionFr"
+                    label="Short Description (fr)"
+                    placeholder="Enter a short description in french"
+                    isRequired
+                    error={errors.shortDescriptionFr}
                     register={register}
                 />
                 <CustomInput
