@@ -8,11 +8,10 @@ export async function GET() {
         const projects = await prisma.projectCard.findMany({
             select: {
                 id: true,
-                title: true,
-                shortDescription: true,
                 pictureUrl: true,
                 stack: true,
                 link: true,
+                translations: true
             },
         });
 

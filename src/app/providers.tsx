@@ -14,8 +14,6 @@ interface ProvidersProps {
 }
 
 export default function Providers({children, messages, locale, timeZone }: Readonly<ProvidersProps>) {
-    console.log('Timezone:', timeZone);
-
     return (
         <NextIntlClientProvider
             messages={messages}
