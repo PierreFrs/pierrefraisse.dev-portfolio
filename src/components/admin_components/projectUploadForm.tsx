@@ -1,5 +1,3 @@
-"use client";
-
 import React, {useState, useEffect, useRef} from "react";
 import {useSession} from "next-auth/react";
 import {CustomButtonComponent} from "@/components/shared_components/CustomButton";

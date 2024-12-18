@@ -1,5 +1,3 @@
-"use client";
-
 import { StackBadge } from "@/app/lib/models/stackBadgeModel";
 import { StackBadgeComponent } from "@/components/shared_components/stackBadge";
 import { CustomButtonComponent } from "@/components/shared_components/CustomButton";
