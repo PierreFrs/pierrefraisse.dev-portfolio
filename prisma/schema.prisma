@@ -93,20 +93,33 @@ model HeroPicture {
 
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     }
-    
+
 model ProjectCard {
     id                  String @id @default(cuid())
-    title               String
-    shortDescription    String
     pictureUrl          String
     stack               String[]
     link                String?
     userId              String
     createdAt           DateTime @default(now())
     updatedAt           DateTime @updatedAt
-    
+
+    translations        ProjectCardTranslation[]
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    }
+}
+
+model ProjectCardTranslation {
+    id                String @id @default(cuid())
+    language          String
+    title             String
+    shortDescription  String
+    projectCardId     String
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+
+    projectCard       ProjectCard @relation(fields: [projectCardId], references: [id], onDelete: Cascade)
+
+    @@unique([projectCardId, language])
+}
 
 model StackBadge {
     id          String @id @default(cuid())

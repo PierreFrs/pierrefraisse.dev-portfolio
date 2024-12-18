@@ -2,11 +2,15 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import HeroDescription from "@/components/hero_components/heroDescription";
 import SocialLink from "@/components/hero_components/socialLink";
 import HeroPicture from "@/components/hero_components/heroPicture";
+import {useTranslations} from "next-intl";
+
 
 export default function Hero() {
+    const t = useTranslations('HomePage');
+
     return (
         <section id="about" className="homepage-section hero-section">
-            <h1 className="hero-title title">Concepteur, développeur d&apos;applications web</h1>
+            <h1 className="hero-title title">{t('hero-title')}</h1>
             <div className="hero-description-picture-container">
                 <HeroDescription/>
                 <HeroPicture size={380}/>
