@@ -1,5 +1,6 @@
 import { CardModel } from "@/app/lib/models/cardModel";
 import Image from "next/image";
+import {useLocale} from "next-intl";
 
 type ProjectPictureProps = {
     project: CardModel;
@@ -7,14 +8,23 @@ type ProjectPictureProps = {
 
 export function ProjectPictureComponent({ project }: Readonly<ProjectPictureProps>) {
     const placeholderImageUrl = "/images/placeholder.png";
+    const locale = useLocale();
+
+    // Find the translation for the current locale
+    const translation = project.translations.find(
+        (trans) => trans.language === locale
+    );
+
+    const title = translation?.title || "Title not available";
 
     // Validate project.link
     const projectLink = project.link && project.link.trim() !== "" ? project.link : null;
 
+
     const imageComponent = (
         <Image
             src={project.pictureUrl || placeholderImageUrl}
-            alt={project.title || "Project"}
+            alt={title}
             width={0}
             height={0}
             sizes="100vw"
