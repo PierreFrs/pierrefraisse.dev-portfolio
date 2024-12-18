@@ -33,6 +33,7 @@ export async function GET(
 }
 
 export async function DELETE(
+    _: Request,
     { params } : { params: Promise<{ id: string }> }
 ) {
     const id = (await params).id;
