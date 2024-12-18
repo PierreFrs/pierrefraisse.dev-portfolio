@@ -3,6 +3,8 @@ import "./globals.css";
 import Providers from "@/app/providers";
 import React from "react";
 import getRequestConfig from '@/i18n/request';
+import Header from "@/components/main_components/header";
+import Footer from "@/components/main_components/footer";
 
 
 export const metadata: Metadata = {
@@ -17,7 +19,9 @@ export default async function RootLayout({children}: Readonly<{ children: React.
         <html lang={locale} suppressHydrationWarning>
             <body className="antialiased">
                 <Providers messages={messages} locale={locale} timeZone={timeZone}>
-                    {children}
+                    <Header />
+                        {children}
+                    <Footer />
                 </Providers>
             </body>
         </html>
