@@ -107,7 +107,7 @@ export default function Contact() {
                     >
                         Envoyer
                     </CustomButtonComponent>
-                    {success && <p className="text-xs">Message envoyé</p>}
+                    {success && <p className="text-xs">{t('contact-message-sent')}</p>}
                     {error && <p className="text-xs text-red-500">{error}</p>}
                 </div>
             </Form>

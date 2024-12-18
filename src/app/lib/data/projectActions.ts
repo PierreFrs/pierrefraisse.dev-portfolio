@@ -16,30 +16,41 @@ export async function fetchProjectsWithBadges(): Promise<CardModelWithBadges[]> 
             include: {
                 translations: {
                     select: { title: true, shortDescription: true, language: true },
-                }
-            }
+                },
+            },
         });
 
         return await Promise.all(
             projects.map(async (project) => {
                 try {
-                    // Parse `stack` into a proper array of strings if necessary
-                    const stack =
-                        typeof project.stack[0] === "string"
-                            ? JSON.parse(project.stack[0])
-                            : project.stack;
+                    let stack: string[] = project.stack;
+
+                    // Check and parse the stack safely if it is a string
+                    if (typeof project.stack === "string") {
+                        try {
+                            stack = JSON.parse(project.stack);
+                        } catch (error) {
+                            console.warn(
+                                `Failed to parse stack for project ${project.id}:`,
+                                error
+                            );
+                            stack = [];
+                        }
+                    }
 
                     // Fetch badges for this project
-                    const badges: StackBadge[] = await Promise.all(
-                        stack.map(async (badgeId: string) => {
-                            return await fetchBadgeById(badgeId);
-                        })
-                    );
+                    const badges: StackBadge[] = (
+                        await Promise.all(
+                            stack.map(async (badgeId) => {
+                                return await fetchBadgeById(badgeId);
+                            })
+                        )
+                    ).filter((badge): badge is StackBadge => badge !== null);
 
                     return {
                         ...project,
                         stack,
-                        stackBadges: badges.filter((badge) => badge !== null), // Filter out null badges
+                        stackBadges: badges,
                     } as CardModelWithBadges;
                 } catch (error) {
                     console.error(`Error processing project ${project.id}:`, error);

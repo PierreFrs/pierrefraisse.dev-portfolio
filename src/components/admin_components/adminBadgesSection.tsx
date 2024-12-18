@@ -12,18 +12,17 @@ export function AdminBadgesSection() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        loadBadges();
+        (async () => {
+            try {
+                const fetchedBadges = await fetchBadges();
+                setBadges(fetchedBadges);
+            }
+            catch (error: any) {
+                setError("Failed to load badges. Please try again.");
+                console.error(error);
+            }
+        })();
     }, []);
-
-    const loadBadges = async () => {
-        try {
-            const fetchedBadges = await fetchBadges();
-            setBadges(fetchedBadges);
-        } catch (error: any) {
-            setError("Failed to load badges. Please try again.");
-            console.error(error);
-        }
-    };
 
     const addBadgeHandler = async (newBadge: StackBadge) => {
         try {
