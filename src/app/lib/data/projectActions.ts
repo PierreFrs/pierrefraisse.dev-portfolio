@@ -10,12 +10,11 @@ import {createProjectFromFormData} from "@/app/lib/helpers/projectHelper";
 
 const prisma = new PrismaClient();
 
-export async function fetchProjectsWithBadges(language: string): Promise<CardModelWithBadges[]> {
+export async function fetchProjectsWithBadges(): Promise<CardModelWithBadges[]> {
     try {
         const projects = await prisma.projectCard.findMany({
             include: {
                 translations: {
-                    where: { language },
                     select: { title: true, shortDescription: true, language: true },
                 }
             }
