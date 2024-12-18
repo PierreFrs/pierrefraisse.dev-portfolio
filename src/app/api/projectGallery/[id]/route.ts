@@ -3,7 +3,7 @@ import {prisma} from "../../../../../prisma/prisma";
 import {del} from "@vercel/blob";
 
 export async function DELETE(
-    request: Request,
+    _: Request,
     { params } : { params: Promise<{ id: string }> }
 ) {
     const id = (await params).id;

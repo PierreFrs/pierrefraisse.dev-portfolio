@@ -13,21 +13,18 @@ export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
     const [imageUrl, setImageUrl] = useState<string>("");
 
     useEffect(() => {
-        loadPicture();
+        (async () => {
+            try {
+                const picture = await fetchHeroPicture();
+                if (picture?.url) {
+                    setImageUrl(picture.url);
+                } else {
+                    console.warn("No hero picture URL returned");
+                }
+            } catch (error: any) {
+                console.error("Failed to load hero picture", error); }
+            })();
     }, []);
-
-    const loadPicture = async () => {
-        try {
-            const picture = await fetchHeroPicture();
-            if (picture?.url) {
-                setImageUrl(picture.url);
-            } else {
-                console.warn("No hero picture URL returned");
-            }
-        } catch (error: any) {
-            console.error("Failed to load hero picture", error);
-        }
-    };
 
     if (!imageUrl) {
         return <p>Loading...</p>;
