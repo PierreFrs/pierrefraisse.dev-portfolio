@@ -6,13 +6,17 @@
     "contact-section": {
       "name": "Nom",
       "name-placeholder": "Votre nom",
+      "name-error-message": "Veuillez renseigner votre nom",
       "email": "Email",
       "email-placeholder": "exemple@domain.com",
-      "email-error-message": "Veuillez entrer une adresse email valide",
+      "required-email-message": "L'adresse email est requise",
+      "invalid-email-message": "Veuillez entrer une adresse email valide",
       "subject": "Objet",
       "subject-placeholder": "Objet de votre message",
+      "subject-error-message": "Veuillez renseigner un objet",
       "message": "Message",
       "message-placeholder": "Votre message",
+      "message-error-message": "Veuillez renseigner un message",
       "send-contact-message": "Envoyer",
       "contact-message-sent": "Message envoyé!"
     },

@@ -43,7 +43,9 @@
 
   --homepage-mt: 8rem;
 
-  --header-link-gap: 4rem;
+  --header-controls-gap: 2rem;
+  --header-button-size: 2.5rem;
+  --header-icon-size: 1.5rem;
 
     /* Border & Shadow */
   --border-radius: 1rem;
@@ -104,6 +106,8 @@
     --header-link-gap: 2rem;
     --font-size-lg: 2rem;
     --font-size-xxl: 2.1rem;
+    --header-icon-size: 1rem;
+    --header-button-size: 2rem;
   }
 
   .hero-section {
@@ -210,12 +214,18 @@ body {
   .header-controls {
     display: flex;
     align-items: center;
-    gap: var(--header-link-gap);
+    gap: var(--header-controls-gap);
+  }
+
+  .header-button {
+    width: var(--header-button-size);
+    height: var(--header-button-size);
+    min-width: 0;
   }
 
   .header-icon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--header-icon-size);
+    height: var(--header-icon-size);
   }
 
   .header-logo {

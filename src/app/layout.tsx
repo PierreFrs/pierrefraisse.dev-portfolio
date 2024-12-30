@@ -17,10 +17,12 @@ export default async function RootLayout({children}: Readonly<{ children: React.
 
     return (
         <html lang={locale} suppressHydrationWarning>
-            <body className="antialiased">
+            <body className="antialiased min-h-screen">
                 <Providers messages={messages} locale={locale} timeZone={timeZone}>
                     <Header />
-                        {children}
+                        <main  className="flex-1 flex flex-col">
+                            {children}
+                        </main>
                     <Footer />
                 </Providers>
             </body>
