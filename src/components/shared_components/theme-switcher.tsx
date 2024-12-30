@@ -37,6 +37,7 @@ export function ThemeSwitcher() {
                 setTheme(resolvedTheme === "dark" ? "light" : "dark");
             }}
             aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+            className="header-button"
         >
             {resolvedTheme === "dark" ? (
                 <SunIcon className="w-6 h-6 header-icon" />

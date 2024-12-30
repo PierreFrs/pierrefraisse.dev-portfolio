@@ -35,7 +35,7 @@ export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
             <Image src={imageUrl}
                    alt="Your host picture"
                    className="hero-picture"
-                   layout="responsive"
+                   unoptimized={true}
                    width={1}
                    height={1}
             />

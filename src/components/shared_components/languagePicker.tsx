@@ -37,7 +37,7 @@ export const LanguagePicker = () => {
     return (
         <Dropdown>
             <DropdownTrigger>
-                <Button isIconOnly>
+                <Button isIconOnly className="header-button">
                     <LanguageIcon className="header-icon" />
                 </Button>
             </DropdownTrigger>
