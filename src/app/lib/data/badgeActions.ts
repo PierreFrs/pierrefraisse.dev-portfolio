@@ -61,8 +61,6 @@ export async function addBadge(formData: FormData): Promise<StackBadge | null> {
     }
 }
 
-
-
 export async function removeBadge(id: string) {
     return await prisma.stackBadge.delete({
         where: { id },
