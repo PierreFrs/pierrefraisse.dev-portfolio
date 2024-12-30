@@ -4,6 +4,8 @@ import Mail from 'nodemailer/lib/mailer';
 
 export async function POST(request: NextRequest) {
     const { email, subject, message } = await request.json();
+    console.log('Payload received:', { email, subject, message });
+
 
     const transport = nodemailer.createTransport({
         service: 'gmail',
@@ -25,21 +27,22 @@ export async function POST(request: NextRequest) {
     const mailOptions: Mail.Options = {
         from: email,
         to: process.env.MY_MAIL,
-        // cc: email, (uncomment this line if you want to send a copy to the sender)
+        cc: email,
         subject: subject,
         text: message,
     };
 
-    const sendMailPromise = () =>
-        new Promise<string>((resolve, reject) => {
+    const sendMailPromise = () => {
+        return new Promise<string>((resolve, reject) => {
             transport.sendMail(mailOptions, function (err) {
                 if (!err) {
                     resolve('Email sent');
                 } else {
-                    reject(err.message);
+                    reject(new Error(err.message));
                 }
             });
         });
+    };
 
     try {
         await sendMailPromise();

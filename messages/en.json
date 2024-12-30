@@ -6,13 +6,17 @@
     "contact-section": {
       "name": "Name",
       "name-placeholder": "Your name",
+      "name-error-message": "Please enter your name",
       "email": "Email",
       "email-placeholder": "example@domain.com",
-      "email-error-message": "Please enter a valid email address",
+      "required-email-message": "The email address is required",
+      "invalid-email-message": "Please enter a valid email address",
       "subject": "Subject",
       "subject-placeholder": "Subject of your message",
+      "subject-error-message": "Please enter a subject",
       "message": "Message",
       "message-placeholder": "Your message",
+      "message-error-message": "Please enter a message",
       "send-contact-message": "Send",
       "contact-message-sent": "Message sent!"
     },
