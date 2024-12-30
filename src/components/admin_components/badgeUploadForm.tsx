@@ -85,7 +85,6 @@ export default function BadgeUploadForm({onBadgeAdded}: Readonly<BadgeUploadForm
                 inputKey="badgeUpload"
             />
             <Button
-                color="primary"
                 type="submit"
                 isLoading={inProgress}
             >
