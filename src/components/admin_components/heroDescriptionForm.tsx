@@ -2,16 +2,11 @@
 
 import React, {useState } from "react";
 import { postHeroDescription } from "@/app/lib/data/heroDescriptionActions";
-import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
-import {CustomTextarea} from "@/components/shared_components/customTextArea";
-import {useForm} from "react-hook-form";
 import {Form} from "@nextui-org/form";
 import {useSession} from "next-auth/react";
 import {Select, SelectItem} from "@nextui-org/select";
-
-type HeroDescriptionFormSchema = {
-    description: string;
-};
+import {Textarea} from "@nextui-org/input";
+import {Button} from "@nextui-org/button";
 
 type LanguageItem = {
     value: string;
@@ -20,12 +15,6 @@ type LanguageItem = {
 
 export default function HeroDescriptionForm() {
     const { data: session } = useSession();
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors }
-    } = useForm<HeroDescriptionFormSchema>();
     const [language, setLanguage] = useState<string>("en");
     const [inProgress, setInProgress] = useState(false);
 
@@ -34,23 +23,37 @@ export default function HeroDescriptionForm() {
         { value: "fr", fullName: "French" }
     ];
 
-    const onSubmit = async (data: HeroDescriptionFormSchema) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         setInProgress(true);
 
-        const userId = session?.user?.id;
-        if (!userId) {
-            console.error("No user ID found in session");
-            setInProgress(false);
-            return;
-        }
-
         try {
-            await postHeroDescription({
+            const formElement = e.currentTarget as HTMLFormElement;
+
+            const formData = new FormData(e.currentTarget);
+
+            const userId = session?.user?.id;
+            if (!userId) {
+                console.error("No user ID found in session");
+                setInProgress(false);
+                return;
+            }
+
+            const data = {
                 userId,
                 language,
-                text: data.description
-            });
-            reset();
+                text: formData.get("description") as string, // Map `description` to `text`
+            };
+            const newDescription = await postHeroDescription(data);
+
+            if (!newDescription) {
+                console.error("Error uploading description");
+                setInProgress(false);
+                return null;
+            }
+
+            formElement.reset();
+            setLanguage("en");
         } catch (err: any) {
             console.error("Error updating description", err);
         } finally {
@@ -59,7 +62,7 @@ export default function HeroDescriptionForm() {
     };
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form onSubmit={onSubmit}>
             <Select
                 label="Language"
                 value={language}
@@ -75,21 +78,21 @@ export default function HeroDescriptionForm() {
                     </SelectItem>
                 ))}
             </Select>
-            <CustomTextarea
-                field="description"
+            <Textarea
+                isRequired
                 label="Description"
                 placeholder="Enter a description"
-                isRequired
-                error={errors.description}
-                register={register}
+                name="description"
+                type="text"
+                isDisabled={inProgress}
+                variant="bordered"
             />
-            <CustomButtonComponent
-                variant="primary"
+            <Button
                 type="submit"
                 isLoading={inProgress}
             >
                 Upload
-            </CustomButtonComponent>
+            </Button>
         </Form>
     );
 }

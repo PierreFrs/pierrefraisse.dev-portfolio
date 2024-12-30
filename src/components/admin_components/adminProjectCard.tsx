@@ -1,8 +1,8 @@
 import React from "react";
 import {ProjectPictureComponent} from "@/components/shared_components/projectPicture";
-import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {ProjectStackGallery} from "@/components/shared_components/projectStackGallery";
 import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
+import {Button} from "@nextui-org/button";
 
 type ProjectCardProps = {
     project: CardModelWithBadges;
@@ -26,9 +26,11 @@ export function AdminProjectCardComponent({ project, onDelete }: Readonly<Projec
                 ))}
             </div>
             <ProjectStackGallery stack={project.stackBadges} />
-            <CustomButtonComponent variant="warning" onClick={onDelete}>
+            <Button
+                color="danger"
+                onClick={onDelete}>
                 Delete
-            </CustomButtonComponent>
+            </Button>
         </div>
     );
 }

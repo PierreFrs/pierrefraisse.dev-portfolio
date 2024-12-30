@@ -33,7 +33,7 @@ export const CustomFileInput = forwardRef<HTMLInputElement, CustomFileInputProps
 
         return (
             <div className="custom-file-input-wrapper">
-                <label htmlFor={`file-upload-${inputKey}`} className="custom-file-label flex items-center cursor-pointer">
+                <label htmlFor={`file-upload-${inputKey}`} className="custom-file-label flex items-center cursor-pointer hover:text-foreground">
                     <FiUpload size={24} className="mr-2 text-gray-700" />
                     <span className="upload-text">{fileName ?? "Choose File"}</span>
                     <input
