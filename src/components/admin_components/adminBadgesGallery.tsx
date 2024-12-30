@@ -1,6 +1,6 @@
 import { StackBadge } from "@/app/lib/models/stackBadgeModel";
 import { StackBadgeComponent } from "@/components/shared_components/stackBadge";
-import { CustomButtonComponent } from "@/components/shared_components/CustomButton";
+import {Button} from "@nextui-org/button";
 
 type AdminBadgesGalleryProps = {
     badges: StackBadge[];
@@ -21,12 +21,12 @@ export function AdminBadgesGallery({ badges, onBadgeDeleted }: Readonly<AdminBad
                             />
                         </div>
 
-                        <CustomButtonComponent
-                            variant="warning"
+                        <Button
+                            color="danger"
                             onClick={() => onBadgeDeleted(badge.id)}
                         >
                             Delete
-                        </CustomButtonComponent>
+                        </Button>
                     </li>
                 ))}
             </ul>

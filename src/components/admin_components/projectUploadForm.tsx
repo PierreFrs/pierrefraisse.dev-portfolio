@@ -1,15 +1,14 @@
 import React, {useState, useEffect, useRef} from "react";
 import {useSession} from "next-auth/react";
-import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {StackBadgeComponent} from "@/components/shared_components/stackBadge";
 import {Form} from "@nextui-org/form";
 import {useForm} from "react-hook-form";
-import {CustomInput} from "@/components/shared_components/customInput";
-import {CustomTextarea} from "@/components/shared_components/customTextArea";
 import {fetchBadges} from "@/app/lib/data/badgeActions";
 import {addProject} from "@/app/lib/data/projectActions";
 import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
+import {Input, Textarea} from "@nextui-org/input";
+import {Button} from "@nextui-org/button";
 
 interface ProjectUploadFormProps {
     onProjectAdded: (newProject: CardModelWithBadges) => void;
@@ -25,7 +24,7 @@ type ProjectFormSchema = {
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
     const {data: session} = useSession();
-    const {register, handleSubmit, reset, formState: {errors}} = useForm<ProjectFormSchema>();
+    const {handleSubmit, reset} = useForm<ProjectFormSchema>();
     const [picture, setPicture] = useState<File | null>(null);
     const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
     const [badges, setBadges] = useState<any[]>([]);
@@ -101,46 +100,44 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
             {error && <p className="text-red-500">{error}</p>}
 
             <Form onSubmit={handleSubmit(onSubmit)} className="w-96">
-                <CustomInput
-                    field="titleEn"
+                <Input
+                    isRequired
                     label="Project Title (En)"
-                    type="text"
                     placeholder="Enter project title in english"
-                    isRequired
-                    error={errors.titleEn}
-                    register={register}
-                />
-                <CustomInput
-                    field="titleFr"
-                    label="Project Title (Fr)"
+                    name="titleEn"
                     type="text"
-                    placeholder="Enter project title in french"
-                    isRequired
-                    error={errors.titleFr}
-                    register={register}
+                    variant="bordered"
                 />
-                <CustomTextarea
-                    field="shortDescriptionEn"
+                <Input
+                    isRequired
+                    label="Project Title (Fr)"
+                    placeholder="Enter project title in french"
+                    name="titleFr"
+                    type="text"
+                    variant="bordered"
+                />
+                <Textarea
+                    isRequired
                     label="Short Description (en)"
                     placeholder="Enter a short description in english"
-                    isRequired
-                    error={errors.shortDescriptionEn}
-                    register={register}
+                    name="shortDescriptionEn"
+                    type="text"
+                    variant="bordered"
                 />
-                <CustomTextarea
-                    field="shortDescriptionFr"
+                <Textarea
+                    isRequired
                     label="Short Description (fr)"
                     placeholder="Enter a short description in french"
-                    isRequired
-                    error={errors.shortDescriptionFr}
-                    register={register}
+                    name="shortDescriptionFr"
+                    type="text"
+                    variant="bordered"
                 />
-                <CustomInput
-                    field="link"
+                <Input
                     label="Project Link"
-                    type="url"
                     placeholder="Enter project link"
-                    register={register}
+                    name="link"
+                    type="url"
+                    variant="bordered"
                 />
 
                 <div className="mb-4 mt-2 w-full flex justify-between items-center">
@@ -169,13 +166,12 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
                         ))}
                     </div>
                 </div>
-                <CustomButtonComponent
-                    variant="primary"
+                <Button
                     type="submit"
                     isLoading={inProgress}
                 >
                     Upload
-                </CustomButtonComponent>
+                </Button>
             </Form>
         </>
     );

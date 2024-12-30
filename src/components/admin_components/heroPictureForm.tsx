@@ -2,12 +2,12 @@
 
 import {useRef, useState} from "react";
 import Image from "next/image";
-import {CustomButtonComponent} from "@/components/shared_components/CustomButton";
 import {CustomFileInput} from "@/components/shared_components/CustomFileInput";
 import {useSession} from "next-auth/react";
 import {Form} from "@nextui-org/form";
 import {useForm} from "react-hook-form";
 import {postHeroPicture} from "@/app/lib/data/heroPictureActions";
+import {Button} from "@nextui-org/button";
 
 
 export type HeroPictureFormData = {
@@ -80,13 +80,12 @@ export default function HeroPictureForm() {
                 }
                 inputKey="heroUpload"
             />
-            <CustomButtonComponent
-                variant="primary"
+            <Button
                 type="submit"
                 isLoading={inProgress}
             >
                 Upload
-            </CustomButtonComponent>
+            </Button>
             
             {preview && 
                 <Image src={preview} 
