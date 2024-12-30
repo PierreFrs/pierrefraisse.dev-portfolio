@@ -23,6 +23,8 @@ export const CustomTextarea = <TFieldName extends string>({
           validationRules = {},
           rows = 4,
       }: CustomTextareaProps<TFieldName>) => {
+    const color = error ? "danger" : "default";
+
     return (
         <Textarea
             label={label}
@@ -32,7 +34,7 @@ export const CustomTextarea = <TFieldName extends string>({
             size="sm"
             variant="underlined"
             labelPlacement="inside"
-            color={error ? "danger" : "default"}
+            color={color}
             errorMessage={error?.message}
             {...register(field, { required: isRequired ? `${label} requis` : false, ...validationRules })}
         />
