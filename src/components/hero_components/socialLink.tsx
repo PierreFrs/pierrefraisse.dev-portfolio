@@ -20,7 +20,12 @@ export default function SocialLink(socialLinkProps: Readonly<SocialLinkProps>) {
             target="_blank"
             rel="noopener noreferrer"
         >
-            {icon} {network}
+            <span>
+                {icon}
+            </span>
+            <span className="-mb-1">
+                {network}
+            </span>
         </Link>
         );
 }
