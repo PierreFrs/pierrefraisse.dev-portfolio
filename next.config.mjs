@@ -4,16 +4,7 @@ const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: process.env.NEXT_PUBLIC_BLOB_STORAGE_URL,
-                port: '',
-                pathname: '/**',
-            }
-        ]
-    }
+    output: 'standalone'
 };
 
 export default withNextIntl(nextConfig);
