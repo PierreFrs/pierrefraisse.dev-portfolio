@@ -1,19 +1,20 @@
 # Use the official Node.js image as the base image
-FROM node:18-alpine AS base
+FROM node:lts AS base
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    libc6 \
+    openssl && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 # Copy package manager lock files and install dependencies
-COPY package.json pnpm-lock.yaml ./
-
-# Copy Prisma schema and generate Prisma client
-COPY ./prisma ./prisma
-
-# Copy environment variables
-COPY .env .env
+COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
+COPY --chown=nextjs:nodejs ./prisma ./prisma
+COPY --chown=nextjs:nodejs .env .env
 
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
@@ -25,7 +26,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --chown=nextjs:nodejs . .
 
 # Generate Prisma client and build the application
 RUN npx prisma generate \
@@ -47,16 +48,14 @@ RUN addgroup --system --gid 1001 nodejs \
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
 
 # Copy standalone output
 COPY --from=builder /app/.next/standalone ./
-
-# Set permissions
-RUN chown -R nextjs:nodejs /app
 
 USER nextjs
 
 EXPOSE 3000
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
