@@ -1,8 +1,15 @@
 {
   "Language Selector": "Language Selector",
   "HomePage": {
+    "loading": "Loading...",
     "hero-title": "I design and develop web apps",
+    "hero-no-description": "There is no description to display",
+    "hero-description-load-error": "Error loading the description",
+    "hero-no-picture": "There is no picture to display",
+    "hero-picture-load-error": "Error loading the image",
     "projects-title": "Significant projects",
+    "gallery-no-projects": "No projects to display",
+    "gallery-load-error": "Error loading the projects",
     "contact-section": {
       "name": "Name",
       "name-placeholder": "Your name",

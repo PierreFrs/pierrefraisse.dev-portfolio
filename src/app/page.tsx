@@ -9,14 +9,19 @@ import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 
 export default function MainComponentsComponent() {
     const [projects, setProjects] = useState<CardModelWithBadges[]>([]);
+    const [messageKey, setMessageKey] = useState<string | null>(null);
 
     useEffect(() => {
         (async () => {
             try {
-                const projects = await fetchProjectsWithBadges();
-                setProjects(projects);
+                const { projects, messageKey } = await fetchProjectsWithBadges();
+                if (projects) {
+                    setProjects(projects);
+                } else if (messageKey) {
+                    setMessageKey(messageKey);
+                }
             } catch {
-                console.error("Failed to fetch projects.");
+                setMessageKey("gallery-load-error");
             }
         })();
     }, []);
@@ -24,7 +29,7 @@ export default function MainComponentsComponent() {
     return (
         <section className="homepage">
             <Hero/>
-            <ProjectsGallery projects={projects}/>
+            <ProjectsGallery projects={projects} messageKey={messageKey}/>
             <Contact/>
         </section>
     );

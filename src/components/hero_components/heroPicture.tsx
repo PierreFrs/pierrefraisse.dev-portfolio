@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import {fetchHeroPicture} from "@/app/lib/data/heroPictureActions";
+import {useTranslations} from "next-intl";
 
 type HeroPictureProps = {
     size: number;
@@ -10,24 +11,33 @@ type HeroPictureProps = {
 };
 
 export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
-    const [imageUrl, setImageUrl] = useState<string>("");
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [messageKey, setMessageKey] = useState<string | null>(null);
+
+    const t = useTranslations("HomePage");
 
     useEffect(() => {
         (async () => {
             try {
-                const picture = await fetchHeroPicture();
-                if (picture?.url) {
-                    setImageUrl(picture.url);
-                } else {
-                    console.warn("No hero picture URL returned");
-                }
+                const { url, messageKey } = await fetchHeroPicture();
+                setImageUrl(url);
+                setMessageKey(messageKey);
             } catch (error: any) {
-                console.error("Failed to load hero picture", error); }
-            })();
+                console.error("Failed to load hero picture", error);
+                setMessageKey("hero-picture-load-error");
+            } finally {
+                setLoading(false);
+            }
+        })();
     }, []);
 
+    if (loading) {
+        return <p>{t("loading")}</p>;
+    }
+
     if (!imageUrl) {
-        return <p>Loading...</p>;
+        return <p>{t(messageKey!)}</p>;
     }
 
     return (

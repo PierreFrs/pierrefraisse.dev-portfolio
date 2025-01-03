@@ -8,10 +8,17 @@ import {del, put} from "@vercel/blob";
 const prisma = new PrismaClient();
 
 export async function fetchHeroPicture() {
-    return await prisma.heroPicture.findFirst({
+    const picture = await prisma.heroPicture.findFirst({
         select: { url: true },
     });
+
+    if (!picture) {
+        return { url: null, messageKey: "hero-no-picture" };
+    }
+
+    return { url: picture.url, messageKey: null };
 }
+
 
 export async function postHeroPicture(formData: FormData) {
     try {

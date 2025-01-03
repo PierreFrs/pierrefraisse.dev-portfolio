@@ -19,19 +19,13 @@ export async function postHeroDescription(data: { userId: string; language: stri
 }
 
 export async function fetchHeroDescription(language: string) {
-    try {
         const hero = await prisma.heroDescription.findFirst({
             where: { language },
             select: { text: true },
         });
-        if (hero) {
-            return { description: hero.text }; // Adjust to return `description`
+
+        if (!hero) {
+            return { description: null, messageKey: "hero-no-description" };
         }
-        return { description: "No description available." };
-    } catch (error) {
-        return {
-            message: "An error occurred while fetching the hero description.",
-            error,
-        };
-    }
+            return { description: hero.text, messageKey: null }; // Adjust to return `description`
 }
