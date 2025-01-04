@@ -3,15 +3,15 @@ services:
     container_name: nextapp
     build:
       context: .
-      dockerfile: ./docker/prod/Dockerfile
+      dockerfile: ./docker/dev/Dockerfile
     ports:
       - "3000:3000"
     volumes:
       - blob_storage:/app/blob_storage
     environment:
-      NODE_ENV: "production"
+      NODE_ENV: "development"
     env_file:
-      - stack.env
+      - .env
     depends_on:
       - db
 
