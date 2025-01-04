@@ -14,8 +14,13 @@ export function AdminProjectsSection() {
     useEffect(() => {
         (async () => {
             try {
-                const projects = await fetchProjectsWithBadges();
+                const {projects, messageKey} = await fetchProjectsWithBadges();
+
+                if (projects) {
                 setProjects(projects);
+                } else if (messageKey) {
+                    setError(messageKey);
+                }
             } catch (err) {
                 console.error("Error fetching projects:", err);
                 setError("Failed to fetch projects. Please try again.");

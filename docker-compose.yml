@@ -1,0 +1,30 @@
+services:
+  nextapp:
+    container_name: nextapp
+    build:
+      context: .
+      dockerfile: ./docker/prod/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - blob_storage:/app/blob_storage
+    environment:
+      NODE_ENV: "production"
+    env_file:
+      - stack.env
+    depends_on:
+      - db
+
+  db:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  postgres:
+  blob_storage:

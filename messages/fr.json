@@ -1,8 +1,15 @@
 {
   "Language Selector": "Sélecteur de langue",
   "HomePage": {
+    "loading": "Chargement...",
     "hero-title": "Concepteur, développeur d'applications web",
+    "hero-no-description": "Aucune description à afficher",
+    "hero-description-load-error": "Erreur lors du chargement de la description",
+    "hero-no-picture": "Aucune image à afficher",
+    "hero-picture-load-error": "Erreur lors du chargement de l'image",
     "projects-title": "Projets significatifs",
+    "gallery-no-projects": "Aucun projet à afficher",
+    "gallery-load-error": "Erreur lors du chargement des projets",
     "contact-section": {
       "name": "Nom",
       "name-placeholder": "Votre nom",
