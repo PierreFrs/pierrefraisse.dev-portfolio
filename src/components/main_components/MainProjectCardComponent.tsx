@@ -20,9 +20,9 @@ export function MainProjectCardComponent({ project }: Readonly<MainProjectCardCo
         (trans) => trans.language === locale
     );
 
-    const title = translation?.title || "Title not available";
+    const title = translation?.title ?? "Title not available";
     const shortDescription =
-        translation?.shortDescription || "Description not available";
+        translation?.shortDescription ?? "Description not available";
 
     return (
         <Card

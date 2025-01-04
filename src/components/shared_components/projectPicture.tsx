@@ -15,7 +15,7 @@ export function ProjectPictureComponent({ project }: Readonly<ProjectPictureProp
         (trans) => trans.language === locale
     );
 
-    const title = translation?.title || "Title not available";
+    const title = translation?.title ?? "Title not available";
 
     // Validate project.link
     const projectLink = project.link && project.link.trim() !== "" ? project.link : null;
@@ -23,7 +23,7 @@ export function ProjectPictureComponent({ project }: Readonly<ProjectPictureProp
 
     const imageComponent = (
         <Image
-            src={project.pictureUrl || placeholderImageUrl}
+            src={`/api/blob_storage?path=${project.pictureUrl || placeholderImageUrl}`}
             alt={title}
             width={0}
             height={0}
