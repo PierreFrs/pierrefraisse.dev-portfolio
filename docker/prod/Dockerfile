@@ -14,7 +14,6 @@ WORKDIR /app
 # Copy package manager lock files and install dependencies
 COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
 COPY --chown=nextjs:nodejs ./prisma ./prisma
-COPY --chown=nextjs:nodejs .env .env
 
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
