@@ -21,7 +21,6 @@ export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
         (async () => {
             try {
                 const { url, messageKey } = await fetchHeroPicture();
-                console.log("DEBUG: Fetched image URL:", url);
                 setImageUrl(url);
                 setMessageKey(messageKey);
             } catch (error: any) {

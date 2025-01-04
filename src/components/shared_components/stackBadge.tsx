@@ -14,7 +14,7 @@ export function StackBadgeComponent({ size, badge }: Readonly<StackBadgeProps>) 
     return (
         <div className="flex flex-col items-center gap-1">
             <Image
-                src={badge.pictureUrl || placeholderImageUrl}
+                src={`/api/blob_storage?path=${badge.pictureUrl || placeholderImageUrl}`}
                 alt={sanitizedBadgeName || "Badge"}
                 width={size}
                 height={size}
