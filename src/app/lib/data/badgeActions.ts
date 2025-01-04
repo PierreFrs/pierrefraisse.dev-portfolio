@@ -4,9 +4,12 @@
 
 import { PrismaClient } from "@prisma/client";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
-import {del, put} from "@vercel/blob";
+import path from "path";
+import fs from "fs/promises";
+import {saveFileToDisk} from "@/app/lib/helpers/fileStorage";
 
 const prisma = new PrismaClient();
+const blobStoragePath = process.env.BLOB_STORAGE_PATH ?? "";
 
 export async function fetchBadgeById(id: string): Promise<StackBadge | null> {
     return await prisma.stackBadge.findUnique({
@@ -34,8 +37,9 @@ export async function addBadge(formData: FormData): Promise<StackBadge | null> {
         });
 
         if (existingBadge) {
-            await del(existingBadge.pictureUrl).catch(() => {
-                console.log("No previous icon found to delete in storage.");
+            const filePath = path.join(blobStoragePath, existingBadge.pictureUrl);
+            await fs.unlink(filePath).catch(() => {
+                console.log("No previous icon found to delete.");
             });
 
             await prisma.stackBadge.delete({
@@ -43,14 +47,13 @@ export async function addBadge(formData: FormData): Promise<StackBadge | null> {
             });
         }
 
-        const blob = await put(icon.name, icon, {
-            access: "public",
-        });
+        const fileName = `${name}-${Date.now()}-${icon.name}`;
+        const filePath = await saveFileToDisk(icon, fileName);
 
         return await prisma.stackBadge.create({
             data: {
                 name,
-                pictureUrl: blob.url,
+                pictureUrl: path.relative(blobStoragePath, filePath),
                 userId,
             },
         });
@@ -62,7 +65,16 @@ export async function addBadge(formData: FormData): Promise<StackBadge | null> {
 }
 
 export async function removeBadge(id: string) {
+    const badge = await prisma.stackBadge.findUnique({ where: { id } });
+    if (badge?.pictureUrl) {
+        const filePath = path.join(blobStoragePath, badge.pictureUrl);
+        await fs.unlink(filePath).catch(() => {
+            console.log("No file found to delete.");
+        });
+    }
+
     return await prisma.stackBadge.delete({
         where: { id },
     });
 }
+

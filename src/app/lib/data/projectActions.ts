@@ -7,8 +7,11 @@ import {CardModelWithBadges} from "@/app/lib/models/cardModelWithBadges";
 import {fetchBadgeById} from "@/app/lib/data/badgeActions";
 import {StackBadge} from "@/app/lib/models/stackBadgeModel";
 import {createProjectFromFormData} from "@/app/lib/helpers/projectHelper";
+import path from "path";
+import fs from "fs/promises";
 
 const prisma = new PrismaClient();
+const blobStoragePath = process.env.BLOB_STORAGE_PATH ?? "";
 
 export async function fetchProjectsWithBadges(): Promise<{
     projects: CardModelWithBadges[] | null,
@@ -47,7 +50,7 @@ export async function fetchProjectsWithBadges(): Promise<{
             })
         );
 
-        return { projects: enhancedProjects }; // Fallback to empty badges
+        return { projects: enhancedProjects };
     } catch (error) {
         console.error("Error fetching projects:", error);
         throw new Error("Failed to fetch projects with badges");
@@ -55,7 +58,6 @@ export async function fetchProjectsWithBadges(): Promise<{
 }
 
 export async function addProject(formData: FormData): Promise<CardModelWithBadges> {
-    // Create the project using helper
     const project = await createProjectFromFormData(formData);
 
     const stackBadges = await Promise.all(
@@ -70,7 +72,24 @@ export async function addProject(formData: FormData): Promise<CardModelWithBadge
 }
 
 export async function deleteProject(id: string) {
-    return await prisma.projectCard.delete({
-        where: { id },
-    });
+    try {
+        const project = await prisma.projectCard.findUnique({ where: { id } });
+
+        if (project?.pictureUrl) {
+            const filePath = path.join(blobStoragePath, project.pictureUrl);
+
+            // Delete the associated file
+            await fs.unlink(filePath).catch(() => {
+                console.log("No file found to delete.");
+            });
+        }
+
+        return await prisma.projectCard.delete({
+            where: { id },
+        });
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        throw new Error("Failed to delete project");
+    }
 }
+

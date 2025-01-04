@@ -36,13 +36,16 @@ RUN npx prisma generate \
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Add user for security
 RUN addgroup --system --gid 1001 nodejs \
-&& adduser --system --uid 1001 nextjs
+    && adduser --system --uid 1001 nextjs \
+    && mkdir -p /app/blob_storage \
+    && chown -R nextjs:nodejs /app/blob_storage \
+    && chmod -R 750 /app/blob_storage
 
 # Copy application files
 COPY --from=builder /app/public ./public

@@ -21,6 +21,7 @@ export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
         (async () => {
             try {
                 const { url, messageKey } = await fetchHeroPicture();
+                console.log("DEBUG: Fetched image URL:", url);
                 setImageUrl(url);
                 setMessageKey(messageKey);
             } catch (error: any) {
@@ -42,7 +43,7 @@ export default function HeroPicture({ className }: Readonly<HeroPictureProps>) {
 
     return (
         <div className={`hero-picture-container ${className ?? ""}`}>
-            <Image src={imageUrl}
+            <Image src={`/api/blob_storage?path=${imageUrl}`}
                    alt="Your host picture"
                    className="hero-picture"
                    unoptimized={true}

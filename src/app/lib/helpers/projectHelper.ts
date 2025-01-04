@@ -1,9 +1,11 @@
 // src/lib/helpers/projectHelpers.ts
 
 import { PrismaClient } from "@prisma/client";
-import { put } from "@vercel/blob";
+import {saveFileToDisk} from "@/app/lib/helpers/fileStorage";
+import path from "path";
 
 const prisma = new PrismaClient();
+const blobStoragePath = process.env.BLOB_STORAGE_PATH ?? "";
 
 export async function createProjectFromFormData(formData: FormData) {
 
@@ -21,11 +23,12 @@ export async function createProjectFromFormData(formData: FormData) {
         throw new Error("Missing required fields");
     }
 
-    const blob = await put(picture.name, picture, { access: "public" });
+    const fileName = `${titleEn}-${Date.now()}-${picture.name}`;
+    const filePath = await saveFileToDisk(picture, fileName);
 
     return await prisma.projectCard.create({
         data: {
-            pictureUrl: blob.url,
+            pictureUrl: path.relative(blobStoragePath, filePath),
             stack,
             link,
             userId,
