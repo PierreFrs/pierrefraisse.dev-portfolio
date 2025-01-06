@@ -54,7 +54,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma/migrations ./prisma/migrations
+COPY --from=builder /app/prisma/migrations/20241206170101_made_link_optional/migration.sql ./prisma/migrations/20241206170101_made_link_optional/migration.sql
+COPY --from=builder /app/prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql
+COPY --from=builder /app/prisma/migrations/20241217152551_add_project_card_translations/migration.sql ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql
 
 # Copy standalone output
 COPY --from=builder /app/.next/standalone ./
