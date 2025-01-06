@@ -14,9 +14,9 @@ WORKDIR /app
 # Copy package manager lock files and install dependencies
 COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
 COPY --chown=nextjs:nodejs ./prisma ./prisma
-COPY --chown=nextjs:nodejs ./prisma/migrations/20241206170101_made_link_optional ./prisma/migrations/20241206170101_made_link_optional
-COPY --chown=nextjs:nodejs ./prisma/migrations/20241210151140_add_user_id_language_unique ./prisma/migrations/20241210151140_add_user_id_language_unique
-COPY --chown=nextjs:nodejs ./prisma/migrations/20241217152551_add_project_card_translations ./prisma/migrations/20241217152551_add_project_card_translations
+COPY --chown=nextjs:nodejs ./prisma/migrations/20241206170101_made_link_optional/migration.sql ./prisma/migrations/20241206170101_made_link_optional/migration.sql
+COPY --chown=nextjs:nodejs ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql
+COPY --chown=nextjs:nodejs ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql
 
 RUN npm install -g pnpm && pnpm install --frozen-lockfile
 
