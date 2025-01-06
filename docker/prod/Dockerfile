@@ -48,11 +48,11 @@ RUN addgroup --system --gid 1001 nodejs \
     && chmod -R 750 /app/blob_storage
 
 # Copy application files
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/prisma ./prisma
-COPY --from=builder /app/prisma/migrations ./prisma/migrations
+COPY --from=builder ./app/public ./public
+COPY --from=builder ./app/.next ./.next
+COPY --from=builder ./app/node_modules ./node_modules
+COPY --from=builder ./app/prisma ./prisma
+COPY --from=builder ./app/prisma/migrations ./prisma/migrations
 RUN ls -l /app/prisma/migrations
 
 # Copy standalone output
