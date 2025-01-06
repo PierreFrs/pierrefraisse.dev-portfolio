@@ -3,6 +3,9 @@ FROM node:lts AS base
 
 # Install dependencies only when needed
 FROM base AS deps
+ARG NO_CACHE
+RUN if [ "$NO_CACHE" = "true" ]; then echo "Skipping cache..." && rm -rf /; fi
+
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libc6 \
@@ -14,6 +17,7 @@ WORKDIR /app
 # Copy package manager lock files and install dependencies
 COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
 COPY --chown=nextjs:nodejs ./prisma ./prisma
+COPY --chown=nextjs:nodejs ./prisma/migrations ./prisma/migrations
 COPY --chown=nextjs:nodejs ./prisma/migrations/20241206170101_made_link_optional/migration.sql ./prisma/migrations/20241206170101_made_link_optional/migration.sql
 COPY --chown=nextjs:nodejs ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql
 COPY --chown=nextjs:nodejs ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql
@@ -54,6 +58,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma/migrations ./prisma/migrations
 COPY --from=builder /app/prisma/migrations/20241206170101_made_link_optional/migration.sql ./prisma/migrations/20241206170101_made_link_optional/migration.sql
 COPY --from=builder /app/prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql ./prisma/migrations/20241210151140_add_user_id_language_unique/migration.sql
 COPY --from=builder /app/prisma/migrations/20241217152551_add_project_card_translations/migration.sql ./prisma/migrations/20241217152551_add_project_card_translations/migration.sql
