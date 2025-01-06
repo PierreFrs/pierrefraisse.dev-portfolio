@@ -18,6 +18,7 @@ services:
       - db
     networks:
       - my_network
+    pull_policy: build
 
   db:
     container_name: postgres
