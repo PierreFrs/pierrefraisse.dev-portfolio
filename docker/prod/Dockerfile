@@ -1,6 +1,9 @@
 # Use the official Node.js image as the base image
 FROM node:lts AS base
 
+# Argument to force cache busting
+ARG CACHEBUST=1
+
 # Install dependencies only when needed
 FROM base AS deps
 RUN apt-get update && \
@@ -12,11 +15,11 @@ RUN apt-get update && \
 WORKDIR /app
 
 # Copy package manager lock files and install dependencies
+# Include the CACHEBUST arg to invalidate this layer's cache
 COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
 COPY --chown=nextjs:nodejs ./prisma ./prisma
 COPY --chown=nextjs:nodejs ./prisma/migrations ./prisma/migrations
-
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+RUN echo $CACHEBUST && npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -29,8 +32,8 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY --chown=nextjs:nodejs . .
 
 # Generate Prisma client and build the application
-RUN npx prisma generate \
-&& pnpm build
+# Use CACHEBUST to invalidate this build step if necessary
+RUN echo $CACHEBUST && npx prisma generate && pnpm build
 
 # Production image
 FROM base AS runner
@@ -48,12 +51,10 @@ RUN addgroup --system --gid 1001 nodejs \
     && chmod -R 750 /app/blob_storage
 
 # Copy application files
-COPY --from=builder ./app/public ./public
-COPY --from=builder ./app/.next ./.next
-COPY --from=builder ./app/node_modules ./node_modules
-COPY --from=builder ./app/prisma ./prisma
-COPY --from=builder ./app/prisma/migrations ./prisma/migrations
-RUN ls -l /app/prisma/migrations
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
 
 # Copy standalone output
 COPY --from=builder /app/.next/standalone ./
