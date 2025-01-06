@@ -19,7 +19,7 @@ WORKDIR /app
 COPY --chown=nextjs:nodejs package.json pnpm-lock.yaml ./
 COPY --chown=nextjs:nodejs ./prisma ./prisma
 COPY --chown=nextjs:nodejs ./prisma/migrations ./prisma/migrations
-RUN echo $CACHEBUST && npm install -g pnpm && pnpm install --frozen-lockfile
+RUN echo "$CACHEBUST" && npm install -g pnpm && pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -33,7 +33,7 @@ COPY --chown=nextjs:nodejs . .
 
 # Generate Prisma client and build the application
 # Use CACHEBUST to invalidate this build step if necessary
-RUN echo $CACHEBUST && npx prisma generate && pnpm build
+RUN echo "$CACHEBUST" && npx prisma generate && pnpm build
 
 # Production image
 FROM base AS runner
