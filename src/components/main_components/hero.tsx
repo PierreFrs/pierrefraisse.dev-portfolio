@@ -10,6 +10,7 @@ export default function Hero() {
 
     return (
         <section id="about" className="homepage-section hero-section">
+            <span>test</span>
             <h1 className="hero-title title">{t('hero-title')}</h1>
             <div className="hero-description-picture-container">
                 <HeroDescription/>
