@@ -33,15 +33,10 @@ export const authConfig = {
         },
 
         async session({ session, token }) {
-            console.log("Session callback triggered"); // Debugging
-            console.log("Session before modification:", session); // Check incoming session object
-            console.log("Token:", token); // Check token contents
-
             try {
                 if (token?.id) {
                     session.user.id = token.id as string;
                 }
-                console.log("Session after modification:", session); // Check the modified session
                 return session;
             } catch (err) {
                 console.error("Error in session callback:", err); // Log detailed error
@@ -51,7 +46,6 @@ export const authConfig = {
 
         async signIn({ user: _user, account: _account, profile }) {
             const allowedEmail = process.env.MY_MAIL;
-            console.log(profile?.email, allowedEmail);
 
             // Ensure that the user's email is verified and matches the allowed email
             return profile?.email === allowedEmail;
