@@ -15,8 +15,6 @@ export async function fetchHeroPicture() {
         select: { url: true },
     });
 
-    console.log("DEBUG: Stored picture URL:", picture?.url);
-
     if (!picture) {
         return { url: null, messageKey: "hero-no-picture" };
     }
