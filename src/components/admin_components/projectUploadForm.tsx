@@ -24,7 +24,7 @@ type ProjectFormSchema = {
 
 export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUploadFormProps>) {
     const {data: session} = useSession();
-    const {handleSubmit, reset} = useForm<ProjectFormSchema>();
+    const {register, handleSubmit, reset} = useForm<ProjectFormSchema>();
     const [picture, setPicture] = useState<File | null>(null);
     const [selectedBadges, setSelectedBadges] = useState<string[]>([]);
     const [badges, setBadges] = useState<any[]>([]);
@@ -43,6 +43,8 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     const onSubmit = async (data: ProjectFormSchema) => {
         setInProgress(true);
 
+        console.log("Form data submitted:", data);
+
         if (!picture) {
             console.error("Picture is required.");
             setInProgress(false);
@@ -57,6 +59,10 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
             formData.append("link", data.link ?? "");
             formData.append("picture", picture as Blob);
             selectedBadges.forEach((badgeId) => formData.append("stack", badgeId));
+
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}:`, value);
+        }
 
             const userId = session?.user?.id;
             if (!userId) {
@@ -101,41 +107,37 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
 
             <Form onSubmit={handleSubmit(onSubmit)} className="w-96">
                 <Input
-                    isRequired
+                    {...register("titleEn", { required: true })}
                     label="Project Title (En)"
-                    placeholder="Enter project title in english"
-                    name="titleEn"
+                    placeholder="Enter project title in English"
                     type="text"
                     variant="bordered"
                 />
                 <Input
-                    isRequired
+                    {...register("titleFr", { required: true })}
                     label="Project Title (Fr)"
-                    placeholder="Enter project title in french"
-                    name="titleFr"
+                    placeholder="Enter project title in French"
                     type="text"
                     variant="bordered"
                 />
                 <Textarea
-                    isRequired
-                    label="Short Description (en)"
-                    placeholder="Enter a short description in english"
-                    name="shortDescriptionEn"
+                    {...register("shortDescriptionEn", { required: true })}
+                    label="Short Description (En)"
+                    placeholder="Enter a short description in English"
                     type="text"
                     variant="bordered"
                 />
                 <Textarea
-                    isRequired
-                    label="Short Description (fr)"
-                    placeholder="Enter a short description in french"
-                    name="shortDescriptionFr"
+                    {...register("shortDescriptionFr", { required: true })}
+                    label="Short Description (Fr)"
+                    placeholder="Enter a short description in French"
                     type="text"
                     variant="bordered"
                 />
                 <Input
+                    {...register("link")}
                     label="Project Link"
                     placeholder="Enter project link"
-                    name="link"
                     type="url"
                     variant="bordered"
                 />

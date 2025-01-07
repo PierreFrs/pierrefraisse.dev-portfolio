@@ -9,6 +9,11 @@ const blobStoragePath = process.env.BLOB_STORAGE_PATH ?? "";
 
 export async function createProjectFromFormData(formData: FormData) {
 
+    console.log("FormData entries:");
+    for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+    }
+
     const titleEn = formData.get("titleEn") as string;
     const shortDescriptionEn = formData.get("shortDescriptionEn") as string;
     const titleFr = formData.get("titleFr") as string;
@@ -18,6 +23,9 @@ export async function createProjectFromFormData(formData: FormData) {
     const userId = formData.get("userId") as string;
     const stack = formData.getAll("stack") as string[];
     const picture = formData.get("picture") as File;
+
+    console.log({ titleEn, shortDescriptionEn, titleFr, shortDescriptionFr, link, userId });
+
 
     if (!titleEn || !titleFr || !shortDescriptionEn || !shortDescriptionFr || !userId || !stack.length || !picture) {
         throw new Error("Missing required fields");
