@@ -43,8 +43,6 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
     const onSubmit = async (data: ProjectFormSchema) => {
         setInProgress(true);
 
-        console.log("Form data submitted:", data);
-
         if (!picture) {
             console.error("Picture is required.");
             setInProgress(false);
@@ -59,10 +57,6 @@ export default function ProjectUploadForm({ onProjectAdded }: Readonly<ProjectUp
             formData.append("link", data.link ?? "");
             formData.append("picture", picture as Blob);
             selectedBadges.forEach((badgeId) => formData.append("stack", badgeId));
-
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}:`, value);
-        }
 
             const userId = session?.user?.id;
             if (!userId) {
